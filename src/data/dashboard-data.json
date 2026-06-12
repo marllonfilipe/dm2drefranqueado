@@ -1,0 +1,7461 @@
+{
+  "generatedAt": "2026-06-12T14:13:50.436Z",
+  "workbook": {
+    "fileName": "DRE_Doutor DM2 Diabetes_2026_Marllon.xlsx",
+    "sourcePath": "C:\\Users\\mfcs1\\Downloads\\DRE_Doutor DM2 Diabetes_2026_Marllon.xlsx",
+    "sheets": [
+      "ESTIMATIVA DE INVESTIMENTO",
+      "DRE",
+      "BASE"
+    ]
+  },
+  "months": [
+    "1º Mês",
+    "2º Mês",
+    "3º Mês",
+    "4º Mês",
+    "5º Mês",
+    "6º Mês",
+    "7º Mês",
+    "8º Mês",
+    "9º Mês",
+    "10º Mês",
+    "11º Mês",
+    "12º Mês"
+  ],
+  "kpis": {
+    "initialInvestment": 375000,
+    "totalRevenue": 1776798.535,
+    "totalExpenses": 1344563.9044862262,
+    "totalNetResult": 432234.63051377377,
+    "weightedMargin": 0.243265976417396,
+    "bestMonth": "11º Mês",
+    "bestMonthRevenue": 196145.615,
+    "paybackMonth": "11º Mês"
+  },
+  "monthly": [
+    {
+      "month": "1º Mês",
+      "revenue": 112612.00000000001,
+      "expenses": 89694.63935984,
+      "netResult": 22917.360640160012,
+      "margin": 0.20350726956416731,
+      "cumulativeReturn": -352082.63935983996
+    },
+    {
+      "month": "2º Mês",
+      "revenue": 112612.00000000001,
+      "expenses": 90081.26835984002,
+      "netResult": 22530.731640159996,
+      "margin": 0.20007398536710114,
+      "cumulativeReturn": -329551.90771968
+    },
+    {
+      "month": "3º Mês",
+      "revenue": 117645.6,
+      "expenses": 94275.794517792,
+      "netResult": 23369.805482208,
+      "margin": 0.1986458098068096,
+      "cumulativeReturn": -306182.10223747196
+    },
+    {
+      "month": "4º Mês",
+      "revenue": 124980.01499999998,
+      "expenses": 99253.90803625979,
+      "netResult": 25726.106963740196,
+      "margin": 0.20584176569142035,
+      "cumulativeReturn": -280455.99527373177
+    },
+    {
+      "month": "5º Mês",
+      "revenue": 127540.815,
+      "expenses": 101189.97491731579,
+      "netResult": 26350.84008268421,
+      "margin": 0.20660711696631553,
+      "cumulativeReturn": -254105.15519104755
+    },
+    {
+      "month": "6º Mês",
+      "revenue": 134061.615,
+      "expenses": 105394.8361355718,
+      "netResult": 28666.778864428197,
+      "margin": 0.2138328623329519,
+      "cumulativeReturn": -225438.37632661936
+    },
+    {
+      "month": "7º Mês",
+      "revenue": 136041.615,
+      "expenses": 106161.4472291718,
+      "netResult": 29880.167770828193,
+      "margin": 0.2196399077651952,
+      "cumulativeReturn": -195558.20855579118
+    },
+    {
+      "month": "8º Mês",
+      "revenue": 159467.21500000003,
+      "expenses": 118846.15465656383,
+      "netResult": 40621.0603434362,
+      "margin": 0.25472985367830114,
+      "cumulativeReturn": -154937.14821235498
+    },
+    {
+      "month": "9º Mês",
+      "revenue": 174411.37499999997,
+      "expenses": 126765.143265015,
+      "netResult": 47646.231734984976,
+      "margin": 0.27318305205142146,
+      "cumulativeReturn": -107290.91647737
+    },
+    {
+      "month": "10º Mês",
+      "revenue": 185135.055,
+      "expenses": 132439.8556679526,
+      "netResult": 52695.1993320474,
+      "margin": 0.2846311268929993,
+      "cumulativeReturn": -54595.717145322604
+    },
+    {
+      "month": "11º Mês",
+      "revenue": 196145.615,
+      "expenses": 140230.44117045178,
+      "netResult": 55915.17382954821,
+      "margin": 0.2850697112425797,
+      "cumulativeReturn": 1319.4566842256027
+    },
+    {
+      "month": "12º Mês",
+      "revenue": 196145.615,
+      "expenses": 140230.44117045178,
+      "netResult": 55915.17382954821,
+      "margin": 0.2850697112425797,
+      "cumulativeReturn": 57234.63051377381
+    }
+  ],
+  "dre": [
+    {
+      "id": "faturamento_total",
+      "label": "Faturamento Total",
+      "category": "Receita",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E4",
+        "valueRange": "DRE!F4:Q4",
+        "rowNumber": 4
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 112612.00000000001,
+          "cell": "DRE!F4"
+        },
+        {
+          "month": "2º Mês",
+          "value": 112612.00000000001,
+          "cell": "DRE!G4"
+        },
+        {
+          "month": "3º Mês",
+          "value": 117645.6,
+          "cell": "DRE!H4"
+        },
+        {
+          "month": "4º Mês",
+          "value": 124980.01499999998,
+          "cell": "DRE!I4"
+        },
+        {
+          "month": "5º Mês",
+          "value": 127540.815,
+          "cell": "DRE!J4"
+        },
+        {
+          "month": "6º Mês",
+          "value": 134061.615,
+          "cell": "DRE!K4"
+        },
+        {
+          "month": "7º Mês",
+          "value": 136041.615,
+          "cell": "DRE!L4"
+        },
+        {
+          "month": "8º Mês",
+          "value": 159467.21500000003,
+          "cell": "DRE!M4"
+        },
+        {
+          "month": "9º Mês",
+          "value": 174411.37499999997,
+          "cell": "DRE!N4"
+        },
+        {
+          "month": "10º Mês",
+          "value": 185135.055,
+          "cell": "DRE!O4"
+        },
+        {
+          "month": "11º Mês",
+          "value": 196145.615,
+          "cell": "DRE!P4"
+        },
+        {
+          "month": "12º Mês",
+          "value": 196145.615,
+          "cell": "DRE!Q4"
+        }
+      ]
+    },
+    {
+      "id": "protocolos",
+      "label": "Protocolos",
+      "category": "Receita",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E5",
+        "valueRange": "DRE!F5:Q5",
+        "rowNumber": 5
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 103840.00000000001,
+          "cell": "DRE!F5"
+        },
+        {
+          "month": "2º Mês",
+          "value": 103840.00000000001,
+          "cell": "DRE!G5"
+        },
+        {
+          "month": "3º Mês",
+          "value": 109032,
+          "cell": "DRE!H5"
+        },
+        {
+          "month": "4º Mês",
+          "value": 113519.99999999999,
+          "cell": "DRE!I5"
+        },
+        {
+          "month": "5º Mês",
+          "value": 116160,
+          "cell": "DRE!J5"
+        },
+        {
+          "month": "6º Mês",
+          "value": 122760,
+          "cell": "DRE!K5"
+        },
+        {
+          "month": "7º Mês",
+          "value": 124740,
+          "cell": "DRE!L5"
+        },
+        {
+          "month": "8º Mês",
+          "value": 148720.00000000003,
+          "cell": "DRE!M5"
+        },
+        {
+          "month": "9º Mês",
+          "value": 162729.59999999998,
+          "cell": "DRE!N5"
+        },
+        {
+          "month": "10º Mês",
+          "value": 173342.4,
+          "cell": "DRE!O5"
+        },
+        {
+          "month": "11º Mês",
+          "value": 184250,
+          "cell": "DRE!P5"
+        },
+        {
+          "month": "12º Mês",
+          "value": 184250,
+          "cell": "DRE!Q5"
+        }
+      ]
+    },
+    {
+      "id": "consultas",
+      "label": "Consultas",
+      "category": "Receita",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E6",
+        "valueRange": "DRE!F6:Q6",
+        "rowNumber": 6
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 4752,
+          "cell": "DRE!F6"
+        },
+        {
+          "month": "2º Mês",
+          "value": 4752,
+          "cell": "DRE!G6"
+        },
+        {
+          "month": "3º Mês",
+          "value": 4593.6,
+          "cell": "DRE!H6"
+        },
+        {
+          "month": "4º Mês",
+          "value": 4514.400000000001,
+          "cell": "DRE!I6"
+        },
+        {
+          "month": "5º Mês",
+          "value": 4435.2,
+          "cell": "DRE!J6"
+        },
+        {
+          "month": "6º Mês",
+          "value": 4356,
+          "cell": "DRE!K6"
+        },
+        {
+          "month": "7º Mês",
+          "value": 4356,
+          "cell": "DRE!L6"
+        },
+        {
+          "month": "8º Mês",
+          "value": 3801.5999999999995,
+          "cell": "DRE!M6"
+        },
+        {
+          "month": "9º Mês",
+          "value": 4736.16,
+          "cell": "DRE!N6"
+        },
+        {
+          "month": "10º Mês",
+          "value": 4847.039999999999,
+          "cell": "DRE!O6"
+        },
+        {
+          "month": "11º Mês",
+          "value": 4950,
+          "cell": "DRE!P6"
+        },
+        {
+          "month": "12º Mês",
+          "value": 4950,
+          "cell": "DRE!Q6"
+        }
+      ]
+    },
+    {
+      "id": "produtos_alimenticios",
+      "label": "Produtos Alimentícios",
+      "category": "Receita",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E7",
+        "valueRange": "DRE!F7:Q7",
+        "rowNumber": 7
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 4020,
+          "cell": "DRE!F7"
+        },
+        {
+          "month": "2º Mês",
+          "value": 4020,
+          "cell": "DRE!G7"
+        },
+        {
+          "month": "3º Mês",
+          "value": 4020,
+          "cell": "DRE!H7"
+        },
+        {
+          "month": "4º Mês",
+          "value": 4020,
+          "cell": "DRE!I7"
+        },
+        {
+          "month": "5º Mês",
+          "value": 4020,
+          "cell": "DRE!J7"
+        },
+        {
+          "month": "6º Mês",
+          "value": 4020,
+          "cell": "DRE!K7"
+        },
+        {
+          "month": "7º Mês",
+          "value": 4020,
+          "cell": "DRE!L7"
+        },
+        {
+          "month": "8º Mês",
+          "value": 4020,
+          "cell": "DRE!M7"
+        },
+        {
+          "month": "9º Mês",
+          "value": 4020,
+          "cell": "DRE!N7"
+        },
+        {
+          "month": "10º Mês",
+          "value": 4020,
+          "cell": "DRE!O7"
+        },
+        {
+          "month": "11º Mês",
+          "value": 4020,
+          "cell": "DRE!P7"
+        },
+        {
+          "month": "12º Mês",
+          "value": 4020,
+          "cell": "DRE!Q7"
+        }
+      ]
+    },
+    {
+      "id": "suplementos_extras",
+      "label": "Suplementos Extras",
+      "category": "Receita",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E8",
+        "valueRange": "DRE!F8:Q8",
+        "rowNumber": 8
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 0,
+          "cell": "DRE!F8"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0,
+          "cell": "DRE!G8"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0,
+          "cell": "DRE!H8"
+        },
+        {
+          "month": "4º Mês",
+          "value": 2925.6150000000002,
+          "cell": "DRE!I8"
+        },
+        {
+          "month": "5º Mês",
+          "value": 2925.6150000000002,
+          "cell": "DRE!J8"
+        },
+        {
+          "month": "6º Mês",
+          "value": 2925.6150000000002,
+          "cell": "DRE!K8"
+        },
+        {
+          "month": "7º Mês",
+          "value": 2925.6150000000002,
+          "cell": "DRE!L8"
+        },
+        {
+          "month": "8º Mês",
+          "value": 2925.6150000000002,
+          "cell": "DRE!M8"
+        },
+        {
+          "month": "9º Mês",
+          "value": 2925.6150000000002,
+          "cell": "DRE!N8"
+        },
+        {
+          "month": "10º Mês",
+          "value": 2925.6150000000002,
+          "cell": "DRE!O8"
+        },
+        {
+          "month": "11º Mês",
+          "value": 2925.6150000000002,
+          "cell": "DRE!P8"
+        },
+        {
+          "month": "12º Mês",
+          "value": 2925.6150000000002,
+          "cell": "DRE!Q8"
+        }
+      ]
+    },
+    {
+      "id": "produto_a",
+      "label": "Produto A",
+      "category": "Receita",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E9",
+        "valueRange": "DRE!F9:Q9",
+        "rowNumber": 9
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 0,
+          "cell": "DRE!F9"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0,
+          "cell": "DRE!G9"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0,
+          "cell": "DRE!H9"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0,
+          "cell": "DRE!I9"
+        },
+        {
+          "month": "5º Mês",
+          "value": 0,
+          "cell": "DRE!J9"
+        },
+        {
+          "month": "6º Mês",
+          "value": 0,
+          "cell": "DRE!K9"
+        },
+        {
+          "month": "7º Mês",
+          "value": 0,
+          "cell": "DRE!L9"
+        },
+        {
+          "month": "8º Mês",
+          "value": 0,
+          "cell": "DRE!M9"
+        },
+        {
+          "month": "9º Mês",
+          "value": 0,
+          "cell": "DRE!N9"
+        },
+        {
+          "month": "10º Mês",
+          "value": 0,
+          "cell": "DRE!O9"
+        },
+        {
+          "month": "11º Mês",
+          "value": 0,
+          "cell": "DRE!P9"
+        },
+        {
+          "month": "12º Mês",
+          "value": 0,
+          "cell": "DRE!Q9"
+        }
+      ]
+    },
+    {
+      "id": "produto_b",
+      "label": "Produto B",
+      "category": "Receita",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E10",
+        "valueRange": "DRE!F10:Q10",
+        "rowNumber": 10
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 0,
+          "cell": "DRE!F10"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0,
+          "cell": "DRE!G10"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0,
+          "cell": "DRE!H10"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0,
+          "cell": "DRE!I10"
+        },
+        {
+          "month": "5º Mês",
+          "value": 0,
+          "cell": "DRE!J10"
+        },
+        {
+          "month": "6º Mês",
+          "value": 0,
+          "cell": "DRE!K10"
+        },
+        {
+          "month": "7º Mês",
+          "value": 0,
+          "cell": "DRE!L10"
+        },
+        {
+          "month": "8º Mês",
+          "value": 0,
+          "cell": "DRE!M10"
+        },
+        {
+          "month": "9º Mês",
+          "value": 0,
+          "cell": "DRE!N10"
+        },
+        {
+          "month": "10º Mês",
+          "value": 0,
+          "cell": "DRE!O10"
+        },
+        {
+          "month": "11º Mês",
+          "value": 0,
+          "cell": "DRE!P10"
+        },
+        {
+          "month": "12º Mês",
+          "value": 0,
+          "cell": "DRE!Q10"
+        }
+      ]
+    },
+    {
+      "id": "despesas_rh_contabil",
+      "label": "(-) Despesas RH Contábil",
+      "category": "RH",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E12",
+        "valueRange": "DRE!F12:Q12",
+        "rowNumber": 12
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 23929.606679840002,
+          "cell": "DRE!F12"
+        },
+        {
+          "month": "2º Mês",
+          "value": 22948.395679840003,
+          "cell": "DRE!G12"
+        },
+        {
+          "month": "3º Mês",
+          "value": 23156.219533792006,
+          "cell": "DRE!H12"
+        },
+        {
+          "month": "4º Mês",
+          "value": 23459.0378729098,
+          "cell": "DRE!I12"
+        },
+        {
+          "month": "5º Mês",
+          "value": 23564.766441965803,
+          "cell": "DRE!J12"
+        },
+        {
+          "month": "6º Mês",
+          "value": 23833.9927982218,
+          "cell": "DRE!K12"
+        },
+        {
+          "month": "7º Mês",
+          "value": 23915.7416918218,
+          "cell": "DRE!L12"
+        },
+        {
+          "month": "8º Mês",
+          "value": 24882.921935213802,
+          "cell": "DRE!M12"
+        },
+        {
+          "month": "9º Mês",
+          "value": 25499.926251264995,
+          "cell": "DRE!N12"
+        },
+        {
+          "month": "10º Mês",
+          "value": 25942.678259002605,
+          "cell": "DRE!O12"
+        },
+        {
+          "month": "11º Mês",
+          "value": 26397.274773101803,
+          "cell": "DRE!P12"
+        },
+        {
+          "month": "12º Mês",
+          "value": 26397.274773101803,
+          "cell": "DRE!Q12"
+        }
+      ]
+    },
+    {
+      "id": "despesas_rh_financeira",
+      "label": "(-) Despesas RH Financeira",
+      "category": "RH",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E13",
+        "valueRange": "DRE!F13:Q13",
+        "rowNumber": 13
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 18778.628800000002,
+          "cell": "DRE!F13"
+        },
+        {
+          "month": "2º Mês",
+          "value": 18008.628800000002,
+          "cell": "DRE!G13"
+        },
+        {
+          "month": "3º Mês",
+          "value": 18171.717440000004,
+          "cell": "DRE!H13"
+        },
+        {
+          "month": "4º Mês",
+          "value": 18409.352486,
+          "cell": "DRE!I13"
+        },
+        {
+          "month": "5º Mês",
+          "value": 18492.322406000003,
+          "cell": "DRE!J13"
+        },
+        {
+          "month": "6º Mês",
+          "value": 18703.596326,
+          "cell": "DRE!K13"
+        },
+        {
+          "month": "7º Mês",
+          "value": 18767.748326,
+          "cell": "DRE!L13"
+        },
+        {
+          "month": "8º Mês",
+          "value": 19526.737766000002,
+          "cell": "DRE!M13"
+        },
+        {
+          "month": "9º Mês",
+          "value": 20010.928549999997,
+          "cell": "DRE!N13"
+        },
+        {
+          "month": "10º Mês",
+          "value": 20358.375782000003,
+          "cell": "DRE!O13"
+        },
+        {
+          "month": "11º Mês",
+          "value": 20715.117926000003,
+          "cell": "DRE!P13"
+        },
+        {
+          "month": "12º Mês",
+          "value": 20715.117926000003,
+          "cell": "DRE!Q13"
+        }
+      ]
+    },
+    {
+      "id": "salarios",
+      "label": "Salários",
+      "category": "RH",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E14",
+        "valueRange": "DRE!F14:Q14",
+        "rowNumber": 14
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 13100,
+          "cell": "DRE!F14"
+        },
+        {
+          "month": "2º Mês",
+          "value": 12400,
+          "cell": "DRE!G14"
+        },
+        {
+          "month": "3º Mês",
+          "value": 12400,
+          "cell": "DRE!H14"
+        },
+        {
+          "month": "4º Mês",
+          "value": 12400,
+          "cell": "DRE!I14"
+        },
+        {
+          "month": "5º Mês",
+          "value": 12400,
+          "cell": "DRE!J14"
+        },
+        {
+          "month": "6º Mês",
+          "value": 12400,
+          "cell": "DRE!K14"
+        },
+        {
+          "month": "7º Mês",
+          "value": 12400,
+          "cell": "DRE!L14"
+        },
+        {
+          "month": "8º Mês",
+          "value": 12400,
+          "cell": "DRE!M14"
+        },
+        {
+          "month": "9º Mês",
+          "value": 12400,
+          "cell": "DRE!N14"
+        },
+        {
+          "month": "10º Mês",
+          "value": 12400,
+          "cell": "DRE!O14"
+        },
+        {
+          "month": "11º Mês",
+          "value": 12400,
+          "cell": "DRE!P14"
+        },
+        {
+          "month": "12º Mês",
+          "value": 12400,
+          "cell": "DRE!Q14"
+        }
+      ]
+    },
+    {
+      "id": "comissao_fdv",
+      "label": "Comissão FDV",
+      "category": "RH",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E15",
+        "valueRange": "DRE!F15:Q15",
+        "rowNumber": 15
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 3378.36,
+          "cell": "DRE!F15"
+        },
+        {
+          "month": "2º Mês",
+          "value": 3378.36,
+          "cell": "DRE!G15"
+        },
+        {
+          "month": "3º Mês",
+          "value": 3529.368,
+          "cell": "DRE!H15"
+        },
+        {
+          "month": "4º Mês",
+          "value": 3749.400449999999,
+          "cell": "DRE!I15"
+        },
+        {
+          "month": "5º Mês",
+          "value": 3826.2244499999997,
+          "cell": "DRE!J15"
+        },
+        {
+          "month": "6º Mês",
+          "value": 4021.8484499999995,
+          "cell": "DRE!K15"
+        },
+        {
+          "month": "7º Mês",
+          "value": 4081.2484499999996,
+          "cell": "DRE!L15"
+        },
+        {
+          "month": "8º Mês",
+          "value": 4784.016450000001,
+          "cell": "DRE!M15"
+        },
+        {
+          "month": "9º Mês",
+          "value": 5232.341249999999,
+          "cell": "DRE!N15"
+        },
+        {
+          "month": "10º Mês",
+          "value": 5554.051649999999,
+          "cell": "DRE!O15"
+        },
+        {
+          "month": "11º Mês",
+          "value": 5884.36845,
+          "cell": "DRE!P15"
+        },
+        {
+          "month": "12º Mês",
+          "value": 5884.36845,
+          "cell": "DRE!Q15"
+        }
+      ]
+    },
+    {
+      "id": "vale_transporte_10",
+      "label": "Vale Transporte (10%)",
+      "category": "RH",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E16",
+        "valueRange": "DRE!F16:Q16",
+        "rowNumber": 16
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 1310,
+          "cell": "DRE!F16"
+        },
+        {
+          "month": "2º Mês",
+          "value": 1240,
+          "cell": "DRE!G16"
+        },
+        {
+          "month": "3º Mês",
+          "value": 1240,
+          "cell": "DRE!H16"
+        },
+        {
+          "month": "4º Mês",
+          "value": 1240,
+          "cell": "DRE!I16"
+        },
+        {
+          "month": "5º Mês",
+          "value": 1240,
+          "cell": "DRE!J16"
+        },
+        {
+          "month": "6º Mês",
+          "value": 1240,
+          "cell": "DRE!K16"
+        },
+        {
+          "month": "7º Mês",
+          "value": 1240,
+          "cell": "DRE!L16"
+        },
+        {
+          "month": "8º Mês",
+          "value": 1240,
+          "cell": "DRE!M16"
+        },
+        {
+          "month": "9º Mês",
+          "value": 1240,
+          "cell": "DRE!N16"
+        },
+        {
+          "month": "10º Mês",
+          "value": 1240,
+          "cell": "DRE!O16"
+        },
+        {
+          "month": "11º Mês",
+          "value": 1240,
+          "cell": "DRE!P16"
+        },
+        {
+          "month": "12º Mês",
+          "value": 1240,
+          "cell": "DRE!Q16"
+        }
+      ]
+    },
+    {
+      "id": "encargos",
+      "label": "Encargos",
+      "category": "RH",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E18",
+        "valueRange": "DRE!F18:Q18",
+        "rowNumber": 18
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 990.2688,
+          "cell": "DRE!F18"
+        },
+        {
+          "month": "2º Mês",
+          "value": 990.2688,
+          "cell": "DRE!G18"
+        },
+        {
+          "month": "3º Mês",
+          "value": 1002.3494400000001,
+          "cell": "DRE!H18"
+        },
+        {
+          "month": "4º Mês",
+          "value": 1019.9520359999999,
+          "cell": "DRE!I18"
+        },
+        {
+          "month": "5º Mês",
+          "value": 1026.097956,
+          "cell": "DRE!J18"
+        },
+        {
+          "month": "6º Mês",
+          "value": 1041.747876,
+          "cell": "DRE!K18"
+        },
+        {
+          "month": "7º Mês",
+          "value": 1046.4998759999999,
+          "cell": "DRE!L18"
+        },
+        {
+          "month": "8º Mês",
+          "value": 1102.7213160000001,
+          "cell": "DRE!M18"
+        },
+        {
+          "month": "9º Mês",
+          "value": 1138.5873,
+          "cell": "DRE!N18"
+        },
+        {
+          "month": "10º Mês",
+          "value": 1164.324132,
+          "cell": "DRE!O18"
+        },
+        {
+          "month": "11º Mês",
+          "value": 1190.749476,
+          "cell": "DRE!P18"
+        },
+        {
+          "month": "12º Mês",
+          "value": 1190.749476,
+          "cell": "DRE!Q18"
+        }
+      ]
+    },
+    {
+      "id": "provisao_13_salario",
+      "label": "Provisão 13 salário",
+      "category": "RH",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E21",
+        "valueRange": "DRE!F21:Q21",
+        "rowNumber": 21
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 1564.2597790400002,
+          "cell": "DRE!F21"
+        },
+        {
+          "month": "2º Mês",
+          "value": 1500.1187790400002,
+          "cell": "DRE!G21"
+        },
+        {
+          "month": "3º Mês",
+          "value": 1513.7040627520003,
+          "cell": "DRE!H21"
+        },
+        {
+          "month": "4º Mês",
+          "value": 1533.4990620838,
+          "cell": "DRE!I21"
+        },
+        {
+          "month": "5º Mês",
+          "value": 1540.4104564198003,
+          "cell": "DRE!J21"
+        },
+        {
+          "month": "6º Mês",
+          "value": 1558.0095739557999,
+          "cell": "DRE!K21"
+        },
+        {
+          "month": "7º Mês",
+          "value": 1563.3534355558002,
+          "cell": "DRE!L21"
+        },
+        {
+          "month": "8º Mês",
+          "value": 1626.5772559078002,
+          "cell": "DRE!M21"
+        },
+        {
+          "month": "9º Mês",
+          "value": 1666.9103482149997,
+          "cell": "DRE!N21"
+        },
+        {
+          "month": "10º Mês",
+          "value": 1695.8527026406002,
+          "cell": "DRE!O21"
+        },
+        {
+          "month": "11º Mês",
+          "value": 1725.5693232358003,
+          "cell": "DRE!P21"
+        },
+        {
+          "month": "12º Mês",
+          "value": 1725.5693232358003,
+          "cell": "DRE!Q21"
+        }
+      ]
+    },
+    {
+      "id": "provisao_ferias",
+      "label": "Provisão Férias",
+      "category": "RH",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E22",
+        "valueRange": "DRE!F22:Q22",
+        "rowNumber": 22
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 2084.4277968,
+          "cell": "DRE!F22"
+        },
+        {
+          "month": "2º Mês",
+          "value": 1998.9577968000003,
+          "cell": "DRE!G22"
+        },
+        {
+          "month": "3º Mês",
+          "value": 2017.0606358400005,
+          "cell": "DRE!H22"
+        },
+        {
+          "month": "4º Mês",
+          "value": 2043.438125946,
+          "cell": "DRE!I22"
+        },
+        {
+          "month": "5º Mês",
+          "value": 2052.6477870660005,
+          "cell": "DRE!J22"
+        },
+        {
+          "month": "6º Mês",
+          "value": 2076.099192186,
+          "cell": "DRE!K22"
+        },
+        {
+          "month": "7º Mês",
+          "value": 2083.220064186,
+          "cell": "DRE!L22"
+        },
+        {
+          "month": "8º Mês",
+          "value": 2167.4678920260003,
+          "cell": "DRE!M22"
+        },
+        {
+          "month": "9º Mês",
+          "value": 2221.21306905,
+          "cell": "DRE!N22"
+        },
+        {
+          "month": "10º Mês",
+          "value": 2259.7797118020003,
+          "cell": "DRE!O22"
+        },
+        {
+          "month": "11º Mês",
+          "value": 2299.378089786,
+          "cell": "DRE!P22"
+        },
+        {
+          "month": "12º Mês",
+          "value": 2299.378089786,
+          "cell": "DRE!Q22"
+        }
+      ]
+    },
+    {
+      "id": "provisao_multa_fgts",
+      "label": "Provisão Multa FGTS",
+      "category": "RH",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E23",
+        "valueRange": "DRE!F23:Q23",
+        "rowNumber": 23
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 751.145152,
+          "cell": "DRE!F23"
+        },
+        {
+          "month": "2º Mês",
+          "value": 720.3451520000001,
+          "cell": "DRE!G23"
+        },
+        {
+          "month": "3º Mês",
+          "value": 726.8686976000001,
+          "cell": "DRE!H23"
+        },
+        {
+          "month": "4º Mês",
+          "value": 736.37409944,
+          "cell": "DRE!I23"
+        },
+        {
+          "month": "5º Mês",
+          "value": 739.6928962400001,
+          "cell": "DRE!J23"
+        },
+        {
+          "month": "6º Mês",
+          "value": 748.14385304,
+          "cell": "DRE!K23"
+        },
+        {
+          "month": "7º Mês",
+          "value": 750.70993304,
+          "cell": "DRE!L23"
+        },
+        {
+          "month": "8º Mês",
+          "value": 781.0695106400001,
+          "cell": "DRE!M23"
+        },
+        {
+          "month": "9º Mês",
+          "value": 800.4371419999999,
+          "cell": "DRE!N23"
+        },
+        {
+          "month": "10º Mês",
+          "value": 814.3350312800002,
+          "cell": "DRE!O23"
+        },
+        {
+          "month": "11º Mês",
+          "value": 828.6047170400001,
+          "cell": "DRE!P23"
+        },
+        {
+          "month": "12º Mês",
+          "value": 828.6047170400001,
+          "cell": "DRE!Q23"
+        }
+      ]
+    },
+    {
+      "id": "provisao_rescisoes",
+      "label": "Provisão Rescisões",
+      "category": "RH",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E24",
+        "valueRange": "DRE!F24:Q24",
+        "rowNumber": 24
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 751.145152,
+          "cell": "DRE!F24"
+        },
+        {
+          "month": "2º Mês",
+          "value": 720.3451520000001,
+          "cell": "DRE!G24"
+        },
+        {
+          "month": "3º Mês",
+          "value": 726.8686976000001,
+          "cell": "DRE!H24"
+        },
+        {
+          "month": "4º Mês",
+          "value": 736.37409944,
+          "cell": "DRE!I24"
+        },
+        {
+          "month": "5º Mês",
+          "value": 739.6928962400001,
+          "cell": "DRE!J24"
+        },
+        {
+          "month": "6º Mês",
+          "value": 748.14385304,
+          "cell": "DRE!K24"
+        },
+        {
+          "month": "7º Mês",
+          "value": 750.70993304,
+          "cell": "DRE!L24"
+        },
+        {
+          "month": "8º Mês",
+          "value": 781.0695106400001,
+          "cell": "DRE!M24"
+        },
+        {
+          "month": "9º Mês",
+          "value": 800.4371419999999,
+          "cell": "DRE!N24"
+        },
+        {
+          "month": "10º Mês",
+          "value": 814.3350312800002,
+          "cell": "DRE!O24"
+        },
+        {
+          "month": "11º Mês",
+          "value": 828.6047170400001,
+          "cell": "DRE!P24"
+        },
+        {
+          "month": "12º Mês",
+          "value": 828.6047170400001,
+          "cell": "DRE!Q24"
+        }
+      ]
+    },
+    {
+      "id": "despesas_fixas",
+      "label": "(-) Despesas Fixas",
+      "category": "Despesas Fixas",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E25",
+        "valueRange": "DRE!F25:Q25",
+        "rowNumber": 25
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 16627.2,
+          "cell": "DRE!F25"
+        },
+        {
+          "month": "2º Mês",
+          "value": 16967.2,
+          "cell": "DRE!G25"
+        },
+        {
+          "month": "3º Mês",
+          "value": 16993.16,
+          "cell": "DRE!H25"
+        },
+        {
+          "month": "4º Mês",
+          "value": 17015.6,
+          "cell": "DRE!I25"
+        },
+        {
+          "month": "5º Mês",
+          "value": 17028.8,
+          "cell": "DRE!J25"
+        },
+        {
+          "month": "6º Mês",
+          "value": 17061.8,
+          "cell": "DRE!K25"
+        },
+        {
+          "month": "7º Mês",
+          "value": 17071.7,
+          "cell": "DRE!L25"
+        },
+        {
+          "month": "8º Mês",
+          "value": 17191.6,
+          "cell": "DRE!M25"
+        },
+        {
+          "month": "9º Mês",
+          "value": 17261.648,
+          "cell": "DRE!N25"
+        },
+        {
+          "month": "10º Mês",
+          "value": 17314.712,
+          "cell": "DRE!O25"
+        },
+        {
+          "month": "11º Mês",
+          "value": 17369.25,
+          "cell": "DRE!P25"
+        },
+        {
+          "month": "12º Mês",
+          "value": 17369.25,
+          "cell": "DRE!Q25"
+        }
+      ]
+    },
+    {
+      "id": "aluguel",
+      "label": "Aluguel",
+      "category": "Despesas Fixas",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E26",
+        "valueRange": "DRE!F26:Q26",
+        "rowNumber": 26
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 10000,
+          "cell": "DRE!F26"
+        },
+        {
+          "month": "2º Mês",
+          "value": 10000,
+          "cell": "DRE!G26"
+        },
+        {
+          "month": "3º Mês",
+          "value": 10000,
+          "cell": "DRE!H26"
+        },
+        {
+          "month": "4º Mês",
+          "value": 10000,
+          "cell": "DRE!I26"
+        },
+        {
+          "month": "5º Mês",
+          "value": 10000,
+          "cell": "DRE!J26"
+        },
+        {
+          "month": "6º Mês",
+          "value": 10000,
+          "cell": "DRE!K26"
+        },
+        {
+          "month": "7º Mês",
+          "value": 10000,
+          "cell": "DRE!L26"
+        },
+        {
+          "month": "8º Mês",
+          "value": 10000,
+          "cell": "DRE!M26"
+        },
+        {
+          "month": "9º Mês",
+          "value": 10000,
+          "cell": "DRE!N26"
+        },
+        {
+          "month": "10º Mês",
+          "value": 10000,
+          "cell": "DRE!O26"
+        },
+        {
+          "month": "11º Mês",
+          "value": 10000,
+          "cell": "DRE!P26"
+        },
+        {
+          "month": "12º Mês",
+          "value": 10000,
+          "cell": "DRE!Q26"
+        }
+      ]
+    },
+    {
+      "id": "iptu",
+      "label": "IPTU",
+      "category": "Despesas Fixas",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E27",
+        "valueRange": "DRE!F27:Q27",
+        "rowNumber": 27
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 460,
+          "cell": "DRE!F27"
+        },
+        {
+          "month": "2º Mês",
+          "value": 800,
+          "cell": "DRE!G27"
+        },
+        {
+          "month": "3º Mês",
+          "value": 800,
+          "cell": "DRE!H27"
+        },
+        {
+          "month": "4º Mês",
+          "value": 800,
+          "cell": "DRE!I27"
+        },
+        {
+          "month": "5º Mês",
+          "value": 800,
+          "cell": "DRE!J27"
+        },
+        {
+          "month": "6º Mês",
+          "value": 800,
+          "cell": "DRE!K27"
+        },
+        {
+          "month": "7º Mês",
+          "value": 800,
+          "cell": "DRE!L27"
+        },
+        {
+          "month": "8º Mês",
+          "value": 800,
+          "cell": "DRE!M27"
+        },
+        {
+          "month": "9º Mês",
+          "value": 800,
+          "cell": "DRE!N27"
+        },
+        {
+          "month": "10º Mês",
+          "value": 800,
+          "cell": "DRE!O27"
+        },
+        {
+          "month": "11º Mês",
+          "value": 800,
+          "cell": "DRE!P27"
+        },
+        {
+          "month": "12º Mês",
+          "value": 800,
+          "cell": "DRE!Q27"
+        }
+      ]
+    },
+    {
+      "id": "luz",
+      "label": "Luz",
+      "category": "Despesas Fixas",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E28",
+        "valueRange": "DRE!F28:Q28",
+        "rowNumber": 28
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 1000,
+          "cell": "DRE!F28"
+        },
+        {
+          "month": "2º Mês",
+          "value": 1000,
+          "cell": "DRE!G28"
+        },
+        {
+          "month": "3º Mês",
+          "value": 1000,
+          "cell": "DRE!H28"
+        },
+        {
+          "month": "4º Mês",
+          "value": 1000,
+          "cell": "DRE!I28"
+        },
+        {
+          "month": "5º Mês",
+          "value": 1000,
+          "cell": "DRE!J28"
+        },
+        {
+          "month": "6º Mês",
+          "value": 1000,
+          "cell": "DRE!K28"
+        },
+        {
+          "month": "7º Mês",
+          "value": 1000,
+          "cell": "DRE!L28"
+        },
+        {
+          "month": "8º Mês",
+          "value": 1000,
+          "cell": "DRE!M28"
+        },
+        {
+          "month": "9º Mês",
+          "value": 1000,
+          "cell": "DRE!N28"
+        },
+        {
+          "month": "10º Mês",
+          "value": 1000,
+          "cell": "DRE!O28"
+        },
+        {
+          "month": "11º Mês",
+          "value": 1000,
+          "cell": "DRE!P28"
+        },
+        {
+          "month": "12º Mês",
+          "value": 1000,
+          "cell": "DRE!Q28"
+        }
+      ]
+    },
+    {
+      "id": "agua",
+      "label": "Água",
+      "category": "Despesas Fixas",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E29",
+        "valueRange": "DRE!F29:Q29",
+        "rowNumber": 29
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 150,
+          "cell": "DRE!F29"
+        },
+        {
+          "month": "2º Mês",
+          "value": 150,
+          "cell": "DRE!G29"
+        },
+        {
+          "month": "3º Mês",
+          "value": 150,
+          "cell": "DRE!H29"
+        },
+        {
+          "month": "4º Mês",
+          "value": 150,
+          "cell": "DRE!I29"
+        },
+        {
+          "month": "5º Mês",
+          "value": 150,
+          "cell": "DRE!J29"
+        },
+        {
+          "month": "6º Mês",
+          "value": 150,
+          "cell": "DRE!K29"
+        },
+        {
+          "month": "7º Mês",
+          "value": 150,
+          "cell": "DRE!L29"
+        },
+        {
+          "month": "8º Mês",
+          "value": 150,
+          "cell": "DRE!M29"
+        },
+        {
+          "month": "9º Mês",
+          "value": 150,
+          "cell": "DRE!N29"
+        },
+        {
+          "month": "10º Mês",
+          "value": 150,
+          "cell": "DRE!O29"
+        },
+        {
+          "month": "11º Mês",
+          "value": 150,
+          "cell": "DRE!P29"
+        },
+        {
+          "month": "12º Mês",
+          "value": 150,
+          "cell": "DRE!Q29"
+        }
+      ]
+    },
+    {
+      "id": "internet",
+      "label": "internet",
+      "category": "Despesas Fixas",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E30",
+        "valueRange": "DRE!F30:Q30",
+        "rowNumber": 30
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 150,
+          "cell": "DRE!F30"
+        },
+        {
+          "month": "2º Mês",
+          "value": 150,
+          "cell": "DRE!G30"
+        },
+        {
+          "month": "3º Mês",
+          "value": 150,
+          "cell": "DRE!H30"
+        },
+        {
+          "month": "4º Mês",
+          "value": 150,
+          "cell": "DRE!I30"
+        },
+        {
+          "month": "5º Mês",
+          "value": 150,
+          "cell": "DRE!J30"
+        },
+        {
+          "month": "6º Mês",
+          "value": 150,
+          "cell": "DRE!K30"
+        },
+        {
+          "month": "7º Mês",
+          "value": 150,
+          "cell": "DRE!L30"
+        },
+        {
+          "month": "8º Mês",
+          "value": 150,
+          "cell": "DRE!M30"
+        },
+        {
+          "month": "9º Mês",
+          "value": 150,
+          "cell": "DRE!N30"
+        },
+        {
+          "month": "10º Mês",
+          "value": 150,
+          "cell": "DRE!O30"
+        },
+        {
+          "month": "11º Mês",
+          "value": 150,
+          "cell": "DRE!P30"
+        },
+        {
+          "month": "12º Mês",
+          "value": 150,
+          "cell": "DRE!Q30"
+        }
+      ]
+    },
+    {
+      "id": "seguranca",
+      "label": "Segurança",
+      "category": "Despesas Fixas",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E31",
+        "valueRange": "DRE!F31:Q31",
+        "rowNumber": 31
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 250,
+          "cell": "DRE!F31"
+        },
+        {
+          "month": "2º Mês",
+          "value": 250,
+          "cell": "DRE!G31"
+        },
+        {
+          "month": "3º Mês",
+          "value": 250,
+          "cell": "DRE!H31"
+        },
+        {
+          "month": "4º Mês",
+          "value": 250,
+          "cell": "DRE!I31"
+        },
+        {
+          "month": "5º Mês",
+          "value": 250,
+          "cell": "DRE!J31"
+        },
+        {
+          "month": "6º Mês",
+          "value": 250,
+          "cell": "DRE!K31"
+        },
+        {
+          "month": "7º Mês",
+          "value": 250,
+          "cell": "DRE!L31"
+        },
+        {
+          "month": "8º Mês",
+          "value": 250,
+          "cell": "DRE!M31"
+        },
+        {
+          "month": "9º Mês",
+          "value": 250,
+          "cell": "DRE!N31"
+        },
+        {
+          "month": "10º Mês",
+          "value": 250,
+          "cell": "DRE!O31"
+        },
+        {
+          "month": "11º Mês",
+          "value": 250,
+          "cell": "DRE!P31"
+        },
+        {
+          "month": "12º Mês",
+          "value": 250,
+          "cell": "DRE!Q31"
+        }
+      ]
+    },
+    {
+      "id": "limpeza_faxina",
+      "label": "Limpeza/Faxina",
+      "category": "Despesas Fixas",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E32",
+        "valueRange": "DRE!F32:Q32",
+        "rowNumber": 32
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 800,
+          "cell": "DRE!F32"
+        },
+        {
+          "month": "2º Mês",
+          "value": 800,
+          "cell": "DRE!G32"
+        },
+        {
+          "month": "3º Mês",
+          "value": 800,
+          "cell": "DRE!H32"
+        },
+        {
+          "month": "4º Mês",
+          "value": 800,
+          "cell": "DRE!I32"
+        },
+        {
+          "month": "5º Mês",
+          "value": 800,
+          "cell": "DRE!J32"
+        },
+        {
+          "month": "6º Mês",
+          "value": 800,
+          "cell": "DRE!K32"
+        },
+        {
+          "month": "7º Mês",
+          "value": 800,
+          "cell": "DRE!L32"
+        },
+        {
+          "month": "8º Mês",
+          "value": 800,
+          "cell": "DRE!M32"
+        },
+        {
+          "month": "9º Mês",
+          "value": 800,
+          "cell": "DRE!N32"
+        },
+        {
+          "month": "10º Mês",
+          "value": 800,
+          "cell": "DRE!O32"
+        },
+        {
+          "month": "11º Mês",
+          "value": 800,
+          "cell": "DRE!P32"
+        },
+        {
+          "month": "12º Mês",
+          "value": 800,
+          "cell": "DRE!Q32"
+        }
+      ]
+    },
+    {
+      "id": "profissional_trafego_pago",
+      "label": "Profissional Tráfego pago",
+      "category": "Despesas Fixas",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E33",
+        "valueRange": "DRE!F33:Q33",
+        "rowNumber": 33
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 1500,
+          "cell": "DRE!F33"
+        },
+        {
+          "month": "2º Mês",
+          "value": 1500,
+          "cell": "DRE!G33"
+        },
+        {
+          "month": "3º Mês",
+          "value": 1500,
+          "cell": "DRE!H33"
+        },
+        {
+          "month": "4º Mês",
+          "value": 1500,
+          "cell": "DRE!I33"
+        },
+        {
+          "month": "5º Mês",
+          "value": 1500,
+          "cell": "DRE!J33"
+        },
+        {
+          "month": "6º Mês",
+          "value": 1500,
+          "cell": "DRE!K33"
+        },
+        {
+          "month": "7º Mês",
+          "value": 1500,
+          "cell": "DRE!L33"
+        },
+        {
+          "month": "8º Mês",
+          "value": 1500,
+          "cell": "DRE!M33"
+        },
+        {
+          "month": "9º Mês",
+          "value": 1500,
+          "cell": "DRE!N33"
+        },
+        {
+          "month": "10º Mês",
+          "value": 1500,
+          "cell": "DRE!O33"
+        },
+        {
+          "month": "11º Mês",
+          "value": 1500,
+          "cell": "DRE!P33"
+        },
+        {
+          "month": "12º Mês",
+          "value": 1500,
+          "cell": "DRE!Q33"
+        }
+      ]
+    },
+    {
+      "id": "contador",
+      "label": "contador",
+      "category": "Despesas Fixas",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E34",
+        "valueRange": "DRE!F34:Q34",
+        "rowNumber": 34
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 650,
+          "cell": "DRE!F34"
+        },
+        {
+          "month": "2º Mês",
+          "value": 650,
+          "cell": "DRE!G34"
+        },
+        {
+          "month": "3º Mês",
+          "value": 650,
+          "cell": "DRE!H34"
+        },
+        {
+          "month": "4º Mês",
+          "value": 650,
+          "cell": "DRE!I34"
+        },
+        {
+          "month": "5º Mês",
+          "value": 650,
+          "cell": "DRE!J34"
+        },
+        {
+          "month": "6º Mês",
+          "value": 650,
+          "cell": "DRE!K34"
+        },
+        {
+          "month": "7º Mês",
+          "value": 650,
+          "cell": "DRE!L34"
+        },
+        {
+          "month": "8º Mês",
+          "value": 650,
+          "cell": "DRE!M34"
+        },
+        {
+          "month": "9º Mês",
+          "value": 650,
+          "cell": "DRE!N34"
+        },
+        {
+          "month": "10º Mês",
+          "value": 650,
+          "cell": "DRE!O34"
+        },
+        {
+          "month": "11º Mês",
+          "value": 650,
+          "cell": "DRE!P34"
+        },
+        {
+          "month": "12º Mês",
+          "value": 650,
+          "cell": "DRE!Q34"
+        }
+      ]
+    },
+    {
+      "id": "zapclinic",
+      "label": "Zapclinic",
+      "category": "Despesas Fixas",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E35",
+        "valueRange": "DRE!F35:Q35",
+        "rowNumber": 35
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 499,
+          "cell": "DRE!F35"
+        },
+        {
+          "month": "2º Mês",
+          "value": 499,
+          "cell": "DRE!G35"
+        },
+        {
+          "month": "3º Mês",
+          "value": 499,
+          "cell": "DRE!H35"
+        },
+        {
+          "month": "4º Mês",
+          "value": 499,
+          "cell": "DRE!I35"
+        },
+        {
+          "month": "5º Mês",
+          "value": 499,
+          "cell": "DRE!J35"
+        },
+        {
+          "month": "6º Mês",
+          "value": 499,
+          "cell": "DRE!K35"
+        },
+        {
+          "month": "7º Mês",
+          "value": 499,
+          "cell": "DRE!L35"
+        },
+        {
+          "month": "8º Mês",
+          "value": 499,
+          "cell": "DRE!M35"
+        },
+        {
+          "month": "9º Mês",
+          "value": 499,
+          "cell": "DRE!N35"
+        },
+        {
+          "month": "10º Mês",
+          "value": 499,
+          "cell": "DRE!O35"
+        },
+        {
+          "month": "11º Mês",
+          "value": 499,
+          "cell": "DRE!P35"
+        },
+        {
+          "month": "12º Mês",
+          "value": 499,
+          "cell": "DRE!Q35"
+        }
+      ]
+    },
+    {
+      "id": "software",
+      "label": "Software",
+      "category": "Despesas Fixas",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E36",
+        "valueRange": "DRE!F36:Q36",
+        "rowNumber": 36
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 449,
+          "cell": "DRE!F36"
+        },
+        {
+          "month": "2º Mês",
+          "value": 449,
+          "cell": "DRE!G36"
+        },
+        {
+          "month": "3º Mês",
+          "value": 449,
+          "cell": "DRE!H36"
+        },
+        {
+          "month": "4º Mês",
+          "value": 449,
+          "cell": "DRE!I36"
+        },
+        {
+          "month": "5º Mês",
+          "value": 449,
+          "cell": "DRE!J36"
+        },
+        {
+          "month": "6º Mês",
+          "value": 449,
+          "cell": "DRE!K36"
+        },
+        {
+          "month": "7º Mês",
+          "value": 449,
+          "cell": "DRE!L36"
+        },
+        {
+          "month": "8º Mês",
+          "value": 449,
+          "cell": "DRE!M36"
+        },
+        {
+          "month": "9º Mês",
+          "value": 449,
+          "cell": "DRE!N36"
+        },
+        {
+          "month": "10º Mês",
+          "value": 449,
+          "cell": "DRE!O36"
+        },
+        {
+          "month": "11º Mês",
+          "value": 449,
+          "cell": "DRE!P36"
+        },
+        {
+          "month": "12º Mês",
+          "value": 449,
+          "cell": "DRE!Q36"
+        }
+      ]
+    },
+    {
+      "id": "materiais_descartaveis",
+      "label": "Materiais Descartáveis",
+      "category": "Despesas Fixas",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E37",
+        "valueRange": "DRE!F37:Q37",
+        "rowNumber": 37
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 519.2,
+          "cell": "DRE!F37"
+        },
+        {
+          "month": "2º Mês",
+          "value": 519.2,
+          "cell": "DRE!G37"
+        },
+        {
+          "month": "3º Mês",
+          "value": 545.16,
+          "cell": "DRE!H37"
+        },
+        {
+          "month": "4º Mês",
+          "value": 567.5999999999999,
+          "cell": "DRE!I37"
+        },
+        {
+          "month": "5º Mês",
+          "value": 580.8000000000001,
+          "cell": "DRE!J37"
+        },
+        {
+          "month": "6º Mês",
+          "value": 613.8000000000001,
+          "cell": "DRE!K37"
+        },
+        {
+          "month": "7º Mês",
+          "value": 623.7,
+          "cell": "DRE!L37"
+        },
+        {
+          "month": "8º Mês",
+          "value": 743.6000000000001,
+          "cell": "DRE!M37"
+        },
+        {
+          "month": "9º Mês",
+          "value": 813.6479999999999,
+          "cell": "DRE!N37"
+        },
+        {
+          "month": "10º Mês",
+          "value": 866.712,
+          "cell": "DRE!O37"
+        },
+        {
+          "month": "11º Mês",
+          "value": 921.25,
+          "cell": "DRE!P37"
+        },
+        {
+          "month": "12º Mês",
+          "value": 921.25,
+          "cell": "DRE!Q37"
+        }
+      ]
+    },
+    {
+      "id": "material_limpeza_escritorio",
+      "label": "Material limpeza/ escritório",
+      "category": "Despesas Fixas",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E38",
+        "valueRange": "DRE!F38:Q38",
+        "rowNumber": 38
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 200,
+          "cell": "DRE!F38"
+        },
+        {
+          "month": "2º Mês",
+          "value": 200,
+          "cell": "DRE!G38"
+        },
+        {
+          "month": "3º Mês",
+          "value": 200,
+          "cell": "DRE!H38"
+        },
+        {
+          "month": "4º Mês",
+          "value": 200,
+          "cell": "DRE!I38"
+        },
+        {
+          "month": "5º Mês",
+          "value": 200,
+          "cell": "DRE!J38"
+        },
+        {
+          "month": "6º Mês",
+          "value": 200,
+          "cell": "DRE!K38"
+        },
+        {
+          "month": "7º Mês",
+          "value": 200,
+          "cell": "DRE!L38"
+        },
+        {
+          "month": "8º Mês",
+          "value": 200,
+          "cell": "DRE!M38"
+        },
+        {
+          "month": "9º Mês",
+          "value": 200,
+          "cell": "DRE!N38"
+        },
+        {
+          "month": "10º Mês",
+          "value": 200,
+          "cell": "DRE!O38"
+        },
+        {
+          "month": "11º Mês",
+          "value": 200,
+          "cell": "DRE!P38"
+        },
+        {
+          "month": "12º Mês",
+          "value": 200,
+          "cell": "DRE!Q38"
+        }
+      ]
+    },
+    {
+      "id": "despesas_variaveis",
+      "label": "(-) Despesas Variáveis",
+      "category": "Despesas Variaveis",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E39",
+        "valueRange": "DRE!F39:Q39",
+        "rowNumber": 39
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 33431.712680000004,
+          "cell": "DRE!F39"
+        },
+        {
+          "month": "2º Mês",
+          "value": 33431.712680000004,
+          "cell": "DRE!G39"
+        },
+        {
+          "month": "3º Mês",
+          "value": 34947.486984,
+          "cell": "DRE!H39"
+        },
+        {
+          "month": "4º Mês",
+          "value": 36287.77561334999,
+          "cell": "DRE!I39"
+        },
+        {
+          "month": "5º Mês",
+          "value": 37050.981925349995,
+          "cell": "DRE!J39"
+        },
+        {
+          "month": "6º Mês",
+          "value": 38292.912637350004,
+          "cell": "DRE!K39"
+        },
+        {
+          "month": "7º Mês",
+          "value": 38532.27483735,
+          "cell": "DRE!L39"
+        },
+        {
+          "month": "8º Mês",
+          "value": 44539.61402135001,
+          "cell": "DRE!M39"
+        },
+        {
+          "month": "9º Mês",
+          "value": 47797.833363749996,
+          "cell": "DRE!N39"
+        },
+        {
+          "month": "10º Mês",
+          "value": 50727.291358949995,
+          "cell": "DRE!O39"
+        },
+        {
+          "month": "11º Mês",
+          "value": 53736.79339735,
+          "cell": "DRE!P39"
+        },
+        {
+          "month": "12º Mês",
+          "value": 53736.79339735,
+          "cell": "DRE!Q39"
+        }
+      ]
+    },
+    {
+      "id": "cmv_protocolos",
+      "label": "CMV Protocolos",
+      "category": "Despesas Variaveis",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E40",
+        "valueRange": "DRE!F40:Q40",
+        "rowNumber": 40
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 18145.248000000003,
+          "cell": "DRE!F40"
+        },
+        {
+          "month": "2º Mês",
+          "value": 18145.248000000003,
+          "cell": "DRE!G40"
+        },
+        {
+          "month": "3º Mês",
+          "value": 19052.5104,
+          "cell": "DRE!H40"
+        },
+        {
+          "month": "4º Mês",
+          "value": 19506.1416,
+          "cell": "DRE!I40"
+        },
+        {
+          "month": "5º Mês",
+          "value": 19959.7728,
+          "cell": "DRE!J40"
+        },
+        {
+          "month": "6º Mês",
+          "value": 20413.404000000002,
+          "cell": "DRE!K40"
+        },
+        {
+          "month": "7º Mês",
+          "value": 20413.404000000002,
+          "cell": "DRE!L40"
+        },
+        {
+          "month": "8º Mês",
+          "value": 23588.822400000005,
+          "cell": "DRE!M40"
+        },
+        {
+          "month": "9º Mês",
+          "value": 25040.442239999997,
+          "cell": "DRE!N40"
+        },
+        {
+          "month": "10º Mês",
+          "value": 26673.51456,
+          "cell": "DRE!O40"
+        },
+        {
+          "month": "11º Mês",
+          "value": 28351.95,
+          "cell": "DRE!P40"
+        },
+        {
+          "month": "12º Mês",
+          "value": 28351.95,
+          "cell": "DRE!Q40"
+        }
+      ]
+    },
+    {
+      "id": "cmv_suplementos_avulsos",
+      "label": "CMV Suplementos Avulsos",
+      "category": "Despesas Variaveis",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E41",
+        "valueRange": "DRE!F41:Q41",
+        "rowNumber": 41
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 0,
+          "cell": "DRE!F41"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0,
+          "cell": "DRE!G41"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0,
+          "cell": "DRE!H41"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0,
+          "cell": "DRE!I41"
+        },
+        {
+          "month": "5º Mês",
+          "value": 0,
+          "cell": "DRE!J41"
+        },
+        {
+          "month": "6º Mês",
+          "value": 0,
+          "cell": "DRE!K41"
+        },
+        {
+          "month": "7º Mês",
+          "value": 0,
+          "cell": "DRE!L41"
+        },
+        {
+          "month": "8º Mês",
+          "value": 0,
+          "cell": "DRE!M41"
+        },
+        {
+          "month": "9º Mês",
+          "value": 0,
+          "cell": "DRE!N41"
+        },
+        {
+          "month": "10º Mês",
+          "value": 0,
+          "cell": "DRE!O41"
+        },
+        {
+          "month": "11º Mês",
+          "value": 0,
+          "cell": "DRE!P41"
+        },
+        {
+          "month": "12º Mês",
+          "value": 0,
+          "cell": "DRE!Q41"
+        }
+      ]
+    },
+    {
+      "id": "cmv_produtos",
+      "label": "CMV Produtos",
+      "category": "Despesas Variaveis",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E42",
+        "valueRange": "DRE!F42:Q42",
+        "rowNumber": 42
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 1672.7999999999997,
+          "cell": "DRE!F42"
+        },
+        {
+          "month": "2º Mês",
+          "value": 1672.7999999999997,
+          "cell": "DRE!G42"
+        },
+        {
+          "month": "3º Mês",
+          "value": 1672.7999999999997,
+          "cell": "DRE!H42"
+        },
+        {
+          "month": "4º Mês",
+          "value": 1672.7999999999997,
+          "cell": "DRE!I42"
+        },
+        {
+          "month": "5º Mês",
+          "value": 1672.7999999999997,
+          "cell": "DRE!J42"
+        },
+        {
+          "month": "6º Mês",
+          "value": 1672.7999999999997,
+          "cell": "DRE!K42"
+        },
+        {
+          "month": "7º Mês",
+          "value": 1672.7999999999997,
+          "cell": "DRE!L42"
+        },
+        {
+          "month": "8º Mês",
+          "value": 1672.7999999999997,
+          "cell": "DRE!M42"
+        },
+        {
+          "month": "9º Mês",
+          "value": 1672.7999999999997,
+          "cell": "DRE!N42"
+        },
+        {
+          "month": "10º Mês",
+          "value": 1672.7999999999997,
+          "cell": "DRE!O42"
+        },
+        {
+          "month": "11º Mês",
+          "value": 1672.7999999999997,
+          "cell": "DRE!P42"
+        },
+        {
+          "month": "12º Mês",
+          "value": 1672.7999999999997,
+          "cell": "DRE!Q42"
+        }
+      ]
+    },
+    {
+      "id": "cmv_produto_b",
+      "label": "CMV Produto B",
+      "category": "Despesas Variaveis",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E43",
+        "valueRange": "DRE!F43:Q43",
+        "rowNumber": 43
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 0,
+          "cell": "DRE!F43"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0,
+          "cell": "DRE!G43"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0,
+          "cell": "DRE!H43"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0,
+          "cell": "DRE!I43"
+        },
+        {
+          "month": "5º Mês",
+          "value": 0,
+          "cell": "DRE!J43"
+        },
+        {
+          "month": "6º Mês",
+          "value": 0,
+          "cell": "DRE!K43"
+        },
+        {
+          "month": "7º Mês",
+          "value": 0,
+          "cell": "DRE!L43"
+        },
+        {
+          "month": "8º Mês",
+          "value": 0,
+          "cell": "DRE!M43"
+        },
+        {
+          "month": "9º Mês",
+          "value": 0,
+          "cell": "DRE!N43"
+        },
+        {
+          "month": "10º Mês",
+          "value": 0,
+          "cell": "DRE!O43"
+        },
+        {
+          "month": "11º Mês",
+          "value": 0,
+          "cell": "DRE!P43"
+        },
+        {
+          "month": "12º Mês",
+          "value": 0,
+          "cell": "DRE!Q43"
+        }
+      ]
+    },
+    {
+      "id": "verba_de_marketing_5",
+      "label": "Verba de Marketing 5%",
+      "category": "Despesas Variaveis",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E44",
+        "valueRange": "DRE!F44:Q44",
+        "rowNumber": 44
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 5630.600000000001,
+          "cell": "DRE!F44"
+        },
+        {
+          "month": "2º Mês",
+          "value": 5630.600000000001,
+          "cell": "DRE!G44"
+        },
+        {
+          "month": "3º Mês",
+          "value": 5882.280000000001,
+          "cell": "DRE!H44"
+        },
+        {
+          "month": "4º Mês",
+          "value": 6249.000749999999,
+          "cell": "DRE!I44"
+        },
+        {
+          "month": "5º Mês",
+          "value": 6377.04075,
+          "cell": "DRE!J44"
+        },
+        {
+          "month": "6º Mês",
+          "value": 6703.08075,
+          "cell": "DRE!K44"
+        },
+        {
+          "month": "7º Mês",
+          "value": 6802.08075,
+          "cell": "DRE!L44"
+        },
+        {
+          "month": "8º Mês",
+          "value": 7973.360750000002,
+          "cell": "DRE!M44"
+        },
+        {
+          "month": "9º Mês",
+          "value": 8720.568749999999,
+          "cell": "DRE!N44"
+        },
+        {
+          "month": "10º Mês",
+          "value": 9256.75275,
+          "cell": "DRE!O44"
+        },
+        {
+          "month": "11º Mês",
+          "value": 9807.28075,
+          "cell": "DRE!P44"
+        },
+        {
+          "month": "12º Mês",
+          "value": 9807.28075,
+          "cell": "DRE!Q44"
+        }
+      ]
+    },
+    {
+      "id": "taxas_cartao",
+      "label": "Taxas Cartão",
+      "category": "Despesas Variaveis",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E45",
+        "valueRange": "DRE!F45:Q45",
+        "rowNumber": 45
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 7983.064680000001,
+          "cell": "DRE!F45"
+        },
+        {
+          "month": "2º Mês",
+          "value": 7983.064680000001,
+          "cell": "DRE!G45"
+        },
+        {
+          "month": "3º Mês",
+          "value": 8339.896584,
+          "cell": "DRE!H45"
+        },
+        {
+          "month": "4º Mês",
+          "value": 8859.833263349998,
+          "cell": "DRE!I45"
+        },
+        {
+          "month": "5º Mês",
+          "value": 9041.368375349999,
+          "cell": "DRE!J45"
+        },
+        {
+          "month": "6º Mês",
+          "value": 9503.627887349998,
+          "cell": "DRE!K45"
+        },
+        {
+          "month": "7º Mês",
+          "value": 9643.99008735,
+          "cell": "DRE!L45"
+        },
+        {
+          "month": "8º Mês",
+          "value": 11304.630871350002,
+          "cell": "DRE!M45"
+        },
+        {
+          "month": "9º Mês",
+          "value": 12364.022373749998,
+          "cell": "DRE!N45"
+        },
+        {
+          "month": "10º Mês",
+          "value": 13124.22404895,
+          "cell": "DRE!O45"
+        },
+        {
+          "month": "11º Mês",
+          "value": 13904.76264735,
+          "cell": "DRE!P45"
+        },
+        {
+          "month": "12º Mês",
+          "value": 13904.76264735,
+          "cell": "DRE!Q45"
+        }
+      ]
+    },
+    {
+      "id": "impostos",
+      "label": "(-) Impostos",
+      "category": "Impostos",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E46",
+        "valueRange": "DRE!F46:Q46",
+        "rowNumber": 46
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 4920.120000000001,
+          "cell": "DRE!F46"
+        },
+        {
+          "month": "2º Mês",
+          "value": 5947.960000000001,
+          "cell": "DRE!G46"
+        },
+        {
+          "month": "3º Mês",
+          "value": 7873.727999999999,
+          "cell": "DRE!H46"
+        },
+        {
+          "month": "4º Mês",
+          "value": 10444.93305,
+          "cell": "DRE!I46"
+        },
+        {
+          "month": "5º Mês",
+          "value": 11234.86505,
+          "cell": "DRE!J46"
+        },
+        {
+          "month": "6º Mês",
+          "value": 13235.569200000002,
+          "cell": "DRE!K46"
+        },
+        {
+          "month": "7º Mês",
+          "value": 13473.1692,
+          "cell": "DRE!L46"
+        },
+        {
+          "month": "8º Mês",
+          "value": 16665.457200000004,
+          "cell": "DRE!M46"
+        },
+        {
+          "month": "9º Mês",
+          "value": 19238.21415,
+          "cell": "DRE!N46"
+        },
+        {
+          "month": "10º Mês",
+          "value": 20426.37255,
+          "cell": "DRE!O46"
+        },
+        {
+          "month": "11º Mês",
+          "value": 23607.561500000003,
+          "cell": "DRE!P46"
+        },
+        {
+          "month": "12º Mês",
+          "value": 23607.561500000003,
+          "cell": "DRE!Q46"
+        }
+      ]
+    },
+    {
+      "id": "simples_nacional_suplementos",
+      "label": "SIMPLES Nacional Suplementos",
+      "category": "Impostos",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E47",
+        "valueRange": "DRE!F47:Q47",
+        "rowNumber": 47
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 1836.6000000000001,
+          "cell": "DRE!F47"
+        },
+        {
+          "month": "2º Mês",
+          "value": 1836.6000000000001,
+          "cell": "DRE!G47"
+        },
+        {
+          "month": "3º Mês",
+          "value": 3588.48,
+          "cell": "DRE!H47"
+        },
+        {
+          "month": "4º Mês",
+          "value": 4790.49305,
+          "cell": "DRE!I47"
+        },
+        {
+          "month": "5º Mês",
+          "value": 4890.59305,
+          "cell": "DRE!J47"
+        },
+        {
+          "month": "6º Mês",
+          "value": 5703.649200000001,
+          "cell": "DRE!K47"
+        },
+        {
+          "month": "7º Mês",
+          "value": 5703.649200000001,
+          "cell": "DRE!L47"
+        },
+        {
+          "month": "8º Mês",
+          "value": 6504.449200000002,
+          "cell": "DRE!M47"
+        },
+        {
+          "month": "9º Mês",
+          "value": 7729.345349999999,
+          "cell": "DRE!N47"
+        },
+        {
+          "month": "10º Mês",
+          "value": 8192.66535,
+          "cell": "DRE!O47"
+        },
+        {
+          "month": "11º Mês",
+          "value": 9632.061500000002,
+          "cell": "DRE!P47"
+        },
+        {
+          "month": "12º Mês",
+          "value": 9632.061500000002,
+          "cell": "DRE!Q47"
+        }
+      ]
+    },
+    {
+      "id": "simples_nacional_servicos",
+      "label": "SIMPLES Nacional Serviços",
+      "category": "Impostos",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E48",
+        "valueRange": "DRE!F48:Q48",
+        "rowNumber": 48
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 3083.5200000000004,
+          "cell": "DRE!F48"
+        },
+        {
+          "month": "2º Mês",
+          "value": 4111.360000000001,
+          "cell": "DRE!G48"
+        },
+        {
+          "month": "3º Mês",
+          "value": 4285.248,
+          "cell": "DRE!H48"
+        },
+        {
+          "month": "4º Mês",
+          "value": 5654.44,
+          "cell": "DRE!I48"
+        },
+        {
+          "month": "5º Mês",
+          "value": 6344.272,
+          "cell": "DRE!J48"
+        },
+        {
+          "month": "6º Mês",
+          "value": 7531.92,
+          "cell": "DRE!K48"
+        },
+        {
+          "month": "7º Mês",
+          "value": 7769.5199999999995,
+          "cell": "DRE!L48"
+        },
+        {
+          "month": "8º Mês",
+          "value": 10161.008000000003,
+          "cell": "DRE!M48"
+        },
+        {
+          "month": "9º Mês",
+          "value": 11508.8688,
+          "cell": "DRE!N48"
+        },
+        {
+          "month": "10º Mês",
+          "value": 12233.707199999999,
+          "cell": "DRE!O48"
+        },
+        {
+          "month": "11º Mês",
+          "value": 13975.500000000002,
+          "cell": "DRE!P48"
+        },
+        {
+          "month": "12º Mês",
+          "value": 13975.500000000002,
+          "cell": "DRE!Q48"
+        }
+      ]
+    },
+    {
+      "id": "despesa_franchising",
+      "label": "(-) Despesa Franchising",
+      "category": "Franchising",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E49",
+        "valueRange": "DRE!F49:Q49",
+        "rowNumber": 49
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 10786.000000000002,
+          "cell": "DRE!F49"
+        },
+        {
+          "month": "2º Mês",
+          "value": 10786.000000000002,
+          "cell": "DRE!G49"
+        },
+        {
+          "month": "3º Mês",
+          "value": 11305.2,
+          "cell": "DRE!H49"
+        },
+        {
+          "month": "4º Mês",
+          "value": 12046.5615,
+          "cell": "DRE!I49"
+        },
+        {
+          "month": "5º Mês",
+          "value": 12310.561500000002,
+          "cell": "DRE!J49"
+        },
+        {
+          "month": "6º Mês",
+          "value": 12970.5615,
+          "cell": "DRE!K49"
+        },
+        {
+          "month": "7º Mês",
+          "value": 13168.5615,
+          "cell": "DRE!L49"
+        },
+        {
+          "month": "8º Mês",
+          "value": 15566.561500000003,
+          "cell": "DRE!M49"
+        },
+        {
+          "month": "9º Mês",
+          "value": 16967.5215,
+          "cell": "DRE!N49"
+        },
+        {
+          "month": "10º Mês",
+          "value": 18028.801499999998,
+          "cell": "DRE!O49"
+        },
+        {
+          "month": "11º Mês",
+          "value": 19119.5615,
+          "cell": "DRE!P49"
+        },
+        {
+          "month": "12º Mês",
+          "value": 19119.5615,
+          "cell": "DRE!Q49"
+        }
+      ]
+    },
+    {
+      "id": "royalties_10",
+      "label": "Royalties 10%",
+      "category": "Franchising",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E50",
+        "valueRange": "DRE!F50:Q50",
+        "rowNumber": 50
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 10786.000000000002,
+          "cell": "DRE!F50"
+        },
+        {
+          "month": "2º Mês",
+          "value": 10786.000000000002,
+          "cell": "DRE!G50"
+        },
+        {
+          "month": "3º Mês",
+          "value": 11305.2,
+          "cell": "DRE!H50"
+        },
+        {
+          "month": "4º Mês",
+          "value": 12046.5615,
+          "cell": "DRE!I50"
+        },
+        {
+          "month": "5º Mês",
+          "value": 12310.561500000002,
+          "cell": "DRE!J50"
+        },
+        {
+          "month": "6º Mês",
+          "value": 12970.5615,
+          "cell": "DRE!K50"
+        },
+        {
+          "month": "7º Mês",
+          "value": 13168.5615,
+          "cell": "DRE!L50"
+        },
+        {
+          "month": "8º Mês",
+          "value": 15566.561500000003,
+          "cell": "DRE!M50"
+        },
+        {
+          "month": "9º Mês",
+          "value": 16967.5215,
+          "cell": "DRE!N50"
+        },
+        {
+          "month": "10º Mês",
+          "value": 18028.801499999998,
+          "cell": "DRE!O50"
+        },
+        {
+          "month": "11º Mês",
+          "value": 19119.5615,
+          "cell": "DRE!P50"
+        },
+        {
+          "month": "12º Mês",
+          "value": 19119.5615,
+          "cell": "DRE!Q50"
+        }
+      ]
+    },
+    {
+      "id": "total_despesas",
+      "label": "TOTAL DESPESAS",
+      "category": "Outros",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E51",
+        "valueRange": "DRE!F51:Q51",
+        "rowNumber": 51
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 89694.63935984,
+          "cell": "DRE!F51"
+        },
+        {
+          "month": "2º Mês",
+          "value": 90081.26835984002,
+          "cell": "DRE!G51"
+        },
+        {
+          "month": "3º Mês",
+          "value": 94275.794517792,
+          "cell": "DRE!H51"
+        },
+        {
+          "month": "4º Mês",
+          "value": 99253.90803625979,
+          "cell": "DRE!I51"
+        },
+        {
+          "month": "5º Mês",
+          "value": 101189.97491731579,
+          "cell": "DRE!J51"
+        },
+        {
+          "month": "6º Mês",
+          "value": 105394.8361355718,
+          "cell": "DRE!K51"
+        },
+        {
+          "month": "7º Mês",
+          "value": 106161.4472291718,
+          "cell": "DRE!L51"
+        },
+        {
+          "month": "8º Mês",
+          "value": 118846.15465656383,
+          "cell": "DRE!M51"
+        },
+        {
+          "month": "9º Mês",
+          "value": 126765.143265015,
+          "cell": "DRE!N51"
+        },
+        {
+          "month": "10º Mês",
+          "value": 132439.8556679526,
+          "cell": "DRE!O51"
+        },
+        {
+          "month": "11º Mês",
+          "value": 140230.44117045178,
+          "cell": "DRE!P51"
+        },
+        {
+          "month": "12º Mês",
+          "value": 140230.44117045178,
+          "cell": "DRE!Q51"
+        }
+      ]
+    },
+    {
+      "id": "resultado_liquido",
+      "label": "RESULTADO LÍQUIDO",
+      "category": "Resultado",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E53",
+        "valueRange": "DRE!F53:Q53",
+        "rowNumber": 53
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 22917.360640160012,
+          "cell": "DRE!F53"
+        },
+        {
+          "month": "2º Mês",
+          "value": 22530.731640159996,
+          "cell": "DRE!G53"
+        },
+        {
+          "month": "3º Mês",
+          "value": 23369.805482208,
+          "cell": "DRE!H53"
+        },
+        {
+          "month": "4º Mês",
+          "value": 25726.106963740196,
+          "cell": "DRE!I53"
+        },
+        {
+          "month": "5º Mês",
+          "value": 26350.84008268421,
+          "cell": "DRE!J53"
+        },
+        {
+          "month": "6º Mês",
+          "value": 28666.778864428197,
+          "cell": "DRE!K53"
+        },
+        {
+          "month": "7º Mês",
+          "value": 29880.167770828193,
+          "cell": "DRE!L53"
+        },
+        {
+          "month": "8º Mês",
+          "value": 40621.0603434362,
+          "cell": "DRE!M53"
+        },
+        {
+          "month": "9º Mês",
+          "value": 47646.231734984976,
+          "cell": "DRE!N53"
+        },
+        {
+          "month": "10º Mês",
+          "value": 52695.1993320474,
+          "cell": "DRE!O53"
+        },
+        {
+          "month": "11º Mês",
+          "value": 55915.17382954821,
+          "cell": "DRE!P53"
+        },
+        {
+          "month": "12º Mês",
+          "value": 55915.17382954821,
+          "cell": "DRE!Q53"
+        }
+      ]
+    },
+    {
+      "id": "lucratividade",
+      "label": "LUCRATIVIDADE (%)",
+      "category": "Resultado",
+      "valueType": "percent",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E54",
+        "valueRange": "DRE!F54:Q54",
+        "rowNumber": 54
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 0.20350726956416731,
+          "cell": "DRE!F54"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0.20007398536710114,
+          "cell": "DRE!G54"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0.1986458098068096,
+          "cell": "DRE!H54"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0.20584176569142035,
+          "cell": "DRE!I54"
+        },
+        {
+          "month": "5º Mês",
+          "value": 0.20660711696631553,
+          "cell": "DRE!J54"
+        },
+        {
+          "month": "6º Mês",
+          "value": 0.2138328623329519,
+          "cell": "DRE!K54"
+        },
+        {
+          "month": "7º Mês",
+          "value": 0.2196399077651952,
+          "cell": "DRE!L54"
+        },
+        {
+          "month": "8º Mês",
+          "value": 0.25472985367830114,
+          "cell": "DRE!M54"
+        },
+        {
+          "month": "9º Mês",
+          "value": 0.27318305205142146,
+          "cell": "DRE!N54"
+        },
+        {
+          "month": "10º Mês",
+          "value": 0.2846311268929993,
+          "cell": "DRE!O54"
+        },
+        {
+          "month": "11º Mês",
+          "value": 0.2850697112425797,
+          "cell": "DRE!P54"
+        },
+        {
+          "month": "12º Mês",
+          "value": 0.2850697112425797,
+          "cell": "DRE!Q54"
+        }
+      ]
+    },
+    {
+      "id": "investimento_inicial",
+      "label": "INVESTIMENTO INICIAL",
+      "category": "Investimento",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E57",
+        "valueRange": "DRE!F57:Q57",
+        "rowNumber": 57
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 375000,
+          "cell": "DRE!F57"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0,
+          "cell": "DRE!G57"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0,
+          "cell": "DRE!H57"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0,
+          "cell": "DRE!I57"
+        },
+        {
+          "month": "5º Mês",
+          "value": 0,
+          "cell": "DRE!J57"
+        },
+        {
+          "month": "6º Mês",
+          "value": 0,
+          "cell": "DRE!K57"
+        },
+        {
+          "month": "7º Mês",
+          "value": 0,
+          "cell": "DRE!L57"
+        },
+        {
+          "month": "8º Mês",
+          "value": 0,
+          "cell": "DRE!M57"
+        },
+        {
+          "month": "9º Mês",
+          "value": 0,
+          "cell": "DRE!N57"
+        },
+        {
+          "month": "10º Mês",
+          "value": 0,
+          "cell": "DRE!O57"
+        },
+        {
+          "month": "11º Mês",
+          "value": 0,
+          "cell": "DRE!P57"
+        },
+        {
+          "month": "12º Mês",
+          "value": 0,
+          "cell": "DRE!Q57"
+        }
+      ]
+    },
+    {
+      "id": "retorno_ivestimento_pay_back",
+      "label": "RETORNO IVESTIMENTO | PAY BACK",
+      "category": "Resultado",
+      "valueType": "currency",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E58",
+        "valueRange": "DRE!F58:Q58",
+        "rowNumber": 58
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": -352082.63935983996,
+          "cell": "DRE!F58"
+        },
+        {
+          "month": "2º Mês",
+          "value": -329551.90771968,
+          "cell": "DRE!G58"
+        },
+        {
+          "month": "3º Mês",
+          "value": -306182.10223747196,
+          "cell": "DRE!H58"
+        },
+        {
+          "month": "4º Mês",
+          "value": -280455.99527373177,
+          "cell": "DRE!I58"
+        },
+        {
+          "month": "5º Mês",
+          "value": -254105.15519104755,
+          "cell": "DRE!J58"
+        },
+        {
+          "month": "6º Mês",
+          "value": -225438.37632661936,
+          "cell": "DRE!K58"
+        },
+        {
+          "month": "7º Mês",
+          "value": -195558.20855579118,
+          "cell": "DRE!L58"
+        },
+        {
+          "month": "8º Mês",
+          "value": -154937.14821235498,
+          "cell": "DRE!M58"
+        },
+        {
+          "month": "9º Mês",
+          "value": -107290.91647737,
+          "cell": "DRE!N58"
+        },
+        {
+          "month": "10º Mês",
+          "value": -54595.717145322604,
+          "cell": "DRE!O58"
+        },
+        {
+          "month": "11º Mês",
+          "value": 1319.4566842256027,
+          "cell": "DRE!P58"
+        },
+        {
+          "month": "12º Mês",
+          "value": 57234.63051377381,
+          "cell": "DRE!Q58"
+        }
+      ]
+    },
+    {
+      "id": "rentabilidade",
+      "label": "RENTABILIDADE (%)",
+      "category": "Outros",
+      "valueType": "percent",
+      "source": {
+        "sheet": "DRE",
+        "labelCell": "DRE!E61",
+        "valueRange": "DRE!F61:Q61",
+        "rowNumber": 61
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 0.06111296170709336,
+          "cell": "DRE!F61"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0.06008195104042666,
+          "cell": "DRE!G61"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0.062319481285888004,
+          "cell": "DRE!H61"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0.06860295190330719,
+          "cell": "DRE!I61"
+        },
+        {
+          "month": "5º Mês",
+          "value": 0.0702689068871579,
+          "cell": "DRE!J61"
+        },
+        {
+          "month": "6º Mês",
+          "value": 0.0764447436384752,
+          "cell": "DRE!K61"
+        },
+        {
+          "month": "7º Mês",
+          "value": 0.07968044738887518,
+          "cell": "DRE!L61"
+        },
+        {
+          "month": "8º Mês",
+          "value": 0.10832282758249653,
+          "cell": "DRE!M61"
+        },
+        {
+          "month": "9º Mês",
+          "value": 0.12705661795995993,
+          "cell": "DRE!N61"
+        },
+        {
+          "month": "10º Mês",
+          "value": 0.1405205315521264,
+          "cell": "DRE!O61"
+        },
+        {
+          "month": "11º Mês",
+          "value": 0.14910713021212854,
+          "cell": "DRE!P61"
+        },
+        {
+          "month": "12º Mês",
+          "value": 0.14910713021212854,
+          "cell": "DRE!Q61"
+        }
+      ]
+    }
+  ],
+  "investmentItems": [
+    {
+      "label": "EQUIPAMENTOS TÉCNICOS",
+      "value": 20000,
+      "color": "#075C57",
+      "source": {
+        "sheet": "ESTIMATIVA DE INVESTIMENTO",
+        "labelCell": "ESTIMATIVA DE INVESTIMENTO!C5",
+        "valueCell": "ESTIMATIVA DE INVESTIMENTO!D5",
+        "rowNumber": 5
+      }
+    },
+    {
+      "label": "MOVEIS",
+      "value": 22000,
+      "color": "#00A19A",
+      "source": {
+        "sheet": "ESTIMATIVA DE INVESTIMENTO",
+        "labelCell": "ESTIMATIVA DE INVESTIMENTO!C6",
+        "valueCell": "ESTIMATIVA DE INVESTIMENTO!D6",
+        "rowNumber": 6
+      }
+    },
+    {
+      "label": "ESTOQUE INICIAL",
+      "value": 24000,
+      "color": "#12C2C2",
+      "source": {
+        "sheet": "ESTIMATIVA DE INVESTIMENTO",
+        "labelCell": "ESTIMATIVA DE INVESTIMENTO!C7",
+        "valueCell": "ESTIMATIVA DE INVESTIMENTO!D7",
+        "rowNumber": 7
+      }
+    },
+    {
+      "label": "ELETROELETRÔNICOS",
+      "value": 20000,
+      "color": "#F99D36",
+      "source": {
+        "sheet": "ESTIMATIVA DE INVESTIMENTO",
+        "labelCell": "ESTIMATIVA DE INVESTIMENTO!C8",
+        "valueCell": "ESTIMATIVA DE INVESTIMENTO!D8",
+        "rowNumber": 8
+      }
+    },
+    {
+      "label": "FACHADA",
+      "value": 15000,
+      "color": "#1D71B8",
+      "source": {
+        "sheet": "ESTIMATIVA DE INVESTIMENTO",
+        "labelCell": "ESTIMATIVA DE INVESTIMENTO!C9",
+        "valueCell": "ESTIMATIVA DE INVESTIMENTO!D9",
+        "rowNumber": 9
+      }
+    },
+    {
+      "label": "REFORMA",
+      "value": 70000,
+      "color": "#1192B1",
+      "source": {
+        "sheet": "ESTIMATIVA DE INVESTIMENTO",
+        "labelCell": "ESTIMATIVA DE INVESTIMENTO!C10",
+        "valueCell": "ESTIMATIVA DE INVESTIMENTO!D10",
+        "rowNumber": 10
+      }
+    },
+    {
+      "label": "UNIFORMES",
+      "value": 2000,
+      "color": "#12E8E8",
+      "source": {
+        "sheet": "ESTIMATIVA DE INVESTIMENTO",
+        "labelCell": "ESTIMATIVA DE INVESTIMENTO!C11",
+        "valueCell": "ESTIMATIVA DE INVESTIMENTO!D11",
+        "rowNumber": 11
+      }
+    },
+    {
+      "label": "COMUNICA��O VISUAL INTERNA",
+      "value": 3000,
+      "color": "#075C57",
+      "source": {
+        "sheet": "ESTIMATIVA DE INVESTIMENTO",
+        "labelCell": "ESTIMATIVA DE INVESTIMENTO!C12",
+        "valueCell": "ESTIMATIVA DE INVESTIMENTO!D12",
+        "rowNumber": 12
+      }
+    },
+    {
+      "label": "VIAGENS E HOSPEDAGEM",
+      "value": 20000,
+      "color": "#00A19A",
+      "source": {
+        "sheet": "ESTIMATIVA DE INVESTIMENTO",
+        "labelCell": "ESTIMATIVA DE INVESTIMENTO!C13",
+        "valueCell": "ESTIMATIVA DE INVESTIMENTO!D13",
+        "rowNumber": 13
+      }
+    },
+    {
+      "label": "COMPRAS EXTRAS",
+      "value": 15000,
+      "color": "#12C2C2",
+      "source": {
+        "sheet": "ESTIMATIVA DE INVESTIMENTO",
+        "labelCell": "ESTIMATIVA DE INVESTIMENTO!C14",
+        "valueCell": "ESTIMATIVA DE INVESTIMENTO!D14",
+        "rowNumber": 14
+      }
+    },
+    {
+      "label": "MATERIAL GRÁFICO",
+      "value": 3000,
+      "color": "#F99D36",
+      "source": {
+        "sheet": "ESTIMATIVA DE INVESTIMENTO",
+        "labelCell": "ESTIMATIVA DE INVESTIMENTO!C15",
+        "valueCell": "ESTIMATIVA DE INVESTIMENTO!D15",
+        "rowNumber": 15
+      }
+    },
+    {
+      "label": "ABERTURA CNPJ, ALVARÁS",
+      "value": 5000,
+      "color": "#1D71B8",
+      "source": {
+        "sheet": "ESTIMATIVA DE INVESTIMENTO",
+        "labelCell": "ESTIMATIVA DE INVESTIMENTO!C16",
+        "valueCell": "ESTIMATIVA DE INVESTIMENTO!D16",
+        "rowNumber": 16
+      }
+    },
+    {
+      "label": "MARKETING INAUGURAL",
+      "value": 6000,
+      "color": "#1192B1",
+      "source": {
+        "sheet": "ESTIMATIVA DE INVESTIMENTO",
+        "labelCell": "ESTIMATIVA DE INVESTIMENTO!C17",
+        "valueCell": "ESTIMATIVA DE INVESTIMENTO!D17",
+        "rowNumber": 17
+      }
+    },
+    {
+      "label": "TAXA DE FRANQUIA",
+      "value": 120000,
+      "color": "#12E8E8",
+      "source": {
+        "sheet": "ESTIMATIVA DE INVESTIMENTO",
+        "labelCell": "ESTIMATIVA DE INVESTIMENTO!C19",
+        "valueCell": "ESTIMATIVA DE INVESTIMENTO!D19",
+        "rowNumber": 19
+      }
+    },
+    {
+      "label": "CAPITAL DE GIRO",
+      "value": 30000,
+      "color": "#075C57",
+      "source": {
+        "sheet": "ESTIMATIVA DE INVESTIMENTO",
+        "labelCell": "ESTIMATIVA DE INVESTIMENTO!C23",
+        "valueCell": "ESTIMATIVA DE INVESTIMENTO!D23",
+        "rowNumber": 23
+      }
+    }
+  ],
+  "assumptions": [
+    {
+      "id": "dias_uteis",
+      "label": "Dias úteis",
+      "valueType": "count",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B3",
+        "valueRange": "BASE!D3:O3",
+        "rowNumber": 3
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": null,
+          "cell": "BASE!D3"
+        },
+        {
+          "month": "2º Mês",
+          "value": "% Suplemento Adicional",
+          "cell": "BASE!E3"
+        },
+        {
+          "month": "3º Mês",
+          "value": null,
+          "cell": "BASE!F3"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0.9,
+          "cell": "BASE!G3"
+        },
+        {
+          "month": "5º Mês",
+          "value": null,
+          "cell": "BASE!H3"
+        },
+        {
+          "month": "6º Mês",
+          "value": "Comissão",
+          "cell": "BASE!I3"
+        },
+        {
+          "month": "7º Mês",
+          "value": 0.03,
+          "cell": "BASE!J3"
+        },
+        {
+          "month": "8º Mês",
+          "value": null,
+          "cell": "BASE!K3"
+        },
+        {
+          "month": "9º Mês",
+          "value": null,
+          "cell": "BASE!L3"
+        },
+        {
+          "month": "10º Mês",
+          "value": null,
+          "cell": "BASE!M3"
+        },
+        {
+          "month": "11º Mês",
+          "value": "Vlr Consulta",
+          "cell": "BASE!N3"
+        },
+        {
+          "month": "12º Mês",
+          "value": 180,
+          "cell": "BASE!O3"
+        }
+      ]
+    },
+    {
+      "id": "ticket_medio",
+      "label": "Ticket Médio",
+      "valueType": "currency",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B6",
+        "valueRange": "BASE!D6:O6",
+        "rowNumber": 6
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 5900,
+          "cell": "BASE!D6"
+        },
+        {
+          "month": "2º Mês",
+          "value": 5900,
+          "cell": "BASE!E6"
+        },
+        {
+          "month": "3º Mês",
+          "value": 5900,
+          "cell": "BASE!F6"
+        },
+        {
+          "month": "4º Mês",
+          "value": 6000,
+          "cell": "BASE!G6"
+        },
+        {
+          "month": "5º Mês",
+          "value": 6000,
+          "cell": "BASE!H6"
+        },
+        {
+          "month": "6º Mês",
+          "value": 6200,
+          "cell": "BASE!I6"
+        },
+        {
+          "month": "7º Mês",
+          "value": 6300,
+          "cell": "BASE!J6"
+        },
+        {
+          "month": "8º Mês",
+          "value": 6500,
+          "cell": "BASE!K6"
+        },
+        {
+          "month": "9º Mês",
+          "value": 6700,
+          "cell": "BASE!L6"
+        },
+        {
+          "month": "10º Mês",
+          "value": 6700,
+          "cell": "BASE!M6"
+        },
+        {
+          "month": "11º Mês",
+          "value": 6700,
+          "cell": "BASE!N6"
+        },
+        {
+          "month": "12º Mês",
+          "value": 6700,
+          "cell": "BASE!O6"
+        }
+      ]
+    },
+    {
+      "id": "recepcionista",
+      "label": "Recepcionista",
+      "valueType": "count",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B7",
+        "valueRange": "BASE!D7:O7",
+        "rowNumber": 7
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 1,
+          "cell": "BASE!D7"
+        },
+        {
+          "month": "2º Mês",
+          "value": 1,
+          "cell": "BASE!E7"
+        },
+        {
+          "month": "3º Mês",
+          "value": 1,
+          "cell": "BASE!F7"
+        },
+        {
+          "month": "4º Mês",
+          "value": 1,
+          "cell": "BASE!G7"
+        },
+        {
+          "month": "5º Mês",
+          "value": 1,
+          "cell": "BASE!H7"
+        },
+        {
+          "month": "6º Mês",
+          "value": 1,
+          "cell": "BASE!I7"
+        },
+        {
+          "month": "7º Mês",
+          "value": 1,
+          "cell": "BASE!J7"
+        },
+        {
+          "month": "8º Mês",
+          "value": 1,
+          "cell": "BASE!K7"
+        },
+        {
+          "month": "9º Mês",
+          "value": 1,
+          "cell": "BASE!L7"
+        },
+        {
+          "month": "10º Mês",
+          "value": 1,
+          "cell": "BASE!M7"
+        },
+        {
+          "month": "11º Mês",
+          "value": 1,
+          "cell": "BASE!N7"
+        },
+        {
+          "month": "12º Mês",
+          "value": 1,
+          "cell": "BASE!O7"
+        }
+      ]
+    },
+    {
+      "id": "vendedor",
+      "label": "Vendedor",
+      "valueType": "count",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B8",
+        "valueRange": "BASE!D8:O8",
+        "rowNumber": 8
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 1,
+          "cell": "BASE!D8"
+        },
+        {
+          "month": "2º Mês",
+          "value": 1,
+          "cell": "BASE!E8"
+        },
+        {
+          "month": "3º Mês",
+          "value": 1,
+          "cell": "BASE!F8"
+        },
+        {
+          "month": "4º Mês",
+          "value": 1,
+          "cell": "BASE!G8"
+        },
+        {
+          "month": "5º Mês",
+          "value": 1,
+          "cell": "BASE!H8"
+        },
+        {
+          "month": "6º Mês",
+          "value": 1,
+          "cell": "BASE!I8"
+        },
+        {
+          "month": "7º Mês",
+          "value": 1,
+          "cell": "BASE!J8"
+        },
+        {
+          "month": "8º Mês",
+          "value": 1,
+          "cell": "BASE!K8"
+        },
+        {
+          "month": "9º Mês",
+          "value": 1,
+          "cell": "BASE!L8"
+        },
+        {
+          "month": "10º Mês",
+          "value": 1,
+          "cell": "BASE!M8"
+        },
+        {
+          "month": "11º Mês",
+          "value": 1,
+          "cell": "BASE!N8"
+        },
+        {
+          "month": "12º Mês",
+          "value": 1,
+          "cell": "BASE!O8"
+        }
+      ]
+    },
+    {
+      "id": "agendador",
+      "label": "Agendador",
+      "valueType": "count",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B9",
+        "valueRange": "BASE!D9:O9",
+        "rowNumber": 9
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 1,
+          "cell": "BASE!D9"
+        },
+        {
+          "month": "2º Mês",
+          "value": 1,
+          "cell": "BASE!E9"
+        },
+        {
+          "month": "3º Mês",
+          "value": 1,
+          "cell": "BASE!F9"
+        },
+        {
+          "month": "4º Mês",
+          "value": 1,
+          "cell": "BASE!G9"
+        },
+        {
+          "month": "5º Mês",
+          "value": 1,
+          "cell": "BASE!H9"
+        },
+        {
+          "month": "6º Mês",
+          "value": 1,
+          "cell": "BASE!I9"
+        },
+        {
+          "month": "7º Mês",
+          "value": 1,
+          "cell": "BASE!J9"
+        },
+        {
+          "month": "8º Mês",
+          "value": 1,
+          "cell": "BASE!K9"
+        },
+        {
+          "month": "9º Mês",
+          "value": 1,
+          "cell": "BASE!L9"
+        },
+        {
+          "month": "10º Mês",
+          "value": 1,
+          "cell": "BASE!M9"
+        },
+        {
+          "month": "11º Mês",
+          "value": 1,
+          "cell": "BASE!N9"
+        },
+        {
+          "month": "12º Mês",
+          "value": 1,
+          "cell": "BASE!O9"
+        }
+      ]
+    },
+    {
+      "id": "estagiario",
+      "label": "Estagiário",
+      "valueType": "count",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B10",
+        "valueRange": "BASE!D10:O10",
+        "rowNumber": 10
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 3,
+          "cell": "BASE!D10"
+        },
+        {
+          "month": "2º Mês",
+          "value": 2,
+          "cell": "BASE!E10"
+        },
+        {
+          "month": "3º Mês",
+          "value": 2,
+          "cell": "BASE!F10"
+        },
+        {
+          "month": "4º Mês",
+          "value": 2,
+          "cell": "BASE!G10"
+        },
+        {
+          "month": "5º Mês",
+          "value": 2,
+          "cell": "BASE!H10"
+        },
+        {
+          "month": "6º Mês",
+          "value": 2,
+          "cell": "BASE!I10"
+        },
+        {
+          "month": "7º Mês",
+          "value": 2,
+          "cell": "BASE!J10"
+        },
+        {
+          "month": "8º Mês",
+          "value": 2,
+          "cell": "BASE!K10"
+        },
+        {
+          "month": "9º Mês",
+          "value": 2,
+          "cell": "BASE!L10"
+        },
+        {
+          "month": "10º Mês",
+          "value": 2,
+          "cell": "BASE!M10"
+        },
+        {
+          "month": "11º Mês",
+          "value": 2,
+          "cell": "BASE!N10"
+        },
+        {
+          "month": "12º Mês",
+          "value": 2,
+          "cell": "BASE!O10"
+        }
+      ]
+    },
+    {
+      "id": "biomedico",
+      "label": "Biomédico",
+      "valueType": "count",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B11",
+        "valueRange": "BASE!D11:O11",
+        "rowNumber": 11
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 1,
+          "cell": "BASE!D11"
+        },
+        {
+          "month": "2º Mês",
+          "value": 1,
+          "cell": "BASE!E11"
+        },
+        {
+          "month": "3º Mês",
+          "value": 1,
+          "cell": "BASE!F11"
+        },
+        {
+          "month": "4º Mês",
+          "value": 1,
+          "cell": "BASE!G11"
+        },
+        {
+          "month": "5º Mês",
+          "value": 1,
+          "cell": "BASE!H11"
+        },
+        {
+          "month": "6º Mês",
+          "value": 1,
+          "cell": "BASE!I11"
+        },
+        {
+          "month": "7º Mês",
+          "value": 1,
+          "cell": "BASE!J11"
+        },
+        {
+          "month": "8º Mês",
+          "value": 1,
+          "cell": "BASE!K11"
+        },
+        {
+          "month": "9º Mês",
+          "value": 1,
+          "cell": "BASE!L11"
+        },
+        {
+          "month": "10º Mês",
+          "value": 1,
+          "cell": "BASE!M11"
+        },
+        {
+          "month": "11º Mês",
+          "value": 1,
+          "cell": "BASE!N11"
+        },
+        {
+          "month": "12º Mês",
+          "value": 1,
+          "cell": "BASE!O11"
+        }
+      ]
+    },
+    {
+      "id": "avaliacoes_dia",
+      "label": "Avaliações Dia",
+      "valueType": "number",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B13",
+        "valueRange": "BASE!D13:O13",
+        "rowNumber": 13
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 2,
+          "cell": "BASE!D13"
+        },
+        {
+          "month": "2º Mês",
+          "value": 2,
+          "cell": "BASE!E13"
+        },
+        {
+          "month": "3º Mês",
+          "value": 2,
+          "cell": "BASE!F13"
+        },
+        {
+          "month": "4º Mês",
+          "value": 2,
+          "cell": "BASE!G13"
+        },
+        {
+          "month": "5º Mês",
+          "value": 2,
+          "cell": "BASE!H13"
+        },
+        {
+          "month": "6º Mês",
+          "value": 2,
+          "cell": "BASE!I13"
+        },
+        {
+          "month": "7º Mês",
+          "value": 2,
+          "cell": "BASE!J13"
+        },
+        {
+          "month": "8º Mês",
+          "value": 2,
+          "cell": "BASE!K13"
+        },
+        {
+          "month": "9º Mês",
+          "value": 2.3,
+          "cell": "BASE!L13"
+        },
+        {
+          "month": "10º Mês",
+          "value": 2.4,
+          "cell": "BASE!M13"
+        },
+        {
+          "month": "11º Mês",
+          "value": 2.5,
+          "cell": "BASE!N13"
+        },
+        {
+          "month": "12º Mês",
+          "value": 2.5,
+          "cell": "BASE!O13"
+        }
+      ]
+    },
+    {
+      "id": "avaliacoes_mes",
+      "label": "Avaliações Mês",
+      "valueType": "number",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B14",
+        "valueRange": "BASE!D14:O14",
+        "rowNumber": 14
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 44,
+          "cell": "BASE!D14"
+        },
+        {
+          "month": "2º Mês",
+          "value": 44,
+          "cell": "BASE!E14"
+        },
+        {
+          "month": "3º Mês",
+          "value": 44,
+          "cell": "BASE!F14"
+        },
+        {
+          "month": "4º Mês",
+          "value": 44,
+          "cell": "BASE!G14"
+        },
+        {
+          "month": "5º Mês",
+          "value": 44,
+          "cell": "BASE!H14"
+        },
+        {
+          "month": "6º Mês",
+          "value": 44,
+          "cell": "BASE!I14"
+        },
+        {
+          "month": "7º Mês",
+          "value": 44,
+          "cell": "BASE!J14"
+        },
+        {
+          "month": "8º Mês",
+          "value": 44,
+          "cell": "BASE!K14"
+        },
+        {
+          "month": "9º Mês",
+          "value": 50.599999999999994,
+          "cell": "BASE!L14"
+        },
+        {
+          "month": "10º Mês",
+          "value": 52.8,
+          "cell": "BASE!M14"
+        },
+        {
+          "month": "11º Mês",
+          "value": 55,
+          "cell": "BASE!N14"
+        },
+        {
+          "month": "12º Mês",
+          "value": 55,
+          "cell": "BASE!O14"
+        }
+      ]
+    },
+    {
+      "id": "conversao",
+      "label": "Conversão",
+      "valueType": "number",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B15",
+        "valueRange": "BASE!D15:O15",
+        "rowNumber": 15
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 0.4,
+          "cell": "BASE!D15"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0.4,
+          "cell": "BASE!E15"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0.42,
+          "cell": "BASE!F15"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0.43,
+          "cell": "BASE!G15"
+        },
+        {
+          "month": "5º Mês",
+          "value": 0.44,
+          "cell": "BASE!H15"
+        },
+        {
+          "month": "6º Mês",
+          "value": 0.45,
+          "cell": "BASE!I15"
+        },
+        {
+          "month": "7º Mês",
+          "value": 0.45,
+          "cell": "BASE!J15"
+        },
+        {
+          "month": "8º Mês",
+          "value": 0.52,
+          "cell": "BASE!K15"
+        },
+        {
+          "month": "9º Mês",
+          "value": 0.48,
+          "cell": "BASE!L15"
+        },
+        {
+          "month": "10º Mês",
+          "value": 0.49,
+          "cell": "BASE!M15"
+        },
+        {
+          "month": "11º Mês",
+          "value": 0.5,
+          "cell": "BASE!N15"
+        },
+        {
+          "month": "12º Mês",
+          "value": 0.5,
+          "cell": "BASE!O15"
+        }
+      ]
+    },
+    {
+      "id": "vendas_protocolos",
+      "label": "Vendas Protocolos",
+      "valueType": "count",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B16",
+        "valueRange": "BASE!D16:O16",
+        "rowNumber": 16
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 17.6,
+          "cell": "BASE!D16"
+        },
+        {
+          "month": "2º Mês",
+          "value": 17.6,
+          "cell": "BASE!E16"
+        },
+        {
+          "month": "3º Mês",
+          "value": 18.48,
+          "cell": "BASE!F16"
+        },
+        {
+          "month": "4º Mês",
+          "value": 18.919999999999998,
+          "cell": "BASE!G16"
+        },
+        {
+          "month": "5º Mês",
+          "value": 19.36,
+          "cell": "BASE!H16"
+        },
+        {
+          "month": "6º Mês",
+          "value": 19.8,
+          "cell": "BASE!I16"
+        },
+        {
+          "month": "7º Mês",
+          "value": 19.8,
+          "cell": "BASE!J16"
+        },
+        {
+          "month": "8º Mês",
+          "value": 22.880000000000003,
+          "cell": "BASE!K16"
+        },
+        {
+          "month": "9º Mês",
+          "value": 24.287999999999997,
+          "cell": "BASE!L16"
+        },
+        {
+          "month": "10º Mês",
+          "value": 25.872,
+          "cell": "BASE!M16"
+        },
+        {
+          "month": "11º Mês",
+          "value": 27.5,
+          "cell": "BASE!N16"
+        },
+        {
+          "month": "12º Mês",
+          "value": 27.5,
+          "cell": "BASE!O16"
+        }
+      ]
+    },
+    {
+      "id": "consulta_nao_convertidas",
+      "label": "Consulta não convertidas",
+      "valueType": "number",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B17",
+        "valueRange": "BASE!D17:O17",
+        "rowNumber": 17
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 26.4,
+          "cell": "BASE!D17"
+        },
+        {
+          "month": "2º Mês",
+          "value": 26.4,
+          "cell": "BASE!E17"
+        },
+        {
+          "month": "3º Mês",
+          "value": 25.52,
+          "cell": "BASE!F17"
+        },
+        {
+          "month": "4º Mês",
+          "value": 25.080000000000002,
+          "cell": "BASE!G17"
+        },
+        {
+          "month": "5º Mês",
+          "value": 24.64,
+          "cell": "BASE!H17"
+        },
+        {
+          "month": "6º Mês",
+          "value": 24.2,
+          "cell": "BASE!I17"
+        },
+        {
+          "month": "7º Mês",
+          "value": 24.2,
+          "cell": "BASE!J17"
+        },
+        {
+          "month": "8º Mês",
+          "value": 21.119999999999997,
+          "cell": "BASE!K17"
+        },
+        {
+          "month": "9º Mês",
+          "value": 26.311999999999998,
+          "cell": "BASE!L17"
+        },
+        {
+          "month": "10º Mês",
+          "value": 26.927999999999997,
+          "cell": "BASE!M17"
+        },
+        {
+          "month": "11º Mês",
+          "value": 27.5,
+          "cell": "BASE!N17"
+        },
+        {
+          "month": "12º Mês",
+          "value": 27.5,
+          "cell": "BASE!O17"
+        }
+      ]
+    },
+    {
+      "id": "cmv_protocolos",
+      "label": "CMV protocolos",
+      "valueType": "count",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B18",
+        "valueRange": "BASE!D18:O18",
+        "rowNumber": 18
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 18145.248000000003,
+          "cell": "BASE!D18"
+        },
+        {
+          "month": "2º Mês",
+          "value": 18145.248000000003,
+          "cell": "BASE!E18"
+        },
+        {
+          "month": "3º Mês",
+          "value": 19052.5104,
+          "cell": "BASE!F18"
+        },
+        {
+          "month": "4º Mês",
+          "value": 19506.1416,
+          "cell": "BASE!G18"
+        },
+        {
+          "month": "5º Mês",
+          "value": 19959.7728,
+          "cell": "BASE!H18"
+        },
+        {
+          "month": "6º Mês",
+          "value": 20413.404000000002,
+          "cell": "BASE!I18"
+        },
+        {
+          "month": "7º Mês",
+          "value": 20413.404000000002,
+          "cell": "BASE!J18"
+        },
+        {
+          "month": "8º Mês",
+          "value": 23588.822400000005,
+          "cell": "BASE!K18"
+        },
+        {
+          "month": "9º Mês",
+          "value": 25040.442239999997,
+          "cell": "BASE!L18"
+        },
+        {
+          "month": "10º Mês",
+          "value": 26673.51456,
+          "cell": "BASE!M18"
+        },
+        {
+          "month": "11º Mês",
+          "value": 28351.95,
+          "cell": "BASE!N18"
+        },
+        {
+          "month": "12º Mês",
+          "value": 28351.95,
+          "cell": "BASE!O18"
+        }
+      ]
+    },
+    {
+      "id": "base_suplementos",
+      "label": "Base Suplementos",
+      "valueType": "currency",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B22",
+        "valueRange": "BASE!D22:O22",
+        "rowNumber": 22
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 61220.00000000001,
+          "cell": "BASE!D22"
+        },
+        {
+          "month": "2º Mês",
+          "value": 61220.00000000001,
+          "cell": "BASE!E22"
+        },
+        {
+          "month": "3º Mês",
+          "value": 64080,
+          "cell": "BASE!F22"
+        },
+        {
+          "month": "4º Mês",
+          "value": 68435.61499999999,
+          "cell": "BASE!G22"
+        },
+        {
+          "month": "5º Mês",
+          "value": 69865.615,
+          "cell": "BASE!H22"
+        },
+        {
+          "month": "6º Mês",
+          "value": 71295.615,
+          "cell": "BASE!I22"
+        },
+        {
+          "month": "7º Mês",
+          "value": 71295.615,
+          "cell": "BASE!J22"
+        },
+        {
+          "month": "8º Mês",
+          "value": 81305.61500000002,
+          "cell": "BASE!K22"
+        },
+        {
+          "month": "9º Mês",
+          "value": 85881.61499999999,
+          "cell": "BASE!L22"
+        },
+        {
+          "month": "10º Mês",
+          "value": 91029.615,
+          "cell": "BASE!M22"
+        },
+        {
+          "month": "11º Mês",
+          "value": 96320.615,
+          "cell": "BASE!N22"
+        },
+        {
+          "month": "12º Mês",
+          "value": 96320.615,
+          "cell": "BASE!O22"
+        }
+      ]
+    },
+    {
+      "id": "base_servicos",
+      "label": "Base Serviços",
+      "valueType": "currency",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B23",
+        "valueRange": "BASE!D23:O23",
+        "rowNumber": 23
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 51392.00000000001,
+          "cell": "BASE!D23"
+        },
+        {
+          "month": "2º Mês",
+          "value": 51392.00000000001,
+          "cell": "BASE!E23"
+        },
+        {
+          "month": "3º Mês",
+          "value": 53565.6,
+          "cell": "BASE!F23"
+        },
+        {
+          "month": "4º Mês",
+          "value": 56544.399999999994,
+          "cell": "BASE!G23"
+        },
+        {
+          "month": "5º Mês",
+          "value": 57675.2,
+          "cell": "BASE!H23"
+        },
+        {
+          "month": "6º Mês",
+          "value": 62766,
+          "cell": "BASE!I23"
+        },
+        {
+          "month": "7º Mês",
+          "value": 64746,
+          "cell": "BASE!J23"
+        },
+        {
+          "month": "8º Mês",
+          "value": 78161.60000000002,
+          "cell": "BASE!K23"
+        },
+        {
+          "month": "9º Mês",
+          "value": 88529.76,
+          "cell": "BASE!L23"
+        },
+        {
+          "month": "10º Mês",
+          "value": 94105.43999999999,
+          "cell": "BASE!M23"
+        },
+        {
+          "month": "11º Mês",
+          "value": 99825,
+          "cell": "BASE!N23"
+        },
+        {
+          "month": "12º Mês",
+          "value": 99825,
+          "cell": "BASE!O23"
+        }
+      ]
+    },
+    {
+      "id": "aliquota_suplementos",
+      "label": "Aliquota Suplementos",
+      "valueType": "currency",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B24",
+        "valueRange": "BASE!D24:O24",
+        "rowNumber": 24
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 0.03,
+          "cell": "BASE!D24"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0.03,
+          "cell": "BASE!E24"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0.056,
+          "cell": "BASE!F24"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0.07,
+          "cell": "BASE!G24"
+        },
+        {
+          "month": "5º Mês",
+          "value": 0.07,
+          "cell": "BASE!H24"
+        },
+        {
+          "month": "6º Mês",
+          "value": 0.08,
+          "cell": "BASE!I24"
+        },
+        {
+          "month": "7º Mês",
+          "value": 0.08,
+          "cell": "BASE!J24"
+        },
+        {
+          "month": "8º Mês",
+          "value": 0.08,
+          "cell": "BASE!K24"
+        },
+        {
+          "month": "9º Mês",
+          "value": 0.09,
+          "cell": "BASE!L24"
+        },
+        {
+          "month": "10º Mês",
+          "value": 0.09,
+          "cell": "BASE!M24"
+        },
+        {
+          "month": "11º Mês",
+          "value": 0.1,
+          "cell": "BASE!N24"
+        },
+        {
+          "month": "12º Mês",
+          "value": 0.1,
+          "cell": "BASE!O24"
+        }
+      ]
+    },
+    {
+      "id": "aliquota_servicos",
+      "label": "Aliquota Serviços",
+      "valueType": "number",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B25",
+        "valueRange": "BASE!D25:O25",
+        "rowNumber": 25
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 0.06,
+          "cell": "BASE!D25"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0.08,
+          "cell": "BASE!E25"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0.08,
+          "cell": "BASE!F25"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0.1,
+          "cell": "BASE!G25"
+        },
+        {
+          "month": "5º Mês",
+          "value": 0.11,
+          "cell": "BASE!H25"
+        },
+        {
+          "month": "6º Mês",
+          "value": 0.12,
+          "cell": "BASE!I25"
+        },
+        {
+          "month": "7º Mês",
+          "value": 0.12,
+          "cell": "BASE!J25"
+        },
+        {
+          "month": "8º Mês",
+          "value": 0.13,
+          "cell": "BASE!K25"
+        },
+        {
+          "month": "9º Mês",
+          "value": 0.13,
+          "cell": "BASE!L25"
+        },
+        {
+          "month": "10º Mês",
+          "value": 0.13,
+          "cell": "BASE!M25"
+        },
+        {
+          "month": "11º Mês",
+          "value": 0.14,
+          "cell": "BASE!N25"
+        },
+        {
+          "month": "12º Mês",
+          "value": 0.14,
+          "cell": "BASE!O25"
+        }
+      ]
+    },
+    {
+      "id": "simples_nacional_suplementos",
+      "label": "SIMPLES Nacional Suplementos",
+      "valueType": "currency",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B26",
+        "valueRange": "BASE!D26:O26",
+        "rowNumber": 26
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 1836.6000000000001,
+          "cell": "BASE!D26"
+        },
+        {
+          "month": "2º Mês",
+          "value": 1836.6000000000001,
+          "cell": "BASE!E26"
+        },
+        {
+          "month": "3º Mês",
+          "value": 3588.48,
+          "cell": "BASE!F26"
+        },
+        {
+          "month": "4º Mês",
+          "value": 4790.49305,
+          "cell": "BASE!G26"
+        },
+        {
+          "month": "5º Mês",
+          "value": 4890.59305,
+          "cell": "BASE!H26"
+        },
+        {
+          "month": "6º Mês",
+          "value": 5703.649200000001,
+          "cell": "BASE!I26"
+        },
+        {
+          "month": "7º Mês",
+          "value": 5703.649200000001,
+          "cell": "BASE!J26"
+        },
+        {
+          "month": "8º Mês",
+          "value": 6504.449200000002,
+          "cell": "BASE!K26"
+        },
+        {
+          "month": "9º Mês",
+          "value": 7729.345349999999,
+          "cell": "BASE!L26"
+        },
+        {
+          "month": "10º Mês",
+          "value": 8192.66535,
+          "cell": "BASE!M26"
+        },
+        {
+          "month": "11º Mês",
+          "value": 9632.061500000002,
+          "cell": "BASE!N26"
+        },
+        {
+          "month": "12º Mês",
+          "value": 9632.061500000002,
+          "cell": "BASE!O26"
+        }
+      ]
+    },
+    {
+      "id": "simples_nacional_servicos",
+      "label": "SIMPLES Nacional Serviços",
+      "valueType": "number",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B27",
+        "valueRange": "BASE!D27:O27",
+        "rowNumber": 27
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 3083.5200000000004,
+          "cell": "BASE!D27"
+        },
+        {
+          "month": "2º Mês",
+          "value": 4111.360000000001,
+          "cell": "BASE!E27"
+        },
+        {
+          "month": "3º Mês",
+          "value": 4285.248,
+          "cell": "BASE!F27"
+        },
+        {
+          "month": "4º Mês",
+          "value": 5654.44,
+          "cell": "BASE!G27"
+        },
+        {
+          "month": "5º Mês",
+          "value": 6344.272,
+          "cell": "BASE!H27"
+        },
+        {
+          "month": "6º Mês",
+          "value": 7531.92,
+          "cell": "BASE!I27"
+        },
+        {
+          "month": "7º Mês",
+          "value": 7769.5199999999995,
+          "cell": "BASE!J27"
+        },
+        {
+          "month": "8º Mês",
+          "value": 10161.008000000003,
+          "cell": "BASE!K27"
+        },
+        {
+          "month": "9º Mês",
+          "value": 11508.8688,
+          "cell": "BASE!L27"
+        },
+        {
+          "month": "10º Mês",
+          "value": 12233.707199999999,
+          "cell": "BASE!M27"
+        },
+        {
+          "month": "11º Mês",
+          "value": 13975.500000000002,
+          "cell": "BASE!N27"
+        },
+        {
+          "month": "12º Mês",
+          "value": 13975.500000000002,
+          "cell": "BASE!O27"
+        }
+      ]
+    },
+    {
+      "id": "recepcionista",
+      "label": "Recepcionista",
+      "valueType": "count",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B30",
+        "valueRange": "BASE!D30:O30",
+        "rowNumber": 30
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 2000,
+          "cell": "BASE!D30"
+        },
+        {
+          "month": "2º Mês",
+          "value": 2000,
+          "cell": "BASE!E30"
+        },
+        {
+          "month": "3º Mês",
+          "value": 2000,
+          "cell": "BASE!F30"
+        },
+        {
+          "month": "4º Mês",
+          "value": 2000,
+          "cell": "BASE!G30"
+        },
+        {
+          "month": "5º Mês",
+          "value": 2000,
+          "cell": "BASE!H30"
+        },
+        {
+          "month": "6º Mês",
+          "value": 2000,
+          "cell": "BASE!I30"
+        },
+        {
+          "month": "7º Mês",
+          "value": 2000,
+          "cell": "BASE!J30"
+        },
+        {
+          "month": "8º Mês",
+          "value": 2000,
+          "cell": "BASE!K30"
+        },
+        {
+          "month": "9º Mês",
+          "value": 2000,
+          "cell": "BASE!L30"
+        },
+        {
+          "month": "10º Mês",
+          "value": 2000,
+          "cell": "BASE!M30"
+        },
+        {
+          "month": "11º Mês",
+          "value": 2000,
+          "cell": "BASE!N30"
+        },
+        {
+          "month": "12º Mês",
+          "value": 2000,
+          "cell": "BASE!O30"
+        }
+      ]
+    },
+    {
+      "id": "vendedor",
+      "label": "Vendedor",
+      "valueType": "count",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B31",
+        "valueRange": "BASE!D31:O31",
+        "rowNumber": 31
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 2500,
+          "cell": "BASE!D31"
+        },
+        {
+          "month": "2º Mês",
+          "value": 2500,
+          "cell": "BASE!E31"
+        },
+        {
+          "month": "3º Mês",
+          "value": 2500,
+          "cell": "BASE!F31"
+        },
+        {
+          "month": "4º Mês",
+          "value": 2500,
+          "cell": "BASE!G31"
+        },
+        {
+          "month": "5º Mês",
+          "value": 2500,
+          "cell": "BASE!H31"
+        },
+        {
+          "month": "6º Mês",
+          "value": 2500,
+          "cell": "BASE!I31"
+        },
+        {
+          "month": "7º Mês",
+          "value": 2500,
+          "cell": "BASE!J31"
+        },
+        {
+          "month": "8º Mês",
+          "value": 2500,
+          "cell": "BASE!K31"
+        },
+        {
+          "month": "9º Mês",
+          "value": 2500,
+          "cell": "BASE!L31"
+        },
+        {
+          "month": "10º Mês",
+          "value": 2500,
+          "cell": "BASE!M31"
+        },
+        {
+          "month": "11º Mês",
+          "value": 2500,
+          "cell": "BASE!N31"
+        },
+        {
+          "month": "12º Mês",
+          "value": 2500,
+          "cell": "BASE!O31"
+        }
+      ]
+    },
+    {
+      "id": "agendador",
+      "label": "Agendador",
+      "valueType": "count",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B32",
+        "valueRange": "BASE!D32:O32",
+        "rowNumber": 32
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 2000,
+          "cell": "BASE!D32"
+        },
+        {
+          "month": "2º Mês",
+          "value": 2000,
+          "cell": "BASE!E32"
+        },
+        {
+          "month": "3º Mês",
+          "value": 2000,
+          "cell": "BASE!F32"
+        },
+        {
+          "month": "4º Mês",
+          "value": 2000,
+          "cell": "BASE!G32"
+        },
+        {
+          "month": "5º Mês",
+          "value": 2000,
+          "cell": "BASE!H32"
+        },
+        {
+          "month": "6º Mês",
+          "value": 2000,
+          "cell": "BASE!I32"
+        },
+        {
+          "month": "7º Mês",
+          "value": 2000,
+          "cell": "BASE!J32"
+        },
+        {
+          "month": "8º Mês",
+          "value": 2000,
+          "cell": "BASE!K32"
+        },
+        {
+          "month": "9º Mês",
+          "value": 2000,
+          "cell": "BASE!L32"
+        },
+        {
+          "month": "10º Mês",
+          "value": 2000,
+          "cell": "BASE!M32"
+        },
+        {
+          "month": "11º Mês",
+          "value": 2000,
+          "cell": "BASE!N32"
+        },
+        {
+          "month": "12º Mês",
+          "value": 2000,
+          "cell": "BASE!O32"
+        }
+      ]
+    },
+    {
+      "id": "estagiario",
+      "label": "Estagiário",
+      "valueType": "count",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B33",
+        "valueRange": "BASE!D33:O33",
+        "rowNumber": 33
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 2100,
+          "cell": "BASE!D33"
+        },
+        {
+          "month": "2º Mês",
+          "value": 1400,
+          "cell": "BASE!E33"
+        },
+        {
+          "month": "3º Mês",
+          "value": 1400,
+          "cell": "BASE!F33"
+        },
+        {
+          "month": "4º Mês",
+          "value": 1400,
+          "cell": "BASE!G33"
+        },
+        {
+          "month": "5º Mês",
+          "value": 1400,
+          "cell": "BASE!H33"
+        },
+        {
+          "month": "6º Mês",
+          "value": 1400,
+          "cell": "BASE!I33"
+        },
+        {
+          "month": "7º Mês",
+          "value": 1400,
+          "cell": "BASE!J33"
+        },
+        {
+          "month": "8º Mês",
+          "value": 1400,
+          "cell": "BASE!K33"
+        },
+        {
+          "month": "9º Mês",
+          "value": 1400,
+          "cell": "BASE!L33"
+        },
+        {
+          "month": "10º Mês",
+          "value": 1400,
+          "cell": "BASE!M33"
+        },
+        {
+          "month": "11º Mês",
+          "value": 1400,
+          "cell": "BASE!N33"
+        },
+        {
+          "month": "12º Mês",
+          "value": 1400,
+          "cell": "BASE!O33"
+        }
+      ]
+    },
+    {
+      "id": "biomedico",
+      "label": "Biomédico",
+      "valueType": "count",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B34",
+        "valueRange": "BASE!D34:O34",
+        "rowNumber": 34
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 4500,
+          "cell": "BASE!D34"
+        },
+        {
+          "month": "2º Mês",
+          "value": 4500,
+          "cell": "BASE!E34"
+        },
+        {
+          "month": "3º Mês",
+          "value": 4500,
+          "cell": "BASE!F34"
+        },
+        {
+          "month": "4º Mês",
+          "value": 4500,
+          "cell": "BASE!G34"
+        },
+        {
+          "month": "5º Mês",
+          "value": 4500,
+          "cell": "BASE!H34"
+        },
+        {
+          "month": "6º Mês",
+          "value": 4500,
+          "cell": "BASE!I34"
+        },
+        {
+          "month": "7º Mês",
+          "value": 4500,
+          "cell": "BASE!J34"
+        },
+        {
+          "month": "8º Mês",
+          "value": 4500,
+          "cell": "BASE!K34"
+        },
+        {
+          "month": "9º Mês",
+          "value": 4500,
+          "cell": "BASE!L34"
+        },
+        {
+          "month": "10º Mês",
+          "value": 4500,
+          "cell": "BASE!M34"
+        },
+        {
+          "month": "11º Mês",
+          "value": 4500,
+          "cell": "BASE!N34"
+        },
+        {
+          "month": "12º Mês",
+          "value": 4500,
+          "cell": "BASE!O34"
+        }
+      ]
+    },
+    {
+      "id": "comissao_fdv",
+      "label": "Comissão FDV",
+      "valueType": "currency",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B36",
+        "valueRange": "BASE!D36:O36",
+        "rowNumber": 36
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 3378.36,
+          "cell": "BASE!D36"
+        },
+        {
+          "month": "2º Mês",
+          "value": 3378.36,
+          "cell": "BASE!E36"
+        },
+        {
+          "month": "3º Mês",
+          "value": 3529.368,
+          "cell": "BASE!F36"
+        },
+        {
+          "month": "4º Mês",
+          "value": 3749.400449999999,
+          "cell": "BASE!G36"
+        },
+        {
+          "month": "5º Mês",
+          "value": 3826.2244499999997,
+          "cell": "BASE!H36"
+        },
+        {
+          "month": "6º Mês",
+          "value": 4021.8484499999995,
+          "cell": "BASE!I36"
+        },
+        {
+          "month": "7º Mês",
+          "value": 4081.2484499999996,
+          "cell": "BASE!J36"
+        },
+        {
+          "month": "8º Mês",
+          "value": 4784.016450000001,
+          "cell": "BASE!K36"
+        },
+        {
+          "month": "9º Mês",
+          "value": 5232.341249999999,
+          "cell": "BASE!L36"
+        },
+        {
+          "month": "10º Mês",
+          "value": 5554.051649999999,
+          "cell": "BASE!M36"
+        },
+        {
+          "month": "11º Mês",
+          "value": 5884.36845,
+          "cell": "BASE!N36"
+        },
+        {
+          "month": "12º Mês",
+          "value": 5884.36845,
+          "cell": "BASE!O36"
+        }
+      ]
+    },
+    {
+      "id": "vale_transporte_10",
+      "label": "Vale Transporte (10%)",
+      "valueType": "number",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B37",
+        "valueRange": "BASE!D37:O37",
+        "rowNumber": 37
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 1310,
+          "cell": "BASE!D37"
+        },
+        {
+          "month": "2º Mês",
+          "value": 1240,
+          "cell": "BASE!E37"
+        },
+        {
+          "month": "3º Mês",
+          "value": 1240,
+          "cell": "BASE!F37"
+        },
+        {
+          "month": "4º Mês",
+          "value": 1240,
+          "cell": "BASE!G37"
+        },
+        {
+          "month": "5º Mês",
+          "value": 1240,
+          "cell": "BASE!H37"
+        },
+        {
+          "month": "6º Mês",
+          "value": 1240,
+          "cell": "BASE!I37"
+        },
+        {
+          "month": "7º Mês",
+          "value": 1240,
+          "cell": "BASE!J37"
+        },
+        {
+          "month": "8º Mês",
+          "value": 1240,
+          "cell": "BASE!K37"
+        },
+        {
+          "month": "9º Mês",
+          "value": 1240,
+          "cell": "BASE!L37"
+        },
+        {
+          "month": "10º Mês",
+          "value": 1240,
+          "cell": "BASE!M37"
+        },
+        {
+          "month": "11º Mês",
+          "value": 1240,
+          "cell": "BASE!N37"
+        },
+        {
+          "month": "12º Mês",
+          "value": 1240,
+          "cell": "BASE!O37"
+        }
+      ]
+    },
+    {
+      "id": "total_folha_pagamento",
+      "label": "Total Folha Pagamento",
+      "valueType": "number",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B39",
+        "valueRange": "BASE!D39:O39",
+        "rowNumber": 39
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 17788.36,
+          "cell": "BASE!D39"
+        },
+        {
+          "month": "2º Mês",
+          "value": 17018.36,
+          "cell": "BASE!E39"
+        },
+        {
+          "month": "3º Mês",
+          "value": 17169.368000000002,
+          "cell": "BASE!F39"
+        },
+        {
+          "month": "4º Mês",
+          "value": 17389.40045,
+          "cell": "BASE!G39"
+        },
+        {
+          "month": "5º Mês",
+          "value": 17466.22445,
+          "cell": "BASE!H39"
+        },
+        {
+          "month": "6º Mês",
+          "value": 17661.848449999998,
+          "cell": "BASE!I39"
+        },
+        {
+          "month": "7º Mês",
+          "value": 17721.24845,
+          "cell": "BASE!J39"
+        },
+        {
+          "month": "8º Mês",
+          "value": 18424.016450000003,
+          "cell": "BASE!K39"
+        },
+        {
+          "month": "9º Mês",
+          "value": 18872.341249999998,
+          "cell": "BASE!L39"
+        },
+        {
+          "month": "10º Mês",
+          "value": 19194.05165,
+          "cell": "BASE!M39"
+        },
+        {
+          "month": "11º Mês",
+          "value": 19524.36845,
+          "cell": "BASE!N39"
+        },
+        {
+          "month": "12º Mês",
+          "value": 19524.36845,
+          "cell": "BASE!O39"
+        }
+      ]
+    },
+    {
+      "id": "cpp",
+      "label": "CPP",
+      "valueType": "number",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B58",
+        "valueRange": "BASE!D58:O58",
+        "rowNumber": 58
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": "PIS",
+          "cell": "BASE!D58"
+        },
+        {
+          "month": "2º Mês",
+          "value": "CSLL",
+          "cell": "BASE!E58"
+        },
+        {
+          "month": "3º Mês",
+          "value": "IRPJ",
+          "cell": "BASE!F58"
+        },
+        {
+          "month": "4º Mês",
+          "value": "COFINS",
+          "cell": "BASE!G58"
+        },
+        {
+          "month": "5º Mês",
+          "value": "Alíquota Total",
+          "cell": "BASE!H58"
+        },
+        {
+          "month": "6º Mês",
+          "value": "Receita Bruta em 12 meses (em R$)",
+          "cell": "BASE!I58"
+        },
+        {
+          "month": "7º Mês",
+          "value": null,
+          "cell": "BASE!J58"
+        },
+        {
+          "month": "8º Mês",
+          "value": null,
+          "cell": "BASE!K58"
+        },
+        {
+          "month": "9º Mês",
+          "value": null,
+          "cell": "BASE!L58"
+        },
+        {
+          "month": "10º Mês",
+          "value": null,
+          "cell": "BASE!M58"
+        },
+        {
+          "month": "11º Mês",
+          "value": null,
+          "cell": "BASE!N58"
+        },
+        {
+          "month": "12º Mês",
+          "value": null,
+          "cell": "BASE!O58"
+        }
+      ]
+    },
+    {
+      "id": "0_04",
+      "label": "0.04",
+      "valueType": "number",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B59",
+        "valueRange": "BASE!D59:O59",
+        "rowNumber": 59
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 0,
+          "cell": "BASE!D59"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0,
+          "cell": "BASE!E59"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0,
+          "cell": "BASE!F59"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0,
+          "cell": "BASE!G59"
+        },
+        {
+          "month": "5º Mês",
+          "value": 0.06,
+          "cell": "BASE!H59"
+        },
+        {
+          "month": "6º Mês",
+          "value": "De R$ 0,00 a R$ 180.000,00",
+          "cell": "BASE!I59"
+        },
+        {
+          "month": "7º Mês",
+          "value": null,
+          "cell": "BASE!J59"
+        },
+        {
+          "month": "8º Mês",
+          "value": null,
+          "cell": "BASE!K59"
+        },
+        {
+          "month": "9º Mês",
+          "value": null,
+          "cell": "BASE!L59"
+        },
+        {
+          "month": "10º Mês",
+          "value": null,
+          "cell": "BASE!M59"
+        },
+        {
+          "month": "11º Mês",
+          "value": null,
+          "cell": "BASE!N59"
+        },
+        {
+          "month": "12º Mês",
+          "value": null,
+          "cell": "BASE!O59"
+        }
+      ]
+    },
+    {
+      "id": "0_04",
+      "label": "0.04",
+      "valueType": "number",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B60",
+        "valueRange": "BASE!D60:O60",
+        "rowNumber": 60
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 0,
+          "cell": "BASE!D60"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0,
+          "cell": "BASE!E60"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0,
+          "cell": "BASE!F60"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0.0142,
+          "cell": "BASE!G60"
+        },
+        {
+          "month": "5º Mês",
+          "value": 0.0821,
+          "cell": "BASE!H60"
+        },
+        {
+          "month": "6º Mês",
+          "value": "De R$ 180.000,01 a R$ 360.000,00",
+          "cell": "BASE!I60"
+        },
+        {
+          "month": "7º Mês",
+          "value": null,
+          "cell": "BASE!J60"
+        },
+        {
+          "month": "8º Mês",
+          "value": null,
+          "cell": "BASE!K60"
+        },
+        {
+          "month": "9º Mês",
+          "value": null,
+          "cell": "BASE!L60"
+        },
+        {
+          "month": "10º Mês",
+          "value": null,
+          "cell": "BASE!M60"
+        },
+        {
+          "month": "11º Mês",
+          "value": null,
+          "cell": "BASE!N60"
+        },
+        {
+          "month": "12º Mês",
+          "value": null,
+          "cell": "BASE!O60"
+        }
+      ]
+    },
+    {
+      "id": "0_0407",
+      "label": "0.0407",
+      "valueType": "number",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B61",
+        "valueRange": "BASE!D61:O61",
+        "rowNumber": 61
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 0.0035,
+          "cell": "BASE!D61"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0.0043,
+          "cell": "BASE!E61"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0.0048,
+          "cell": "BASE!F61"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0.0143,
+          "cell": "BASE!G61"
+        },
+        {
+          "month": "5º Mês",
+          "value": 0.1026,
+          "cell": "BASE!H61"
+        },
+        {
+          "month": "6º Mês",
+          "value": "De R$ 360.000,01 a R$ 540.000,00",
+          "cell": "BASE!I61"
+        },
+        {
+          "month": "7º Mês",
+          "value": null,
+          "cell": "BASE!J61"
+        },
+        {
+          "month": "8º Mês",
+          "value": null,
+          "cell": "BASE!K61"
+        },
+        {
+          "month": "9º Mês",
+          "value": null,
+          "cell": "BASE!L61"
+        },
+        {
+          "month": "10º Mês",
+          "value": null,
+          "cell": "BASE!M61"
+        },
+        {
+          "month": "11º Mês",
+          "value": null,
+          "cell": "BASE!N61"
+        },
+        {
+          "month": "12º Mês",
+          "value": null,
+          "cell": "BASE!O61"
+        }
+      ]
+    },
+    {
+      "id": "0_0447",
+      "label": "0.0447",
+      "valueType": "number",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B62",
+        "valueRange": "BASE!D62:O62",
+        "rowNumber": 62
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 0.0038,
+          "cell": "BASE!D62"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0.0053,
+          "cell": "BASE!E62"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0.0053,
+          "cell": "BASE!F62"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0.0156,
+          "cell": "BASE!G62"
+        },
+        {
+          "month": "5º Mês",
+          "value": 0.1131,
+          "cell": "BASE!H62"
+        },
+        {
+          "month": "6º Mês",
+          "value": "De R$ 540.000,01 a R$ 720.000,00",
+          "cell": "BASE!I62"
+        },
+        {
+          "month": "7º Mês",
+          "value": null,
+          "cell": "BASE!J62"
+        },
+        {
+          "month": "8º Mês",
+          "value": null,
+          "cell": "BASE!K62"
+        },
+        {
+          "month": "9º Mês",
+          "value": null,
+          "cell": "BASE!L62"
+        },
+        {
+          "month": "10º Mês",
+          "value": null,
+          "cell": "BASE!M62"
+        },
+        {
+          "month": "11º Mês",
+          "value": null,
+          "cell": "BASE!N62"
+        },
+        {
+          "month": "12º Mês",
+          "value": null,
+          "cell": "BASE!O62"
+        }
+      ]
+    },
+    {
+      "id": "0_0452",
+      "label": "0.0452",
+      "valueType": "number",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B63",
+        "valueRange": "BASE!D63:O63",
+        "rowNumber": 63
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 0.0038,
+          "cell": "BASE!D63"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0.0052,
+          "cell": "BASE!E63"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0.0053,
+          "cell": "BASE!F63"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0.0158,
+          "cell": "BASE!G63"
+        },
+        {
+          "month": "5º Mês",
+          "value": 0.114,
+          "cell": "BASE!H63"
+        },
+        {
+          "month": "6º Mês",
+          "value": "De R$ 720.000,01 a R$ 900.000,00",
+          "cell": "BASE!I63"
+        },
+        {
+          "month": "7º Mês",
+          "value": null,
+          "cell": "BASE!J63"
+        },
+        {
+          "month": "8º Mês",
+          "value": null,
+          "cell": "BASE!K63"
+        },
+        {
+          "month": "9º Mês",
+          "value": null,
+          "cell": "BASE!L63"
+        },
+        {
+          "month": "10º Mês",
+          "value": null,
+          "cell": "BASE!M63"
+        },
+        {
+          "month": "11º Mês",
+          "value": null,
+          "cell": "BASE!N63"
+        },
+        {
+          "month": "12º Mês",
+          "value": null,
+          "cell": "BASE!O63"
+        }
+      ]
+    },
+    {
+      "id": "0_0492",
+      "label": "0.0492",
+      "valueType": "number",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B64",
+        "valueRange": "BASE!D64:O64",
+        "rowNumber": 64
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 0.004,
+          "cell": "BASE!D64"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0.0057,
+          "cell": "BASE!E64"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0.0057,
+          "cell": "BASE!F64"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0.0173,
+          "cell": "BASE!G64"
+        },
+        {
+          "month": "5º Mês",
+          "value": 0.1242,
+          "cell": "BASE!H64"
+        },
+        {
+          "month": "6º Mês",
+          "value": "De R$ 900.000,01 a R$ 1.080.000,00",
+          "cell": "BASE!I64"
+        },
+        {
+          "month": "7º Mês",
+          "value": null,
+          "cell": "BASE!J64"
+        },
+        {
+          "month": "8º Mês",
+          "value": null,
+          "cell": "BASE!K64"
+        },
+        {
+          "month": "9º Mês",
+          "value": null,
+          "cell": "BASE!L64"
+        },
+        {
+          "month": "10º Mês",
+          "value": null,
+          "cell": "BASE!M64"
+        },
+        {
+          "month": "11º Mês",
+          "value": null,
+          "cell": "BASE!N64"
+        },
+        {
+          "month": "12º Mês",
+          "value": null,
+          "cell": "BASE!O64"
+        }
+      ]
+    },
+    {
+      "id": "0_0497",
+      "label": "0.0497",
+      "valueType": "number",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B65",
+        "valueRange": "BASE!D65:O65",
+        "rowNumber": 65
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 0.0042,
+          "cell": "BASE!D65"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0.0056,
+          "cell": "BASE!E65"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0.0059,
+          "cell": "BASE!F65"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0.0174,
+          "cell": "BASE!G65"
+        },
+        {
+          "month": "5º Mês",
+          "value": 0.1254,
+          "cell": "BASE!H65"
+        },
+        {
+          "month": "6º Mês",
+          "value": "De R$ 1.080.000,01 a R$ 1.260.000,00",
+          "cell": "BASE!I65"
+        },
+        {
+          "month": "7º Mês",
+          "value": null,
+          "cell": "BASE!J65"
+        },
+        {
+          "month": "8º Mês",
+          "value": null,
+          "cell": "BASE!K65"
+        },
+        {
+          "month": "9º Mês",
+          "value": null,
+          "cell": "BASE!L65"
+        },
+        {
+          "month": "10º Mês",
+          "value": null,
+          "cell": "BASE!M65"
+        },
+        {
+          "month": "11º Mês",
+          "value": null,
+          "cell": "BASE!N65"
+        },
+        {
+          "month": "12º Mês",
+          "value": null,
+          "cell": "BASE!O65"
+        }
+      ]
+    },
+    {
+      "id": "0_0503",
+      "label": "0.0503",
+      "valueType": "number",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B66",
+        "valueRange": "BASE!D66:O66",
+        "rowNumber": 66
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 0.0042,
+          "cell": "BASE!D66"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0.0057,
+          "cell": "BASE!E66"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0.0059,
+          "cell": "BASE!F66"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0.0176,
+          "cell": "BASE!G66"
+        },
+        {
+          "month": "5º Mês",
+          "value": 0.1268,
+          "cell": "BASE!H66"
+        },
+        {
+          "month": "6º Mês",
+          "value": "De R$ 1.260.000,01 a R$ 1.440.000,00",
+          "cell": "BASE!I66"
+        },
+        {
+          "month": "7º Mês",
+          "value": null,
+          "cell": "BASE!J66"
+        },
+        {
+          "month": "8º Mês",
+          "value": null,
+          "cell": "BASE!K66"
+        },
+        {
+          "month": "9º Mês",
+          "value": null,
+          "cell": "BASE!L66"
+        },
+        {
+          "month": "10º Mês",
+          "value": null,
+          "cell": "BASE!M66"
+        },
+        {
+          "month": "11º Mês",
+          "value": null,
+          "cell": "BASE!N66"
+        },
+        {
+          "month": "12º Mês",
+          "value": null,
+          "cell": "BASE!O66"
+        }
+      ]
+    },
+    {
+      "id": "0_0537",
+      "label": "0.0537",
+      "valueType": "number",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B67",
+        "valueRange": "BASE!D67:O67",
+        "rowNumber": 67
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 0.0045,
+          "cell": "BASE!D67"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0.0061,
+          "cell": "BASE!E67"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0.0063,
+          "cell": "BASE!F67"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0.0188,
+          "cell": "BASE!G67"
+        },
+        {
+          "month": "5º Mês",
+          "value": 0.1355,
+          "cell": "BASE!H67"
+        },
+        {
+          "month": "6º Mês",
+          "value": "De R$ 1.440.000,01 a R$ 1.620.000,00",
+          "cell": "BASE!I67"
+        },
+        {
+          "month": "7º Mês",
+          "value": null,
+          "cell": "BASE!J67"
+        },
+        {
+          "month": "8º Mês",
+          "value": null,
+          "cell": "BASE!K67"
+        },
+        {
+          "month": "9º Mês",
+          "value": null,
+          "cell": "BASE!L67"
+        },
+        {
+          "month": "10º Mês",
+          "value": null,
+          "cell": "BASE!M67"
+        },
+        {
+          "month": "11º Mês",
+          "value": null,
+          "cell": "BASE!N67"
+        },
+        {
+          "month": "12º Mês",
+          "value": null,
+          "cell": "BASE!O67"
+        }
+      ]
+    },
+    {
+      "id": "0_0542",
+      "label": "0.0542",
+      "valueType": "number",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B68",
+        "valueRange": "BASE!D68:O68",
+        "rowNumber": 68
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 0.0045,
+          "cell": "BASE!D68"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0.0064,
+          "cell": "BASE!E68"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0.0063,
+          "cell": "BASE!F68"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0.0189,
+          "cell": "BASE!G68"
+        },
+        {
+          "month": "5º Mês",
+          "value": 0.1368,
+          "cell": "BASE!H68"
+        },
+        {
+          "month": "6º Mês",
+          "value": "De R$ 1.620.000,01 a R$ 1.800.000,00",
+          "cell": "BASE!I68"
+        },
+        {
+          "month": "7º Mês",
+          "value": null,
+          "cell": "BASE!J68"
+        },
+        {
+          "month": "8º Mês",
+          "value": null,
+          "cell": "BASE!K68"
+        },
+        {
+          "month": "9º Mês",
+          "value": null,
+          "cell": "BASE!L68"
+        },
+        {
+          "month": "10º Mês",
+          "value": null,
+          "cell": "BASE!M68"
+        },
+        {
+          "month": "11º Mês",
+          "value": null,
+          "cell": "BASE!N68"
+        },
+        {
+          "month": "12º Mês",
+          "value": null,
+          "cell": "BASE!O68"
+        }
+      ]
+    },
+    {
+      "id": "0_0598",
+      "label": "0.0598",
+      "valueType": "number",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B69",
+        "valueRange": "BASE!D69:O69",
+        "rowNumber": 69
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 0.005,
+          "cell": "BASE!D69"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0.0069,
+          "cell": "BASE!E69"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0.0069,
+          "cell": "BASE!F69"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0.0207,
+          "cell": "BASE!G69"
+        },
+        {
+          "month": "5º Mês",
+          "value": 0.1493,
+          "cell": "BASE!H69"
+        },
+        {
+          "month": "6º Mês",
+          "value": "De R$ 1.800.000,01 a R$ 1.980.000,00",
+          "cell": "BASE!I69"
+        },
+        {
+          "month": "7º Mês",
+          "value": null,
+          "cell": "BASE!J69"
+        },
+        {
+          "month": "8º Mês",
+          "value": null,
+          "cell": "BASE!K69"
+        },
+        {
+          "month": "9º Mês",
+          "value": null,
+          "cell": "BASE!L69"
+        },
+        {
+          "month": "10º Mês",
+          "value": null,
+          "cell": "BASE!M69"
+        },
+        {
+          "month": "11º Mês",
+          "value": null,
+          "cell": "BASE!N69"
+        },
+        {
+          "month": "12º Mês",
+          "value": null,
+          "cell": "BASE!O69"
+        }
+      ]
+    },
+    {
+      "id": "0_0609",
+      "label": "0.0609",
+      "valueType": "number",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B70",
+        "valueRange": "BASE!D70:O70",
+        "rowNumber": 70
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 0.005,
+          "cell": "BASE!D70"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0.0069,
+          "cell": "BASE!E70"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0.0069,
+          "cell": "BASE!F70"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0.0209,
+          "cell": "BASE!G70"
+        },
+        {
+          "month": "5º Mês",
+          "value": 0.1506,
+          "cell": "BASE!H70"
+        },
+        {
+          "month": "6º Mês",
+          "value": "De R$ 1.980.000,01 a R$ 2.160.000,00",
+          "cell": "BASE!I70"
+        },
+        {
+          "month": "7º Mês",
+          "value": null,
+          "cell": "BASE!J70"
+        },
+        {
+          "month": "8º Mês",
+          "value": null,
+          "cell": "BASE!K70"
+        },
+        {
+          "month": "9º Mês",
+          "value": null,
+          "cell": "BASE!L70"
+        },
+        {
+          "month": "10º Mês",
+          "value": null,
+          "cell": "BASE!M70"
+        },
+        {
+          "month": "11º Mês",
+          "value": null,
+          "cell": "BASE!N70"
+        },
+        {
+          "month": "12º Mês",
+          "value": null,
+          "cell": "BASE!O70"
+        }
+      ]
+    },
+    {
+      "id": "0_0619",
+      "label": "0.0619",
+      "valueType": "number",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B71",
+        "valueRange": "BASE!D71:O71",
+        "rowNumber": 71
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 0.005,
+          "cell": "BASE!D71"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0.007,
+          "cell": "BASE!E71"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0.0071,
+          "cell": "BASE!F71"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0.021,
+          "cell": "BASE!G71"
+        },
+        {
+          "month": "5º Mês",
+          "value": 0.152,
+          "cell": "BASE!H71"
+        },
+        {
+          "month": "6º Mês",
+          "value": "De R$ 2.160.000,01 a R$ 2.340.000,00",
+          "cell": "BASE!I71"
+        },
+        {
+          "month": "7º Mês",
+          "value": null,
+          "cell": "BASE!J71"
+        },
+        {
+          "month": "8º Mês",
+          "value": null,
+          "cell": "BASE!K71"
+        },
+        {
+          "month": "9º Mês",
+          "value": null,
+          "cell": "BASE!L71"
+        },
+        {
+          "month": "10º Mês",
+          "value": null,
+          "cell": "BASE!M71"
+        },
+        {
+          "month": "11º Mês",
+          "value": null,
+          "cell": "BASE!N71"
+        },
+        {
+          "month": "12º Mês",
+          "value": null,
+          "cell": "BASE!O71"
+        }
+      ]
+    },
+    {
+      "id": "0_063",
+      "label": "0.063",
+      "valueType": "number",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B72",
+        "valueRange": "BASE!D72:O72",
+        "rowNumber": 72
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 0.0051,
+          "cell": "BASE!D72"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0.007,
+          "cell": "BASE!E72"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0.0071,
+          "cell": "BASE!F72"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0.0213,
+          "cell": "BASE!G72"
+        },
+        {
+          "month": "5º Mês",
+          "value": 0.1535,
+          "cell": "BASE!H72"
+        },
+        {
+          "month": "6º Mês",
+          "value": "De R$ 2.340.000,01 a R$ 2.520.000,00",
+          "cell": "BASE!I72"
+        },
+        {
+          "month": "7º Mês",
+          "value": null,
+          "cell": "BASE!J72"
+        },
+        {
+          "month": "8º Mês",
+          "value": null,
+          "cell": "BASE!K72"
+        },
+        {
+          "month": "9º Mês",
+          "value": null,
+          "cell": "BASE!L72"
+        },
+        {
+          "month": "10º Mês",
+          "value": null,
+          "cell": "BASE!M72"
+        },
+        {
+          "month": "11º Mês",
+          "value": null,
+          "cell": "BASE!N72"
+        },
+        {
+          "month": "12º Mês",
+          "value": null,
+          "cell": "BASE!O72"
+        }
+      ]
+    },
+    {
+      "id": "0_064",
+      "label": "0.064",
+      "valueType": "number",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B73",
+        "valueRange": "BASE!D73:O73",
+        "rowNumber": 73
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 0.0051,
+          "cell": "BASE!D73"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0.007,
+          "cell": "BASE!E73"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0.0072,
+          "cell": "BASE!F73"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0.0215,
+          "cell": "BASE!G73"
+        },
+        {
+          "month": "5º Mês",
+          "value": 0.1548,
+          "cell": "BASE!H73"
+        },
+        {
+          "month": "6º Mês",
+          "value": "De R$ 2.520.000,01 a R$ 2.700.000,00",
+          "cell": "BASE!I73"
+        },
+        {
+          "month": "7º Mês",
+          "value": null,
+          "cell": "BASE!J73"
+        },
+        {
+          "month": "8º Mês",
+          "value": null,
+          "cell": "BASE!K73"
+        },
+        {
+          "month": "9º Mês",
+          "value": null,
+          "cell": "BASE!L73"
+        },
+        {
+          "month": "10º Mês",
+          "value": null,
+          "cell": "BASE!M73"
+        },
+        {
+          "month": "11º Mês",
+          "value": null,
+          "cell": "BASE!N73"
+        },
+        {
+          "month": "12º Mês",
+          "value": null,
+          "cell": "BASE!O73"
+        }
+      ]
+    },
+    {
+      "id": "0_0741",
+      "label": "0.0741",
+      "valueType": "number",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B74",
+        "valueRange": "BASE!D74:O74",
+        "rowNumber": 74
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 0.0056,
+          "cell": "BASE!D74"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0.0076,
+          "cell": "BASE!E74"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0.0078,
+          "cell": "BASE!F74"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0.0234,
+          "cell": "BASE!G74"
+        },
+        {
+          "month": "5º Mês",
+          "value": 0.1685,
+          "cell": "BASE!H74"
+        },
+        {
+          "month": "6º Mês",
+          "value": "De R$ 2.700.000,01 a R$ 2.880.000,00",
+          "cell": "BASE!I74"
+        },
+        {
+          "month": "7º Mês",
+          "value": null,
+          "cell": "BASE!J74"
+        },
+        {
+          "month": "8º Mês",
+          "value": null,
+          "cell": "BASE!K74"
+        },
+        {
+          "month": "9º Mês",
+          "value": null,
+          "cell": "BASE!L74"
+        },
+        {
+          "month": "10º Mês",
+          "value": null,
+          "cell": "BASE!M74"
+        },
+        {
+          "month": "11º Mês",
+          "value": null,
+          "cell": "BASE!N74"
+        },
+        {
+          "month": "12º Mês",
+          "value": null,
+          "cell": "BASE!O74"
+        }
+      ]
+    },
+    {
+      "id": "0_075",
+      "label": "0.075",
+      "valueType": "number",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B75",
+        "valueRange": "BASE!D75:O75",
+        "rowNumber": 75
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 0.0056,
+          "cell": "BASE!D75"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0.0078,
+          "cell": "BASE!E75"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0.0078,
+          "cell": "BASE!F75"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0.0236,
+          "cell": "BASE!G75"
+        },
+        {
+          "month": "5º Mês",
+          "value": 0.1698,
+          "cell": "BASE!H75"
+        },
+        {
+          "month": "6º Mês",
+          "value": "De R$ 2.880.000,01 a R$ 3.060.000,00",
+          "cell": "BASE!I75"
+        },
+        {
+          "month": "7º Mês",
+          "value": null,
+          "cell": "BASE!J75"
+        },
+        {
+          "month": "8º Mês",
+          "value": null,
+          "cell": "BASE!K75"
+        },
+        {
+          "month": "9º Mês",
+          "value": null,
+          "cell": "BASE!L75"
+        },
+        {
+          "month": "10º Mês",
+          "value": null,
+          "cell": "BASE!M75"
+        },
+        {
+          "month": "11º Mês",
+          "value": null,
+          "cell": "BASE!N75"
+        },
+        {
+          "month": "12º Mês",
+          "value": null,
+          "cell": "BASE!O75"
+        }
+      ]
+    },
+    {
+      "id": "0_076",
+      "label": "0.076",
+      "valueType": "number",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B76",
+        "valueRange": "BASE!D76:O76",
+        "rowNumber": 76
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 0.0057,
+          "cell": "BASE!D76"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0.0079,
+          "cell": "BASE!E76"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0.008,
+          "cell": "BASE!F76"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0.0237,
+          "cell": "BASE!G76"
+        },
+        {
+          "month": "5º Mês",
+          "value": 0.1713,
+          "cell": "BASE!H76"
+        },
+        {
+          "month": "6º Mês",
+          "value": "De R$ 3.060.000,01 a R$ 3.240.000,00",
+          "cell": "BASE!I76"
+        },
+        {
+          "month": "7º Mês",
+          "value": null,
+          "cell": "BASE!J76"
+        },
+        {
+          "month": "8º Mês",
+          "value": null,
+          "cell": "BASE!K76"
+        },
+        {
+          "month": "9º Mês",
+          "value": null,
+          "cell": "BASE!L76"
+        },
+        {
+          "month": "10º Mês",
+          "value": null,
+          "cell": "BASE!M76"
+        },
+        {
+          "month": "11º Mês",
+          "value": null,
+          "cell": "BASE!N76"
+        },
+        {
+          "month": "12º Mês",
+          "value": null,
+          "cell": "BASE!O76"
+        }
+      ]
+    },
+    {
+      "id": "0_0771",
+      "label": "0.0771",
+      "valueType": "number",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B77",
+        "valueRange": "BASE!D77:O77",
+        "rowNumber": 77
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 0.0057,
+          "cell": "BASE!D77"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0.0079,
+          "cell": "BASE!E77"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0.008,
+          "cell": "BASE!F77"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0.024,
+          "cell": "BASE!G77"
+        },
+        {
+          "month": "5º Mês",
+          "value": 0.1727,
+          "cell": "BASE!H77"
+        },
+        {
+          "month": "6º Mês",
+          "value": "De R$ 3.240.000,01 a R$ 3.420.000,00",
+          "cell": "BASE!I77"
+        },
+        {
+          "month": "7º Mês",
+          "value": null,
+          "cell": "BASE!J77"
+        },
+        {
+          "month": "8º Mês",
+          "value": null,
+          "cell": "BASE!K77"
+        },
+        {
+          "month": "9º Mês",
+          "value": null,
+          "cell": "BASE!L77"
+        },
+        {
+          "month": "10º Mês",
+          "value": null,
+          "cell": "BASE!M77"
+        },
+        {
+          "month": "11º Mês",
+          "value": null,
+          "cell": "BASE!N77"
+        },
+        {
+          "month": "12º Mês",
+          "value": null,
+          "cell": "BASE!O77"
+        }
+      ]
+    },
+    {
+      "id": "0_0783",
+      "label": "0.0783",
+      "valueType": "number",
+      "source": {
+        "sheet": "BASE",
+        "labelCell": "BASE!B78",
+        "valueRange": "BASE!D78:O78",
+        "rowNumber": 78
+      },
+      "values": [
+        {
+          "month": "1º Mês",
+          "value": 0.0057,
+          "cell": "BASE!D78"
+        },
+        {
+          "month": "2º Mês",
+          "value": 0.0079,
+          "cell": "BASE!E78"
+        },
+        {
+          "month": "3º Mês",
+          "value": 0.0081,
+          "cell": "BASE!F78"
+        },
+        {
+          "month": "4º Mês",
+          "value": 0.0242,
+          "cell": "BASE!G78"
+        },
+        {
+          "month": "5º Mês",
+          "value": 0.1742,
+          "cell": "BASE!H78"
+        },
+        {
+          "month": "6º Mês",
+          "value": "De R$ 3.420.000,01 a R$ 3.600.000,00",
+          "cell": "BASE!I78"
+        },
+        {
+          "month": "7º Mês",
+          "value": null,
+          "cell": "BASE!J78"
+        },
+        {
+          "month": "8º Mês",
+          "value": null,
+          "cell": "BASE!K78"
+        },
+        {
+          "month": "9º Mês",
+          "value": null,
+          "cell": "BASE!L78"
+        },
+        {
+          "month": "10º Mês",
+          "value": null,
+          "cell": "BASE!M78"
+        },
+        {
+          "month": "11º Mês",
+          "value": null,
+          "cell": "BASE!N78"
+        },
+        {
+          "month": "12º Mês",
+          "value": null,
+          "cell": "BASE!O78"
+        }
+      ]
+    }
+  ],
+  "validation": [
+    {
+      "metric": "Faturamento acumulado 12 meses",
+      "value": 1776798.535,
+      "source": "DRE!F4:Q4",
+      "status": "OK"
+    },
+    {
+      "metric": "Resultado liquido acumulado",
+      "value": 432234.63051377377,
+      "source": "DRE!F53:Q53",
+      "status": "OK"
+    },
+    {
+      "metric": "Investimento inicial",
+      "value": 375000,
+      "source": "DRE!F57",
+      "status": "OK"
+    },
+    {
+      "metric": "Payback",
+      "value": "11º Mês",
+      "source": "DRE!F58:Q58",
+      "status": "OK"
+    }
+  ]
+}
