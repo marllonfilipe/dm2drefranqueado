@@ -8,16 +8,20 @@
     "dev": "vite --host 127.0.0.1",
     "build": "npm run extract && vite build",
     "build:static": "vite build",
-    "preview": "vite preview --host 127.0.0.1"
+    "preview": "vite preview --host 127.0.0.1",
+    "start": "node server.mjs"
   },
   "dependencies": {
+    "@google-cloud/firestore": "^8.6.0",
     "@vitejs/plugin-react": "^6.0.2",
+    "express": "^5.2.1",
     "lucide-react": "^1.17.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "recharts": "^3.8.1",
-    "vite": "^8.0.16",
-    "xlsx": "^0.18.5"
+    "vite": "^8.0.16"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "xlsx": "^0.18.5"
+  }
 }

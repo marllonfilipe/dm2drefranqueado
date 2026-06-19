@@ -25,7 +25,13 @@ function numberOrZero(value) {
 }
 
 function cleanLabel(value) {
-  const text = String(value ?? "").replace(/\s+/g, " ").trim();
+  let text = String(value ?? "").replace(/\s+/g, " ").trim();
+  for (let pass = 0; pass < 2 && /[\u00c2\u00c3]/.test(text); pass += 1) {
+    const decoded = Buffer.from(text, "latin1").toString("utf8");
+    if (decoded === text || decoded.includes("\ufffd")) break;
+    text = decoded;
+  }
+  if (/^COMUNICA.*O VISUAL INTERNA$/i.test(text)) return "COMUNICAÇÃO VISUAL INTERNA";
   if (/[ÃÂ]/.test(text)) {
     return Buffer.from(text, "latin1").toString("utf8");
   }

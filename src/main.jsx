@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   Area,
@@ -79,11 +79,14 @@ const pageMeta = {
 };
 
 const scenarioProfiles = {
-  excel: { label: "Padrao Excel", revenue: 1, rh: 1, fixed: 1, variable: 1, tax: 1, franchising: 1 },
-  custom: { label: "Cenario criado", revenue: 1, rh: 1, fixed: 1, variable: 1, tax: 1, franchising: 1 },
-  conservative: { label: "Conservador", revenue: 0.9, rh: 1, fixed: 1.03, variable: 1.02, tax: 1, franchising: 1 },
-  optimistic: { label: "Otimista", revenue: 1.12, rh: 1.02, fixed: 1.02, variable: 1.04, tax: 1, franchising: 1 },
+  initial: { label: "Cenario inicial", revenue: 1, expense: 1, growth: 0 },
+  conservative: { label: "Conservador", revenue: 0.9, expense: 1.03, growth: 0.01 },
+  optimistic: { label: "Otimista", revenue: 1.12, expense: 1.02, growth: 0.04 },
+  simulated: { label: "Simulado", revenue: 1, expense: 1, growth: 0.02 },
 };
+
+const EVALUATION_TICKET = 180;
+const SCENARIO_STORAGE_KEY = "dm2-dre-scenarios-v3";
 
 const expenseFields = [
   { key: "rh", label: "RH", source: "(-) Despesas RH Contabil" },
@@ -146,6 +149,10 @@ function isScenarioExpenseLeaf(row) {
 function isRevenueRateExpense(row) {
   const label = normalize(row.label);
   return (
+    label.includes("cmv protocolos") ||
+    label.includes("cmv suplementos") ||
+    label === "cmv produtos" ||
+    label.includes("cmv produto b") ||
     label.includes("simples nacional suplementos") ||
     label.includes("simples nacional servicos") ||
     label.includes("verba de marketing") ||
@@ -158,6 +165,16 @@ function isRevenueRateExpense(row) {
 function revenueRateBase(row, index, revenue) {
   const label = normalize(row.label);
   const excelRevenue = getMonthlyValue("Faturamento Total", index);
+
+  if (label.includes("cmv protocolos")) return getMonthlyValue("Protocolos", index);
+  if (label.includes("cmv suplementos") || label === "cmv produtos" || label.includes("cmv produto b")) {
+    return (
+      getMonthlyValue("Produtos Alimenticios", index) +
+      getMonthlyValue("Suplementos Extras", index) +
+      getMonthlyValue("Produto A", index) +
+      getMonthlyValue("Produto B", index)
+    );
+  }
 
   if (label.includes("simples nacional suplementos")) {
     const excelBase = numericAssumption("base_suplementos", index, 0);
@@ -176,15 +193,25 @@ function revenueRateBase(row, index, revenue) {
 
 function revenueRateBaseLabel(row) {
   const label = normalize(row.label);
+  if (label.includes("cmv protocolos")) return " da receita de protocolos";
+  if (label.includes("cmv suplementos") || label === "cmv produtos" || label.includes("cmv produto b")) {
+    return " da receita de suplementos";
+  }
   if (label.includes("simples nacional suplementos")) return " da base de suplementos";
   if (label.includes("simples nacional servicos")) return " da base de servicos";
   return " do faturamento";
 }
 
-function scenarioRevenueRateBase(row, revenue) {
+function scenarioRevenueRateBase(row, revenue, monthScenario) {
   const label = normalize(row.label);
-  if (label.includes("simples nacional suplementos")) return 0;
-  if (label.includes("simples nacional servicos")) return revenue;
+  if (label.includes("cmv protocolos")) return monthScenario?.protocolRevenue || 0;
+  if (label.includes("cmv suplementos") || label === "cmv produtos" || label.includes("cmv produto b")) {
+    return monthScenario?.supplementRevenue || 0;
+  }
+  if (label.includes("simples nacional suplementos")) return monthScenario?.supplementRevenue || 0;
+  if (label.includes("simples nacional servicos")) {
+    return (monthScenario?.evaluationRevenue || 0) + (monthScenario?.protocolRevenue || 0);
+  }
   return revenue;
 }
 
@@ -201,22 +228,29 @@ function isRevenueLine(row) {
   return row.category === "Receita";
 }
 
-function scenarioRevenueLineValue(row, index, protocolRevenue) {
+function scenarioRevenueLineValue(row, monthScenario) {
   const label = normalize(row.label);
-  if (label === "protocolos") return protocolRevenue;
+  if (label === "protocolos") return monthScenario?.protocolRevenue || 0;
+  if (label === "consultas") return monthScenario?.evaluationRevenue || 0;
+  if (label.includes("suplementos extras")) return monthScenario?.supplementRevenue || 0;
+  if (label.includes("produtos alimenticios") || label === "produto a" || label === "produto b") return 0;
   return 0;
 }
 
-function scenarioRevenueTotal(index, protocolRevenue) {
-  return revenueDetailRows.reduce(
-    (sum, row) => sum + scenarioRevenueLineValue(row, index, protocolRevenue),
-    0,
+function scenarioRevenueTotal(monthScenario) {
+  return (
+    (monthScenario?.evaluationRevenue || 0) +
+    (monthScenario?.protocolRevenue || 0) +
+    (monthScenario?.supplementRevenue || 0)
   );
 }
 
 function defaultExpenseControlValue(row, index = 0) {
   if (!row) return 1;
   if (!isRevenueRateExpense(row)) return row.values[index]?.value || 0;
+
+  const explicitRate = String(row.label).match(/(\d+(?:[.,]\d+)?)\s*%/);
+  if (explicitRate) return Number(explicitRate[1].replace(",", ".")) / 100;
 
   const revenue = getMonthlyValue("Faturamento Total", index);
   const base = revenueRateBase(row, index, revenue);
@@ -307,90 +341,172 @@ function baseBreakdown(month, index) {
 }
 
 const defaultPremises = data.months.map((month, index) => {
-  const ticket = numericAssumption("ticket_medio", index, 5900);
+  const protocolTicket = numericAssumption("ticket_medio", index, 5900);
+  const protocolRevenue = getMonthlyValue("Protocolos", index);
+  const evaluationRevenue = getMonthlyValue("Consultas", index);
+  const supplementRevenue =
+    getMonthlyValue("Produtos Alimenticios", index) +
+    getMonthlyValue("Suplementos Extras", index) +
+    getMonthlyValue("Produto A", index) +
+    getMonthlyValue("Produto B", index);
   const days = 22;
-  const revenue = getMonthlyValue("Faturamento Total", index);
-  const attendances = ticket && days ? Math.round(revenue / ticket / days) : 0;
-  return { month, days, attendances, ticket };
+  const evaluationCount = evaluationRevenue / EVALUATION_TICKET;
+
+  return {
+    month,
+    days,
+    evaluationsPerDay: days ? evaluationCount / days : 0,
+    protocolSales: protocolTicket ? protocolRevenue / protocolTicket : 0,
+    protocolTicket,
+    supplementEnabled: supplementRevenue > 0,
+    supplementQuantity: supplementRevenue > 0 ? 1 : 0,
+    supplementTicket: supplementRevenue,
+  };
 });
 
 const defaultInvestmentItems = data.investmentItems.map((item) => ({
   label: item.label,
-  value: item.value,
+  value: normalize(item.label).includes("taxa de franquia")
+    ? 80000
+    : normalize(item.label).includes("capital de giro")
+      ? 120000
+      : item.value,
   color: item.color,
-  locked: normalize(item.label).includes("taxa de franquia"),
+  locked: false,
+  monthly: data.months.map((_, index) =>
+    index === 0
+      ? normalize(item.label).includes("taxa de franquia")
+        ? 80000
+        : normalize(item.label).includes("capital de giro")
+          ? 120000
+          : item.value
+      : 0,
+  ),
 }));
 
-const defaultControls = {
-  premises: defaultPremises,
-  expenses: { rh: 1, fixed: 1, variable: 1, tax: 1, franchising: 1 },
-  expenseItems: Object.fromEntries(expenseEditableRows.map((row) => [row.id, defaultExpenseControlValue(row)])),
-  investmentItems: defaultInvestmentItems,
-};
-
-function investmentTotal(items) {
-  return items.reduce((sum, item) => sum + (Number(item.value) || 0), 0);
+function buildScenarioControls(scenarioId) {
+  const profile = scenarioProfiles[scenarioId];
+  return {
+    modified: scenarioId !== "initial",
+    sourceScenario: scenarioId === "simulated" ? "initial" : scenarioId,
+    growthRate: profile.growth,
+    premises: defaultPremises.map((item) => ({
+      ...item,
+      evaluationsPerDay: item.evaluationsPerDay * profile.revenue,
+      protocolSales: item.protocolSales * profile.revenue,
+      supplementQuantity: item.supplementQuantity * profile.revenue,
+    })),
+    expenseItems: Object.fromEntries(
+      expenseEditableRows.map((row) => {
+        const value = defaultExpenseControlValue(row);
+        return [row.id, isRevenueRateExpense(row) ? value : value * profile.expense];
+      }),
+    ),
+    investmentItems: defaultInvestmentItems.map((item) => ({ ...item, monthly: [...item.monthly] })),
+  };
 }
 
-function scenarioExpenseLineValue(row, index, revenue, controls) {
+const defaultScenarioControls = Object.fromEntries(
+  Object.keys(scenarioProfiles).map((scenarioId) => [scenarioId, buildScenarioControls(scenarioId)]),
+);
+
+const defaultControls = defaultScenarioControls.initial;
+
+function investmentTotal(items) {
+  return items.reduce((sum, item) => sum + investmentItemTotal(item), 0);
+}
+
+function investmentItemTotal(item) {
+  return (item.monthly || []).reduce((total, value) => total + (Number(value) || 0), 0);
+}
+
+function investmentMonthlyTotal(items, index) {
+  return items.reduce((sum, item) => sum + (Number(item.monthly?.[index]) || 0), 0);
+}
+
+function scenarioExpenseLineValue(row, index, revenue, controls, monthScenario) {
   if (isValeTransport(row)) {
     const salaryRow = data.dre.find((item) => normalize(item.label) === "salarios");
-    const salary = salaryRow ? scenarioExpenseLineValue(salaryRow, index, revenue, controls) : 0;
+    const salary = salaryRow ? scenarioExpenseLineValue(salaryRow, index, revenue, controls, monthScenario) : 0;
     return salary * 0.1;
   }
 
   if (isRevenueRateExpense(row)) {
-    return scenarioRevenueRateBase(row, revenue) * expenseControlValue(row, controls, index);
+    return scenarioRevenueRateBase(row, revenue, monthScenario) * expenseControlValue(row, controls, index);
   }
 
   return expenseControlValue(row, controls, index);
 }
 
-function scenarioExpenseGroupValue(category, index, revenue, controls) {
+function scenarioExpenseGroupValue(category, index, revenue, controls, monthScenario) {
   return expenseLeafRows
     .filter((row) => row.category === category)
-    .reduce((sum, row) => sum + scenarioExpenseLineValue(row, index, revenue, controls), 0);
+    .reduce((sum, row) => sum + scenarioExpenseLineValue(row, index, revenue, controls, monthScenario), 0);
 }
 
-function scenarioRhFinancialValue(index, revenue, controls) {
+function scenarioRhFinancialValue(index, revenue, controls, monthScenario) {
   return expenseLeafRows
     .filter((row) => {
       const label = normalize(row.label);
       return row.category === "RH" && !label.includes("provisao");
     })
-    .reduce((sum, row) => sum + scenarioExpenseLineValue(row, index, revenue, controls), 0);
+    .reduce((sum, row) => sum + scenarioExpenseLineValue(row, index, revenue, controls, monthScenario), 0);
 }
 
 function calculateScenario(months, indexes, controls, useExcelBase) {
-  let cumulative = -investmentTotal(controls.investmentItems);
+  let cumulative = 0;
   const initialInvestment = investmentTotal(controls.investmentItems);
 
   return months.map((month, listIndex) => {
     const sourceIndex = indexes[listIndex];
     const base = baseBreakdown(month, sourceIndex);
     const premise = controls.premises[sourceIndex] || defaultPremises[sourceIndex];
-    const protocolRevenue = premise.days * premise.attendances * premise.ticket;
-    const revenue = useExcelBase ? base.revenue : scenarioRevenueTotal(sourceIndex, protocolRevenue);
-    const rh = useExcelBase ? base.rh : scenarioExpenseGroupValue("RH", sourceIndex, revenue, controls);
+    const evaluationCount = premise.days * premise.evaluationsPerDay;
+    const evaluationRevenue = useExcelBase ? getMonthlyValue("Consultas", sourceIndex) : evaluationCount * EVALUATION_TICKET;
+    const protocolRevenue = useExcelBase
+      ? getMonthlyValue("Protocolos", sourceIndex)
+      : premise.protocolSales * premise.protocolTicket;
+    const supplementRevenue = useExcelBase
+      ? getMonthlyValue("Produtos Alimenticios", sourceIndex) +
+        getMonthlyValue("Suplementos Extras", sourceIndex) +
+        getMonthlyValue("Produto A", sourceIndex) +
+        getMonthlyValue("Produto B", sourceIndex)
+      : premise.supplementEnabled
+        ? premise.supplementQuantity * premise.supplementTicket
+        : 0;
+    const revenueParts = { evaluationRevenue, protocolRevenue, supplementRevenue };
+    const revenue = useExcelBase ? base.revenue : scenarioRevenueTotal(revenueParts);
+    const rh = useExcelBase ? base.rh : scenarioExpenseGroupValue("RH", sourceIndex, revenue, controls, revenueParts);
     const rhFinancial = useExcelBase
       ? getMonthlyValue("(-) Despesas RH Financeira", sourceIndex)
-      : scenarioRhFinancialValue(sourceIndex, revenue, controls);
-    const fixed = useExcelBase ? base.fixed : scenarioExpenseGroupValue("Despesas Fixas", sourceIndex, revenue, controls);
-    const variable = useExcelBase ? base.variable : scenarioExpenseGroupValue("Despesas Variaveis", sourceIndex, revenue, controls);
-    const tax = useExcelBase ? base.tax : scenarioExpenseGroupValue("Impostos", sourceIndex, revenue, controls);
-    const franchising = useExcelBase ? base.franchising : scenarioExpenseGroupValue("Franchising", sourceIndex, revenue, controls);
+      : scenarioRhFinancialValue(sourceIndex, revenue, controls, revenueParts);
+    const fixed = useExcelBase ? base.fixed : scenarioExpenseGroupValue("Despesas Fixas", sourceIndex, revenue, controls, revenueParts);
+    const variable = useExcelBase ? base.variable : scenarioExpenseGroupValue("Despesas Variaveis", sourceIndex, revenue, controls, revenueParts);
+    const tax = useExcelBase ? base.tax : scenarioExpenseGroupValue("Impostos", sourceIndex, revenue, controls, revenueParts);
+    const franchising = useExcelBase ? base.franchising : scenarioExpenseGroupValue("Franchising", sourceIndex, revenue, controls, revenueParts);
     const itemizedExpenses = rh + fixed + variable + tax + franchising;
     const expenses = useExcelBase ? getMonthlyValue("TOTAL DESPESAS", sourceIndex) : itemizedExpenses;
     const netResult = revenue - expenses;
     const rentability = initialInvestment ? netResult / initialInvestment : 0;
-    cumulative += netResult;
+    const investmentOutflow = investmentMonthlyTotal(controls.investmentItems, sourceIndex);
+    cumulative += netResult - investmentOutflow;
 
     return {
       ...base,
       days: premise.days,
-      attendances: premise.attendances,
-      ticket: premise.ticket,
-      initialInvestment: sourceIndex === 0 ? initialInvestment : 0,
+      evaluationsPerDay: premise.evaluationsPerDay,
+      evaluationCount,
+      evaluationTicket: EVALUATION_TICKET,
+      evaluationRevenue,
+      protocolSales: premise.protocolSales,
+      protocolTicket: premise.protocolTicket,
+      protocolRevenue,
+      supplementEnabled: premise.supplementEnabled,
+      supplementQuantity: premise.supplementQuantity,
+      supplementTicket: premise.supplementTicket,
+      supplementRevenue,
+      initialInvestment: investmentOutflow,
+      investmentOutflow,
       revenue,
       rh,
       rhFinancial,
@@ -409,7 +525,7 @@ function calculateScenario(months, indexes, controls, useExcelBase) {
 
 function scenarioDreValue(row, index, monthScenario, controls, useExcelBase) {
   const excelValue = row.values[index]?.value ?? 0;
-  if (useExcelBase || !monthScenario) return excelValue;
+  if (!monthScenario) return excelValue;
 
   const label = normalize(row.label);
   const derivedRows = {
@@ -429,16 +545,26 @@ function scenarioDreValue(row, index, monthScenario, controls, useExcelBase) {
     [normalize("RENTABILIDADE (%)")]: monthScenario.rentability,
   };
 
+  if (useExcelBase) {
+    const investmentRows = [
+      normalize("INVESTIMENTO INICIAL"),
+      normalize("RETORNO IVESTIMENTO | PAY BACK"),
+      normalize("RETORNO INVESTIMENTO | PAY BACK"),
+      normalize("RENTABILIDADE (%)"),
+    ];
+    return investmentRows.includes(label) ? derivedRows[label] : excelValue;
+  }
+
   if (Object.prototype.hasOwnProperty.call(derivedRows, label)) {
     return derivedRows[label];
   }
 
   if (expenseLeafRows.some((expenseRow) => expenseRow.id === row.id)) {
-    return scenarioExpenseLineValue(row, index, monthScenario.revenue, controls);
+    return scenarioExpenseLineValue(row, index, monthScenario.revenue, controls, monthScenario);
   }
 
   if (isRevenueLine(row)) {
-    return scenarioRevenueLineValue(row, index, monthScenario.days * monthScenario.attendances * monthScenario.ticket);
+    return scenarioRevenueLineValue(row, monthScenario);
   }
 
   return 0;
@@ -448,28 +574,32 @@ function sumBy(items, field) {
   return items.reduce((sum, item) => sum + (item[field] || 0), 0);
 }
 
-function presetControls(profile, current) {
-  return {
-    ...current,
-    premises: current.premises.map((item) => ({
-      ...item,
-      attendances: Math.max(0, Math.round(item.attendances * profile.revenue)),
-    })),
-    expenses: {
-      rh: profile.rh,
-      fixed: profile.fixed,
-      variable: profile.variable,
-      tax: profile.tax,
-      franchising: profile.franchising,
-    },
-    expenseItems: Object.fromEntries(
-      Object.entries(current.expenseItems).map(([key, value]) => {
-        const row = data.dre.find((item) => item.id === key);
-        const currentValue = Number.isFinite(value) ? value : defaultExpenseControlValue(row);
-        return [key, isRevenueRateExpense(row) ? currentValue : profile.fixed];
-      }),
-    ),
-  };
+function cloneScenarioControls(value) {
+  return JSON.parse(JSON.stringify(value));
+}
+
+function mergeScenarioControls(saved = {}) {
+  return Object.fromEntries(
+    Object.keys(scenarioProfiles).map((scenarioId) => {
+      const fallback = buildScenarioControls(scenarioId);
+      const candidate = saved[scenarioId];
+      if (!candidate) return [scenarioId, fallback];
+      return [
+        scenarioId,
+        {
+          ...fallback,
+          ...candidate,
+          premises: data.months.map((_, index) => ({ ...fallback.premises[index], ...candidate.premises?.[index] })),
+          expenseItems: { ...fallback.expenseItems, ...candidate.expenseItems },
+          investmentItems: fallback.investmentItems.map((item, index) => ({
+            ...item,
+            ...candidate.investmentItems?.[index],
+            monthly: candidate.investmentItems?.[index]?.monthly || item.monthly,
+          })),
+        },
+      ];
+    }),
+  );
 }
 
 function App() {
@@ -478,21 +608,71 @@ function App() {
   const [endMonth, setEndMonth] = useState(data.months[data.months.length - 1]);
   const [category, setCategory] = useState("Todos");
   const [selectedLine, setSelectedLine] = useState("Todos");
-  const [scenario, setScenario] = useState("excel");
-  const [controls, setControls] = useState(defaultControls);
+  const [scenario, setScenario] = useState("initial");
+  const [scenarioControls, setScenarioControls] = useState(() => {
+    try {
+      const saved = JSON.parse(window.localStorage.getItem(SCENARIO_STORAGE_KEY) || "null");
+      return mergeScenarioControls(saved || defaultScenarioControls);
+    } catch {
+      return mergeScenarioControls(defaultScenarioControls);
+    }
+  });
   const [editModal, setEditModal] = useState(null);
+  const persistenceReady = useRef(false);
+  const controls = scenarioControls[scenario];
+  const useExcelBase = scenario === "initial" && !controls.modified;
+
+  const setControls = useCallback(
+    (updater) => {
+      setScenarioControls((current) => {
+        const active = current[scenario];
+        const next = typeof updater === "function" ? updater(active) : updater;
+        return { ...current, [scenario]: next };
+      });
+    },
+    [scenario],
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/scenarios")
+      .then((response) => (response.ok ? response.json() : null))
+      .then((saved) => {
+        if (!cancelled && saved?.scenarios) setScenarioControls(mergeScenarioControls(saved.scenarios));
+      })
+      .catch(() => null)
+      .finally(() => {
+        persistenceReady.current = true;
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem(SCENARIO_STORAGE_KEY, JSON.stringify(scenarioControls));
+    if (!persistenceReady.current) return undefined;
+    const timeout = window.setTimeout(() => {
+      fetch("/api/scenarios", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ scenarios: scenarioControls }),
+      }).catch(() => null);
+    }, 700);
+    return () => window.clearTimeout(timeout);
+  }, [scenarioControls]);
 
   const [startIndex, endIndex] = rangeIndexes(startMonth, endMonth);
   const visibleMonths = data.months.slice(startIndex, endIndex + 1);
   const visibleIndexes = visibleMonths.map((_, index) => startIndex + index);
 
   const scenarioMonthly = useMemo(
-    () => calculateScenario(visibleMonths, visibleIndexes, controls, scenario === "excel"),
-    [visibleMonths.join("|"), visibleIndexes.join("|"), controls, scenario],
+    () => calculateScenario(visibleMonths, visibleIndexes, controls, useExcelBase),
+    [visibleMonths.join("|"), visibleIndexes.join("|"), controls, useExcelBase],
   );
   const annualMonthly = useMemo(
-    () => calculateScenario(data.months, data.months.map((_, index) => index), controls, scenario === "excel"),
-    [controls, scenario],
+    () => calculateScenario(data.months, data.months.map((_, index) => index), controls, useExcelBase),
+    [controls, useExcelBase],
   );
 
   const filteredRows = useMemo(
@@ -503,9 +683,10 @@ function App() {
   const selectedRow = data.dre.find((row) => row.label === selectedLine) || rowByLabel("Faturamento Total") || data.dre[0];
   const selectedLineData = selectedRow.values.slice(startIndex, endIndex + 1).map((item, index) => ({
     month: item.month,
-    value: scenarioDreValue(selectedRow, startIndex + index, scenarioMonthly[index], controls, scenario === "excel"),
+    value: scenarioDreValue(selectedRow, startIndex + index, scenarioMonthly[index], controls, useExcelBase),
   }));
   const totals = {
+    investment: investmentTotal(controls.investmentItems),
     revenue: sumBy(scenarioMonthly, "revenue"),
     expenses: sumBy(scenarioMonthly, "expenses"),
     netResult: sumBy(scenarioMonthly, "netResult"),
@@ -517,24 +698,41 @@ function App() {
 
   function changeScenario(nextScenario) {
     setScenario(nextScenario);
-    if (nextScenario !== "excel" && nextScenario !== "custom") {
-      setControls((current) => presetControls(scenarioProfiles[nextScenario], current));
+  }
+
+  function openEditableScenario(modal) {
+    if (scenario === "initial") {
+      setScenarioControls((current) => ({
+        ...current,
+        simulated: {
+          ...cloneScenarioControls(current.initial),
+          modified: true,
+          sourceScenario: "initial",
+        },
+      }));
+      setScenario("simulated");
     }
+    setEditModal(modal);
   }
 
   function openScenarioEditor() {
-    setScenario("custom");
-    setEditModal("scenario");
+    openEditableScenario("scenario");
   }
 
   function openExpenseEditor() {
-    setScenario("custom");
-    setEditModal("expenses");
+    openEditableScenario("expenses");
   }
 
   function openPremiseEditor() {
-    setScenario("custom");
-    setEditModal("premises");
+    openEditableScenario("premises");
+  }
+
+  function openInvestmentEditor() {
+    openEditableScenario("investment");
+  }
+
+  function resetScenario() {
+    setScenarioControls((current) => ({ ...current, [scenario]: buildScenarioControls(scenario) }));
   }
 
   function exportPdf() {
@@ -600,7 +798,7 @@ function App() {
           setCategory={setCategory}
           setScenario={changeScenario}
         />
-        <AnnualPrintReport monthly={annualMonthly} controls={controls} scenario={scenario} />
+        <AnnualPrintReport monthly={annualMonthly} controls={controls} scenario={scenario} useExcelBase={useExcelBase} />
 
         {activeTab === "executive" && (
           <ExecutiveView
@@ -619,6 +817,7 @@ function App() {
             scenario={scenario}
             controls={controls}
             setControls={setControls}
+            resetScenario={resetScenario}
             openEditor={openScenarioEditor}
           />
         )}
@@ -631,6 +830,7 @@ function App() {
             endIndex={endIndex}
             scenarioMonthly={scenarioMonthly}
             scenario={scenario}
+            useExcelBase={useExcelBase}
             controls={controls}
             selectedLine={selectedLine}
             setSelectedLine={setSelectedLine}
@@ -640,12 +840,12 @@ function App() {
           />
         )}
         {activeTab === "investment" && (
-          <InvestmentView controls={controls} setControls={setControls} openEditor={() => setEditModal("investment")} />
+          <InvestmentView controls={controls} setControls={setControls} openEditor={openInvestmentEditor} />
         )}
         {activeTab === "assumptions" && (
           <AssumptionsView
             controls={controls}
-            monthly={scenarioMonthly}
+            monthly={annualMonthly}
             setControls={setControls}
             startIndex={startIndex}
             endIndex={endIndex}
@@ -655,13 +855,13 @@ function App() {
       </section>
 
       {editModal === "scenario" && (
-        <ScenarioModal mode="full" controls={controls} setControls={setControls} onClose={() => setEditModal(null)} />
+        <ScenarioModal mode="full" scenario={scenario} scenarioControls={scenarioControls} controls={controls} setControls={setControls} onClose={() => setEditModal(null)} />
       )}
       {editModal === "expenses" && (
-        <ScenarioModal mode="expenses" controls={controls} setControls={setControls} onClose={() => setEditModal(null)} />
+        <ScenarioModal mode="expenses" scenario={scenario} scenarioControls={scenarioControls} controls={controls} setControls={setControls} onClose={() => setEditModal(null)} />
       )}
       {editModal === "premises" && (
-        <ScenarioModal mode="premises" controls={controls} setControls={setControls} onClose={() => setEditModal(null)} />
+        <ScenarioModal mode="premises" scenario={scenario} scenarioControls={scenarioControls} controls={controls} setControls={setControls} onClose={() => setEditModal(null)} />
       )}
       {editModal === "investment" && (
         <InvestmentModal controls={controls} setControls={setControls} onClose={() => setEditModal(null)} />
@@ -714,7 +914,7 @@ function FilterSelect({ icon: Icon, label, value, onChange, children }) {
 function ExecutiveView({ monthly, totals, paybackMonth, selectedRow, selectedLineData }) {
   const costRatio = totals.revenue ? totals.expenses / totals.revenue : 0;
   const kpis = [
-    { label: "Investimento", value: formatMoney(data.kpis.initialInvestment), tone: "neutral" },
+    { label: "Investimento", value: formatMoney(totals.investment), tone: "neutral" },
     { label: "Faturamento", value: formatCompactMoney(totals.revenue), tone: "positive" },
     { label: "Resultado", value: formatCompactMoney(totals.netResult), tone: totals.netResult >= 0 ? "positive" : "negative" },
     { label: "Payback", value: paybackMonth, tone: "neutral" },
@@ -738,19 +938,19 @@ function ExecutiveView({ monthly, totals, paybackMonth, selectedRow, selectedLin
         </div>
         <div className="chart-large">
           <ResponsiveContainer>
-            <ComposedChart data={monthly}>
+            <ComposedChart data={monthly} margin={{ top: 30, right: 20, left: 12, bottom: 8 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#D8E5EA" />
-              <XAxis dataKey="month" tick={{ fill: "#075C57", fontSize: 11 }} />
-              <YAxis tickFormatter={formatCompactMoney} tick={{ fill: "#075C57", fontSize: 11 }} />
+              <XAxis dataKey="month" interval={0} tick={{ fill: "#075C57", fontSize: 11 }} />
+              <YAxis yAxisId="main" domain={[0, (maximum) => maximum * 1.18]} tickFormatter={formatCompactMoney} tick={{ fill: "#075C57", fontSize: 11 }} />
               <Tooltip content={<MoneyTooltip />} />
               <Legend />
-              <Bar dataKey="revenue" name="Faturamento" fill={brand.green} radius={[4, 4, 0, 0]}>
+              <Bar yAxisId="main" dataKey="revenue" name="Faturamento" fill={brand.green} radius={[4, 4, 0, 0]}>
                 <LabelList dataKey="revenue" position="top" formatter={formatLabelValue} className="bar-label" />
               </Bar>
-              <Bar dataKey="expenses" name="Despesas" fill={brand.blue2} radius={[4, 4, 0, 0]}>
+              <Bar yAxisId="main" dataKey="expenses" name="Despesas" fill={brand.blue2} radius={[4, 4, 0, 0]}>
                 <LabelList dataKey="expenses" position="top" formatter={formatLabelValue} className="bar-label" />
               </Bar>
-              <Line type="monotone" dataKey="netResult" name="Resultado" stroke={brand.yellow} strokeWidth={3} />
+              <Line yAxisId="main" type="monotone" dataKey="netResult" name="Resultado" stroke={brand.yellow} strokeWidth={3} />
             </ComposedChart>
           </ResponsiveContainer>
         </div>
@@ -759,7 +959,7 @@ function ExecutiveView({ monthly, totals, paybackMonth, selectedRow, selectedLin
         <PanelTitle icon={LineChart} title={selectedRow.label} />
         <div className="chart-medium">
           <ResponsiveContainer>
-            <AreaChart data={selectedLineData}>
+            <AreaChart data={selectedLineData} margin={{ top: 18, right: 20, left: 12, bottom: 8 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#D8E5EA" />
               <XAxis dataKey="month" tick={{ fill: "#075C57", fontSize: 11 }} />
               <YAxis tickFormatter={formatCompactMoney} tick={{ fill: "#075C57", fontSize: 11 }} />
@@ -774,7 +974,7 @@ function ExecutiveView({ monthly, totals, paybackMonth, selectedRow, selectedLin
   );
 }
 
-function SimulatorView({ monthly, totals, paybackMonth, scenario, setControls, openEditor }) {
+function SimulatorView({ monthly, totals, paybackMonth, scenario, resetScenario, openEditor }) {
   return (
     <div className="view-grid">
       <section className="panel wide">
@@ -785,7 +985,7 @@ function SimulatorView({ monthly, totals, paybackMonth, scenario, setControls, o
               <Edit3 size={16} />
               Editar cenario
             </button>
-            <button className="ghost-button" onClick={() => setControls(defaultControls)}>
+            <button className="ghost-button" onClick={resetScenario}>
               <RotateCcw size={16} />
               Reset
             </button>
@@ -793,7 +993,7 @@ function SimulatorView({ monthly, totals, paybackMonth, scenario, setControls, o
         </div>
         <div className="scenario-strip">
           <span>Base: {scenarioProfiles[scenario].label}</span>
-          <span>Editar cenario aplica um mes-base aos 12 meses</span>
+          <span>Edicao salva no cenario selecionado</span>
           <span>PDF mostra o ano completo</span>
         </div>
       </section>
@@ -821,19 +1021,20 @@ function SimulatorView({ monthly, totals, paybackMonth, scenario, setControls, o
         <PanelTitle icon={BarChart3} title="Cenario calculado" />
         <div className="chart-large">
           <ResponsiveContainer>
-            <ComposedChart data={monthly}>
+            <ComposedChart data={monthly} margin={{ top: 30, right: 20, left: 12, bottom: 8 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#D8E5EA" />
-              <XAxis dataKey="month" tick={{ fill: "#075C57", fontSize: 11 }} />
-              <YAxis tickFormatter={formatCompactMoney} tick={{ fill: "#075C57", fontSize: 11 }} />
+              <XAxis dataKey="month" interval={0} tick={{ fill: "#075C57", fontSize: 11 }} />
+              <YAxis yAxisId="main" domain={[0, (maximum) => maximum * 1.18]} tickFormatter={formatCompactMoney} tick={{ fill: "#075C57", fontSize: 11 }} />
+              <YAxis yAxisId="return" orientation="right" hide domain={[(minimum) => minimum * 1.08, (maximum) => maximum * 1.08]} />
               <Tooltip content={<MoneyTooltip />} />
               <Legend />
-              <Bar dataKey="revenue" name="Faturamento" fill={brand.green} radius={[4, 4, 0, 0]}>
+              <Bar yAxisId="main" dataKey="revenue" name="Faturamento" fill={brand.green} radius={[4, 4, 0, 0]}>
                 <LabelList dataKey="revenue" position="top" formatter={formatLabelValue} className="bar-label" />
               </Bar>
-              <Bar dataKey="expenses" name="Despesas" fill={brand.blue2} radius={[4, 4, 0, 0]}>
+              <Bar yAxisId="main" dataKey="expenses" name="Despesas" fill={brand.blue2} radius={[4, 4, 0, 0]}>
                 <LabelList dataKey="expenses" position="top" formatter={formatLabelValue} className="bar-label" />
               </Bar>
-              <Line dataKey="cumulativeReturn" name="Retorno acumulado" stroke={brand.yellow} strokeWidth={3} />
+              <Line yAxisId="return" dataKey="cumulativeReturn" name="Retorno acumulado" stroke={brand.yellow} strokeWidth={3} />
             </ComposedChart>
           </ResponsiveContainer>
         </div>
@@ -854,16 +1055,21 @@ function PremiseGrid({ controls, setControls, months, compact = false }) {
             <strong>{item.month}</strong>
             <ScenarioNumber label="Dias uteis" value={item.days} onChange={(value) => updatePremise(setControls, index, "days", value)} />
             <ScenarioNumber
-              label="Atendimentos/dia"
-              value={item.attendances}
-              onChange={(value) => updatePremise(setControls, index, "attendances", value)}
+              label="Avaliacoes/dia"
+              value={item.evaluationsPerDay}
+              onChange={(value) => updatePremise(setControls, index, "evaluationsPerDay", value)}
             />
             <ScenarioNumber
-              label="Ticket medio"
-              value={item.ticket}
+              label="Vendas de protocolos"
+              value={item.protocolSales}
+              onChange={(value) => updatePremise(setControls, index, "protocolSales", value)}
+            />
+            <ScenarioNumber
+              label="Ticket protocolo"
+              value={item.protocolTicket}
               step={100}
               money
-              onChange={(value) => updatePremise(setControls, index, "ticket", value)}
+              onChange={(value) => updatePremise(setControls, index, "protocolTicket", value)}
             />
           </div>
         );
@@ -909,8 +1115,12 @@ function MonthlyScenarioTable({ monthly }) {
             <tr>
               <th>Mes</th>
               <th>Dias</th>
-              <th>Atend.</th>
-              <th>Ticket</th>
+              <th>Avaliacoes</th>
+              <th>Receita avaliacoes</th>
+              <th>Protocolos</th>
+              <th>Ticket protocolo</th>
+              <th>Receita protocolos</th>
+              <th>Suplementos</th>
               <th>Receita</th>
               <th>Despesas</th>
               <th>Resultado</th>
@@ -922,8 +1132,12 @@ function MonthlyScenarioTable({ monthly }) {
               <tr key={row.month}>
                 <td>{row.month}</td>
                 <td>{numberFormatter.format(row.days)}</td>
-                <td>{numberFormatter.format(row.attendances)}</td>
-                <td>{formatMoney(row.ticket)}</td>
+                <td>{numberFormatter.format(row.evaluationCount)}</td>
+                <td>{formatMoney(row.evaluationRevenue)}</td>
+                <td>{numberFormatter.format(row.protocolSales)}</td>
+                <td>{formatMoney(row.protocolTicket)}</td>
+                <td>{formatMoney(row.protocolRevenue)}</td>
+                <td>{formatMoney(row.supplementRevenue)}</td>
                 <td>{formatMoney(row.revenue)}</td>
                 <td>{formatMoney(row.expenses)}</td>
                 <td>{formatMoney(row.netResult)}</td>
@@ -945,6 +1159,7 @@ function DreView({
   endIndex,
   scenarioMonthly,
   scenario,
+  useExcelBase,
   controls,
   selectedLine,
   setSelectedLine,
@@ -970,8 +1185,6 @@ function DreView({
   const currentPage = Math.min(page, totalPages);
   const pagedRows = visibleRows.slice((currentPage - 1) * pageSize, currentPage * pageSize);
   const chartData = selectedLineData;
-  const useExcelBase = scenario === "excel";
-
   return (
     <div className="view-grid">
       <section className="panel wide">
@@ -1061,7 +1274,7 @@ function DreView({
           <PanelTitle icon={LineChart} title={selectedRow.label} />
           <div className="chart-medium">
             <ResponsiveContainer>
-              <BarChart data={chartData}>
+              <BarChart data={chartData} margin={{ top: 28, right: 18, left: 12, bottom: 8 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#D8E5EA" />
                 <XAxis dataKey="month" tick={{ fill: "#075C57", fontSize: 11 }} />
                 <YAxis tickFormatter={(value) => formatChartValue(value, selectedRow.valueType)} tick={{ fill: "#075C57", fontSize: 11 }} />
@@ -1079,10 +1292,16 @@ function DreView({
 }
 
 function InvestmentView({ controls, setControls, openEditor }) {
+  const [monthFilter, setMonthFilter] = useState("all");
   const items = controls.investmentItems;
-  const topItems = items.slice().sort((a, b) => b.value - a.value).slice(0, 12);
+  const displayItems = items.map((item) => ({
+    ...item,
+    value: monthFilter === "all" ? investmentItemTotal(item) : Number(item.monthly?.[Number(monthFilter)]) || 0,
+  }));
+  const topItems = displayItems.slice().sort((a, b) => b.value - a.value);
   const total = investmentTotal(items);
-  const franchiseFee = items.find((item) => item.locked)?.value || 0;
+  const displayedTotal = topItems.reduce((sum, item) => sum + item.value, 0);
+  const franchiseFee = investmentItemTotal(items.find((item) => normalize(item.label).includes("taxa de franquia")) || { monthly: [] });
   const editableTotal = total - franchiseFee;
   return (
     <div className="investment-layout">
@@ -1098,14 +1317,14 @@ function InvestmentView({ controls, setControls, openEditor }) {
       </section>
       <section className="investment-summary-grid">
         <article>
-          <span>Taxa de franquia fixa</span>
+          <span>Taxa de franquia</span>
           <strong>{formatMoney(franchiseFee)}</strong>
           <small>{percentFormatter.format(total ? franchiseFee / total : 0)} do total</small>
         </article>
         <article>
-          <span>Itens editaveis</span>
+          <span>Demais investimentos</span>
           <strong>{formatMoney(editableTotal)}</strong>
-          <small>{items.filter((item) => !item.locked).length} itens</small>
+          <small>{items.length - 1} outros itens</small>
         </article>
         <article>
           <span>Maior item</span>
@@ -1116,12 +1335,16 @@ function InvestmentView({ controls, setControls, openEditor }) {
       <section className="investment-composition panel wide">
         <div className="panel-actions">
           <PanelTitle icon={PieChartIcon} title="Composicao do investimento" />
+          <FilterSelect icon={Filter} label="Periodo" value={monthFilter} onChange={setMonthFilter}>
+            <option value="all">Todos os meses</option>
+            {data.months.map((month, index) => <option key={month} value={index}>{month}</option>)}
+          </FilterSelect>
         </div>
         <div className="investment-composition-grid">
           <div className="investment-donut">
             <ResponsiveContainer>
               <PieChart>
-                <Pie data={topItems} dataKey="value" nameKey="label" outerRadius={96} innerRadius={64} paddingAngle={2}>
+                <Pie data={topItems.filter((item) => item.value > 0)} dataKey="value" nameKey="label" outerRadius={96} innerRadius={64} paddingAngle={2}>
                   {topItems.map((item) => (
                     <Cell key={item.label} fill={item.color} />
                   ))}
@@ -1131,15 +1354,15 @@ function InvestmentView({ controls, setControls, openEditor }) {
             </ResponsiveContainer>
             <div className="donut-center">
               <span>Total</span>
-              <strong>{formatCompactMoney(total)}</strong>
+              <strong>{formatCompactMoney(displayedTotal)}</strong>
             </div>
           </div>
-          <InvestmentLegend items={topItems} total={total} />
+          <InvestmentLegend items={topItems} total={displayedTotal} />
         </div>
       </section>
       <section className="panel wide">
         <PanelTitle icon={BarChart3} title="Ranking de investimento" />
-        <InvestmentBars items={topItems} total={total} />
+        <InvestmentBars items={topItems} total={displayedTotal} />
       </section>
     </div>
   );
@@ -1183,22 +1406,24 @@ function InvestmentBars({ items, total }) {
 
 function AssumptionsView({ monthly, openEditor }) {
   const [premiseFilter, setPremiseFilter] = useState("Todos");
-  const premiseChart = monthly.map((item) => ({
-    month: item.month,
-    days: item.days,
-    revenue: item.revenue,
-    attendances: item.attendances,
-    ticket: item.ticket,
-  }));
+  const [page, setPage] = useState(0);
+  const premiseChart = monthly.slice(page * 6, page * 6 + 6);
   const premiseRows = [
     { key: "days", label: "Dias uteis", type: "count" },
-    { key: "attendances", label: "Atendimentos/dia", type: "count" },
-    { key: "ticket", label: "Ticket medio", type: "currency" },
+    { key: "evaluationsPerDay", label: "Avaliacoes/dia", type: "count", group: "evaluations" },
+    { key: "evaluationCount", label: "Avaliacoes no mes", type: "count", group: "evaluations" },
+    { key: "evaluationRevenue", label: "Receita de avaliacoes", type: "currency", group: "evaluations" },
+    { key: "protocolSales", label: "Protocolos vendidos", type: "count", group: "protocols" },
+    { key: "protocolTicket", label: "Ticket medio do protocolo", type: "currency", group: "protocols" },
+    { key: "protocolRevenue", label: "Receita de protocolos", type: "currency", group: "protocols" },
+    { key: "supplementQuantity", label: "Quantidade de suplementos", type: "count", group: "supplements" },
+    { key: "supplementTicket", label: "Ticket medio dos suplementos", type: "currency", group: "supplements" },
+    { key: "supplementRevenue", label: "Receita de suplementos", type: "currency", group: "supplements" },
     { key: "revenue", label: "Faturamento", type: "currency" },
   ];
-  const selectedPremiseRow = premiseRows.find((item) => item.key === premiseFilter) || premiseRows[3];
-  const premiseTickFormatter = selectedPremiseRow.type === "count" ? numberFormatter.format : formatCompactMoney;
-  const visiblePremiseRows = premiseFilter === "Todos" ? premiseRows : [selectedPremiseRow];
+  const visiblePremiseRows = premiseFilter === "Todos"
+    ? premiseRows
+    : premiseRows.filter((item) => item.group === premiseFilter || item.key === premiseFilter);
 
   return (
     <div className="view-grid">
@@ -1208,10 +1433,10 @@ function AssumptionsView({ monthly, openEditor }) {
           <div className="button-row">
             <FilterSelect icon={Filter} label="Tipo" value={premiseFilter} onChange={setPremiseFilter}>
               <option value="Todos">Todos</option>
-              <option value="days">Dias uteis</option>
+              <option value="evaluations">Avaliacoes</option>
+              <option value="protocols">Protocolos</option>
+              <option value="supplements">Suplementos</option>
               <option value="revenue">Faturamento</option>
-              <option value="attendances">Atendimentos</option>
-              <option value="ticket">Ticket medio</option>
             </FilterSelect>
             <button className="ghost-button" onClick={openEditor}>
               <Edit3 size={16} />
@@ -1221,24 +1446,30 @@ function AssumptionsView({ monthly, openEditor }) {
         </div>
         <div className="chart-medium">
           <ResponsiveContainer>
-            <ComposedChart data={premiseChart}>
+            <ComposedChart data={premiseChart} margin={{ top: 28, right: 18, left: 12, bottom: 8 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#D8E5EA" />
-              <XAxis dataKey="month" tick={{ fill: "#075C57", fontSize: 11 }} />
+              <XAxis dataKey="month" interval={0} tick={{ fill: "#075C57", fontSize: 11 }} />
               <YAxis
                 yAxisId="main"
-                tickFormatter={premiseFilter === "Todos" ? formatCompactMoney : premiseTickFormatter}
+                tickFormatter={formatCompactMoney}
                 tick={{ fill: "#075C57", fontSize: 11 }}
+                domain={[0, (maximum) => maximum * 1.18]}
               />
               <Tooltip content={<PremiseTooltip type={premiseFilter} />} />
               <Legend />
-              {premiseFilter === "Todos" && (
-                <Bar yAxisId="main" dataKey="revenue" name="Faturamento" fill={brand.green} radius={[4, 4, 0, 0]}>
-                  <LabelList dataKey="revenue" position="top" formatter={formatLabelValue} className="bar-label" />
+              {(premiseFilter === "Todos" || premiseFilter === "evaluations") && (
+                <Bar yAxisId="main" stackId="revenue" dataKey="evaluationRevenue" name="Avaliacoes" fill={brand.blue} radius={[3, 3, 0, 0]}>
+                  <LabelList dataKey="evaluationRevenue" position="center" formatter={formatLabelValue} className="bar-label bar-label-light" />
                 </Bar>
               )}
-              {premiseFilter === "days" && (
-                <Bar yAxisId="main" dataKey="days" name="Dias uteis" fill={brand.cyan} radius={[4, 4, 0, 0]}>
-                  <LabelList dataKey="days" position="top" formatter={numberFormatter.format} className="bar-label" />
+              {(premiseFilter === "Todos" || premiseFilter === "protocols") && (
+                <Bar yAxisId="main" stackId="revenue" dataKey="protocolRevenue" name="Protocolos" fill={brand.green} radius={[3, 3, 0, 0]}>
+                  <LabelList dataKey="protocolRevenue" position="center" formatter={formatLabelValue} className="bar-label bar-label-light" />
+                </Bar>
+              )}
+              {(premiseFilter === "Todos" || premiseFilter === "supplements") && (
+                <Bar yAxisId="main" stackId="revenue" dataKey="supplementRevenue" name="Suplementos" fill={brand.cyan} radius={[3, 3, 0, 0]}>
+                  <LabelList dataKey="supplementRevenue" position="center" formatter={formatLabelValue} className="bar-label bar-label-light" />
                 </Bar>
               )}
               {premiseFilter === "revenue" && (
@@ -1246,16 +1477,7 @@ function AssumptionsView({ monthly, openEditor }) {
                   <LabelList dataKey="revenue" position="top" formatter={formatLabelValue} className="bar-label" />
                 </Bar>
               )}
-              {premiseFilter === "attendances" && (
-                <Bar yAxisId="main" dataKey="attendances" name="Atendimentos/dia" fill={brand.blue2} radius={[4, 4, 0, 0]}>
-                  <LabelList dataKey="attendances" position="top" formatter={numberFormatter.format} className="bar-label" />
-                </Bar>
-              )}
-              {premiseFilter === "ticket" && (
-                <Bar yAxisId="main" dataKey="ticket" name="Ticket medio" fill={brand.yellow} radius={[4, 4, 0, 0]}>
-                  <LabelList dataKey="ticket" position="top" formatter={formatLabelValue} className="bar-label" />
-                </Bar>
-              )}
+              {premiseFilter === "Todos" && <Line yAxisId="main" dataKey="revenue" name="Faturamento total" stroke={brand.yellow} strokeWidth={3} />}
             </ComposedChart>
           </ResponsiveContainer>
         </div>
@@ -1281,20 +1503,42 @@ function AssumptionsView({ monthly, openEditor }) {
             </tbody>
           </table>
         </div>
+        <div className="table-footer">
+          <span>Meses {page * 6 + 1} a {Math.min(page * 6 + 6, monthly.length)}</span>
+          <div>
+            <button className="ghost-button" disabled={page === 0} onClick={() => setPage(0)}>1-6</button>
+            <button className="ghost-button" disabled={page === 1} onClick={() => setPage(1)}>7-12</button>
+          </div>
+        </div>
       </section>
       <ValidationPanel />
     </div>
   );
 }
 
-function ScenarioModal({ mode = "full", controls, setControls, onClose }) {
-  const [draft, setDraft] = useState({
-    expenses: {},
-    base: { days: "", attendances: "", ticket: "" },
+function ScenarioModal({ mode = "full", scenario, scenarioControls, controls, setControls, onClose }) {
+  const draftFromControls = (source) => ({
+    sourceScenario: source.sourceScenario || scenario,
+    growthRate: (source.growthRate || 0) * 100,
+    expenses: Object.fromEntries(
+      expenseEditableRows.map((row) => [
+        row.id,
+        isRevenueRateExpense(row)
+          ? Number((expenseControlValue(row, source) * 100).toFixed(3))
+          : Number(expenseControlValue(row, source).toFixed(2)),
+      ]),
+    ),
+    base: { ...source.premises[0] },
   });
+  const [draft, setDraft] = useState(() => draftFromControls(controls));
   const showExpenses = mode === "full" || mode === "expenses";
   const showPremises = mode === "full" || mode === "premises";
   const title = mode === "expenses" ? "Editar despesas" : mode === "premises" ? "Editar premissas" : "Editar cenario";
+
+  function changeSourceScenario(sourceScenario) {
+    const source = scenarioControls[sourceScenario] || controls;
+    setDraft({ ...draftFromControls(source), sourceScenario });
+  }
 
   function applyDraft() {
     setControls((current) => {
@@ -1308,19 +1552,37 @@ function ScenarioModal({ mode = "full", controls, setControls, onClose }) {
         });
       }
 
-      const days = optionalNumber(draft.base.days);
-      const attendances = optionalNumber(draft.base.attendances);
-      const ticket = optionalNumber(draft.base.ticket);
+      const days = optionalNumber(draft.base.days) ?? 0;
+      const evaluationsPerDay = optionalNumber(draft.base.evaluationsPerDay) ?? 0;
+      const protocolSales = optionalNumber(draft.base.protocolSales) ?? 0;
+      const protocolTicket = optionalNumber(draft.base.protocolTicket) ?? 0;
+      const supplementQuantity = optionalNumber(draft.base.supplementQuantity) ?? 0;
+      const supplementTicket = optionalNumber(draft.base.supplementTicket) ?? 0;
+      const growthRate = Math.max(-99, optionalNumber(draft.growthRate) ?? 0) / 100;
       const nextPremises = showPremises
-        ? current.premises.map((item) => ({
+        ? current.premises.map((item, index) => {
+          const growthFactor = Math.pow(1 + growthRate, index);
+          return {
             ...item,
-            days: Math.max(0, days ?? 0),
-            attendances: Math.max(0, attendances ?? 0),
-            ticket: Math.max(0, ticket ?? 0),
-          }))
+            days: Math.max(0, days),
+            evaluationsPerDay: Math.max(0, evaluationsPerDay * growthFactor),
+            protocolSales: Math.max(0, protocolSales * growthFactor),
+            protocolTicket: Math.max(0, protocolTicket),
+            supplementEnabled: Boolean(draft.base.supplementEnabled),
+            supplementQuantity: Math.max(0, supplementQuantity * growthFactor),
+            supplementTicket: Math.max(0, supplementTicket),
+          };
+        })
         : current.premises;
 
-      return { ...current, expenseItems: nextExpenseItems, premises: nextPremises };
+      return {
+        ...current,
+        modified: true,
+        sourceScenario: draft.sourceScenario,
+        growthRate,
+        expenseItems: nextExpenseItems,
+        premises: nextPremises,
+      };
     });
     onClose();
   }
@@ -1334,6 +1596,15 @@ function ScenarioModal({ mode = "full", controls, setControls, onClose }) {
             <X size={18} />
           </button>
         </div>
+        {scenario === "simulated" && mode === "full" && (
+          <div className="modal-section compact-section">
+            <FilterSelect icon={Calculator} label="Base do simulado" value={draft.sourceScenario} onChange={changeSourceScenario}>
+              <option value="initial">Cenario inicial</option>
+              <option value="conservative">Conservador</option>
+              <option value="optimistic">Otimista</option>
+            </FilterSelect>
+          </div>
+        )}
         {showExpenses && (
           <div className="modal-section">
             <h3>Gastos DRE</h3>
@@ -1343,7 +1614,7 @@ function ScenarioModal({ mode = "full", controls, setControls, onClose }) {
                   <span>{row.label}</span>
                   <input
                     type="number"
-                    value={draft.expenses[row.id] || ""}
+                    value={draft.expenses[row.id] ?? ""}
                     placeholder="Digite aqui"
                     min="0"
                     step="1"
@@ -1372,7 +1643,7 @@ function ScenarioModal({ mode = "full", controls, setControls, onClose }) {
         {showPremises && (
           <div className="modal-section">
             <h3>Faturamento</h3>
-            <div className="edit-grid three">
+            <div className="edit-grid four">
               <ScenarioNumber
                 label="Dias uteis"
                 value={draft.base.days}
@@ -1380,23 +1651,68 @@ function ScenarioModal({ mode = "full", controls, setControls, onClose }) {
                 onChange={(value) => setDraft((current) => ({ ...current, base: { ...current.base, days: value } }))}
               />
               <ScenarioNumber
-                label="Atendimentos/dia"
-                value={draft.base.attendances}
+                label="Avaliacoes/dia"
+                value={draft.base.evaluationsPerDay}
                 blankMode
-                onChange={(value) => setDraft((current) => ({ ...current, base: { ...current.base, attendances: value } }))}
+                onChange={(value) => setDraft((current) => ({ ...current, base: { ...current.base, evaluationsPerDay: value } }))}
               />
               <ScenarioNumber
-                label="Ticket medio"
-                value={draft.base.ticket}
+                label="Valor da avaliacao"
+                value={EVALUATION_TICKET}
+                money
+                disabled
+                onChange={() => null}
+              />
+              <ScenarioNumber
+                label="Protocolos vendidos/mes"
+                value={draft.base.protocolSales}
+                blankMode
+                onChange={(value) => setDraft((current) => ({ ...current, base: { ...current.base, protocolSales: value } }))}
+              />
+              <ScenarioNumber
+                label="Ticket medio do protocolo"
+                value={draft.base.protocolTicket}
                 step={100}
                 blankMode
-                onChange={(value) => setDraft((current) => ({ ...current, base: { ...current.base, ticket: value } }))}
+                onChange={(value) => setDraft((current) => ({ ...current, base: { ...current.base, protocolTicket: value } }))}
+              />
+              <ScenarioNumber
+                label="Crescimento mensal (%)"
+                value={draft.growthRate}
+                step={0.1}
+                blankMode
+                onChange={(value) => setDraft((current) => ({ ...current, growthRate: value }))}
               />
             </div>
+            <label className="toggle-control">
+              <input
+                type="checkbox"
+                checked={Boolean(draft.base.supplementEnabled)}
+                onChange={(event) => setDraft((current) => ({ ...current, base: { ...current.base, supplementEnabled: event.target.checked } }))}
+              />
+              <span>Incluir suplementos no faturamento</span>
+            </label>
+            {draft.base.supplementEnabled && (
+              <div className="edit-grid two">
+                <ScenarioNumber
+                  label="Quantidade mensal de suplementos"
+                  value={draft.base.supplementQuantity}
+                  blankMode
+                  onChange={(value) => setDraft((current) => ({ ...current, base: { ...current.base, supplementQuantity: value } }))}
+                />
+                <ScenarioNumber
+                  label="Ticket medio dos suplementos"
+                  value={draft.base.supplementTicket}
+                  step={10}
+                  blankMode
+                  onChange={(value) => setDraft((current) => ({ ...current, base: { ...current.base, supplementTicket: value } }))}
+                />
+              </div>
+            )}
           </div>
         )}
         <div className="modal-actions">
-          <button className="ghost-button" onClick={() => setControls(defaultControls)}>
+          <button className="ghost-button" onClick={() => { setControls(buildScenarioControls(scenario)); onClose(); }}>
             <RotateCcw size={16} />
             Reset
           </button>
@@ -1408,9 +1724,8 @@ function ScenarioModal({ mode = "full", controls, setControls, onClose }) {
 }
 
 function InvestmentModal({ controls, setControls, onClose }) {
-  const lockedItems = controls.investmentItems.filter((item) => item.locked);
-  const editableItems = controls.investmentItems.filter((item) => !item.locked);
-  const orderedItems = [...lockedItems, ...editableItems];
+  const [monthIndex, setMonthIndex] = useState(0);
+  const orderedItems = controls.investmentItems;
 
   return (
     <div className="modal-backdrop" role="dialog" aria-modal="true">
@@ -1425,22 +1740,33 @@ function InvestmentModal({ controls, setControls, onClose }) {
           <span>Total do investimento</span>
           <strong>{formatMoney(investmentTotal(controls.investmentItems))}</strong>
         </div>
+        <div className="modal-section compact-section">
+          <FilterSelect icon={Filter} label="Mes do desembolso" value={String(monthIndex)} onChange={(value) => setMonthIndex(Number(value))}>
+            {data.months.map((month, index) => <option key={month} value={index}>{month}</option>)}
+          </FilterSelect>
+        </div>
         <div className="investment-edit-list">
           {orderedItems.map((item) => {
             const index = controls.investmentItems.findIndex((currentItem) => currentItem.label === item.label);
             return (
             <ScenarioNumber
               key={item.label}
-              label={item.locked ? `${item.label} (fixo)` : item.label}
-              value={item.value}
+              label={item.label}
+              value={item.monthly?.[monthIndex] || 0}
               step={1000}
               money
-              disabled={item.locked}
               onChange={(value) =>
                 setControls((current) => ({
                   ...current,
                   investmentItems: current.investmentItems.map((currentItem, currentIndex) =>
-                    currentIndex === index ? { ...currentItem, value } : currentItem,
+                    currentIndex === index
+                      ? {
+                          ...currentItem,
+                          monthly: currentItem.monthly.map((monthValue, currentMonth) =>
+                            currentMonth === monthIndex ? value : monthValue,
+                          ),
+                        }
+                      : currentItem,
                   ),
                 }))
               }
@@ -1456,12 +1782,11 @@ function InvestmentModal({ controls, setControls, onClose }) {
   );
 }
 
-function AnnualPrintReport({ monthly, controls, scenario }) {
+function AnnualPrintReport({ monthly, controls, scenario, useExcelBase }) {
   const totalRevenue = sumBy(monthly, "revenue");
   const totalExpenses = sumBy(monthly, "expenses");
   const totalResult = sumBy(monthly, "netResult");
   const investment = investmentTotal(controls.investmentItems);
-  const useExcelBase = scenario === "excel";
   const detailedDreRows = data.dre.map((row) => {
     const values = monthly.map((month, index) => scenarioDreValue(row, index, month, controls, useExcelBase));
     const numericValues = values.filter((value) => typeof value === "number" && Number.isFinite(value));
@@ -1474,7 +1799,10 @@ function AnnualPrintReport({ monthly, controls, scenario }) {
           : numericValues.reduce((sum, value) => sum + value, 0),
     };
   });
-  const topInvestmentItems = controls.investmentItems.slice().sort((a, b) => b.value - a.value).slice(0, 10);
+  const topInvestmentItems = controls.investmentItems
+    .map((item) => ({ ...item, value: investmentItemTotal(item) }))
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 10);
 
   return (
     <section className="print-report">
@@ -1549,8 +1877,12 @@ function AnnualPrintReport({ monthly, controls, scenario }) {
           <tr>
             <th>Mes</th>
             <th>Dias uteis</th>
-            <th>Atend./dia</th>
-            <th>Ticket medio</th>
+            <th>Avaliacoes</th>
+            <th>Receita aval.</th>
+            <th>Protocolos</th>
+            <th>Ticket protocolo</th>
+            <th>Receita protocolos</th>
+            <th>Receita suplementos</th>
             <th>Faturamento</th>
           </tr>
         </thead>
@@ -1559,8 +1891,12 @@ function AnnualPrintReport({ monthly, controls, scenario }) {
             <tr key={item.month}>
               <td>{item.month}</td>
               <td>{item.days}</td>
-              <td>{item.attendances}</td>
-              <td>{formatMoney(item.ticket)}</td>
+              <td>{numberFormatter.format(item.evaluationCount)}</td>
+              <td>{formatMoney(item.evaluationRevenue)}</td>
+              <td>{numberFormatter.format(item.protocolSales)}</td>
+              <td>{formatMoney(item.protocolTicket)}</td>
+              <td>{formatMoney(item.protocolRevenue)}</td>
+              <td>{formatMoney(item.supplementRevenue)}</td>
               <td>{formatMoney(item.revenue)}</td>
             </tr>
           ))}
@@ -1569,18 +1905,20 @@ function AnnualPrintReport({ monthly, controls, scenario }) {
 
       <PrintInvestmentChart items={topInvestmentItems} />
 
-      <PrintTable title="Estimativa de investimento">
+      <PrintTable title="Estimativa de investimento" className="page-break allow-break wide-print-table">
         <thead>
           <tr>
             <th>Item</th>
-            <th>Valor</th>
+            {data.months.map((month) => <th key={month}>{month}</th>)}
+            <th>Total</th>
           </tr>
         </thead>
         <tbody>
           {controls.investmentItems.map((item) => (
             <tr key={item.label}>
-              <td>{item.locked ? `${item.label} (fixo)` : item.label}</td>
-              <td>{formatMoney(item.value)}</td>
+              <td>{item.label}</td>
+              {item.monthly.map((value, index) => <td key={`${item.label}-${index}`}>{formatMoney(value)}</td>)}
+              <td>{formatMoney(investmentItemTotal(item))}</td>
             </tr>
           ))}
         </tbody>
@@ -1634,7 +1972,9 @@ function PrintPremiseChart({ data }) {
             <div>
               <i style={{ width: `${Math.max(5, (item.revenue / max) * 100)}%` }} />
             </div>
-            <strong>{item.days} dias | {item.attendances} atend. | {formatCompactMoney(item.revenue)}</strong>
+            <strong>
+              {numberFormatter.format(item.evaluationCount)} aval. | {numberFormatter.format(item.protocolSales)} protocolos | {formatCompactMoney(item.revenue)}
+            </strong>
           </div>
         ))}
       </div>
@@ -1727,14 +2067,12 @@ function MoneyTooltip({ active, payload, label }) {
 
 function PremiseTooltip({ active, payload, label, type }) {
   if (!active || !payload?.length) return null;
-  const item = payload[0];
-  const value = type === "attendances" || type === "days" ? numberFormatter.format(item.value) : formatMoney(item.value);
   return (
     <div className="tooltip">
       <strong>{label}</strong>
-      <span>
-        {item.name}: {value}
-      </span>
+      {payload.map((item) => (
+        <span key={item.dataKey}>{item.name}: {formatMoney(item.value)}</span>
+      ))}
     </div>
   );
 }
