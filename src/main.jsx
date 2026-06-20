@@ -50,7 +50,7 @@ const brand = {
 const tabs = [
   { id: "executive", label: "Executivo", icon: BriefcaseBusiness },
   { id: "simulator", label: "Simulador", icon: SlidersHorizontal },
-  { id: "dre", label: "DRE", icon: Table2 },
+  { id: "dre", label: "PRE", icon: Table2 },
   { id: "investment", label: "Investimento", icon: PieChartIcon },
   { id: "assumptions", label: "Premissas", icon: Database },
 ];
@@ -65,8 +65,8 @@ const pageMeta = {
     description: "Modele premissas e despesas sem alterar a base original do Excel.",
   },
   dre: {
-    title: "DRE",
-    description: "Analise linhas, categorias e resultados mensais do demonstrativo.",
+    title: "PRE",
+    description: "Previsao de Resultados por linhas, categorias e periodos mensais.",
   },
   investment: {
     title: "Investimento",
@@ -86,7 +86,7 @@ const scenarioProfiles = {
 };
 
 const EVALUATION_TICKET = 180;
-const SCENARIO_STORAGE_KEY = "dm2-dre-scenarios-v3";
+const SCENARIO_STORAGE_KEY = "dm2-dre-scenarios-v4";
 
 const expenseFields = [
   { key: "rh", label: "RH", source: "(-) Despesas RH Contabil" },
@@ -368,18 +368,14 @@ const defaultInvestmentItems = data.investmentItems.map((item) => ({
   label: item.label,
   value: normalize(item.label).includes("taxa de franquia")
     ? 80000
-    : normalize(item.label).includes("capital de giro")
-      ? 120000
-      : item.value,
+    : item.value,
   color: item.color,
   locked: false,
   monthly: data.months.map((_, index) =>
     index === 0
       ? normalize(item.label).includes("taxa de franquia")
         ? 80000
-        : normalize(item.label).includes("capital de giro")
-          ? 120000
-          : item.value
+        : item.value
       : 0,
   ),
 }));
@@ -420,8 +416,18 @@ function investmentItemTotal(item) {
   return (item.monthly || []).reduce((total, value) => total + (Number(value) || 0), 0);
 }
 
+function isFranchiseFeeItem(item) {
+  return normalize(item?.label).includes("taxa de franquia");
+}
+
 function investmentMonthlyTotal(items, index) {
   return items.reduce((sum, item) => sum + (Number(item.monthly?.[index]) || 0), 0);
+}
+
+function investmentMonthlyWithoutFranchiseFee(items, index) {
+  return items
+    .filter((item) => !isFranchiseFeeItem(item))
+    .reduce((sum, item) => sum + (Number(item.monthly?.[index]) || 0), 0);
 }
 
 function scenarioExpenseLineValue(row, index, revenue, controls, monthScenario) {
@@ -489,6 +495,7 @@ function calculateScenario(months, indexes, controls, useExcelBase) {
     const netResult = revenue - expenses;
     const rentability = initialInvestment ? netResult / initialInvestment : 0;
     const investmentOutflow = investmentMonthlyTotal(controls.investmentItems, sourceIndex);
+    const preInvestmentOutflow = investmentMonthlyWithoutFranchiseFee(controls.investmentItems, sourceIndex);
     cumulative += netResult - investmentOutflow;
 
     return {
@@ -505,7 +512,7 @@ function calculateScenario(months, indexes, controls, useExcelBase) {
       supplementQuantity: premise.supplementQuantity,
       supplementTicket: premise.supplementTicket,
       supplementRevenue,
-      initialInvestment: investmentOutflow,
+      initialInvestment: preInvestmentOutflow,
       investmentOutflow,
       revenue,
       rh,
@@ -741,7 +748,7 @@ function App() {
 
   const topAction = {
     simulator: { label: "Editar cenario", action: openScenarioEditor },
-    dre: { label: "Editar DRE", action: openExpenseEditor },
+    dre: { label: "Editar PRE", action: openExpenseEditor },
     assumptions: { label: "Editar premissas", action: openPremiseEditor },
   }[activeTab];
 
@@ -1189,7 +1196,7 @@ function DreView({
     <div className="view-grid">
       <section className="panel wide">
         <div className="panel-actions">
-          <PanelTitle icon={Table2} title="DRE" />
+          <PanelTitle icon={Table2} title="PRE" />
           <div className="button-row">
             <label className="search-control">
               <Search size={14} />
@@ -1207,7 +1214,7 @@ function DreView({
                 <option key={item}>{item}</option>
               ))}
             </FilterSelect>
-            <FilterSelect icon={LineChart} label="Linha DRE" value={selectedLine} onChange={setSelectedLine}>
+            <FilterSelect icon={LineChart} label="Linha PRE" value={selectedLine} onChange={setSelectedLine}>
               <option value="Todos">Todos</option>
               {rows.map((row) => (
                 <option key={row.label}>{row.label}</option>
@@ -1298,10 +1305,12 @@ function InvestmentView({ controls, setControls, openEditor }) {
     ...item,
     value: monthFilter === "all" ? investmentItemTotal(item) : Number(item.monthly?.[Number(monthFilter)]) || 0,
   }));
-  const topItems = displayItems.slice().sort((a, b) => b.value - a.value);
+  const topItems = displayItems
+    .filter((item) => !isFranchiseFeeItem(item))
+    .sort((a, b) => b.value - a.value);
   const total = investmentTotal(items);
   const displayedTotal = topItems.reduce((sum, item) => sum + item.value, 0);
-  const franchiseFee = investmentItemTotal(items.find((item) => normalize(item.label).includes("taxa de franquia")) || { monthly: [] });
+  const franchiseFee = investmentItemTotal(items.find(isFranchiseFeeItem) || { monthly: [] });
   const editableTotal = total - franchiseFee;
   return (
     <div className="investment-layout">
@@ -1607,7 +1616,7 @@ function ScenarioModal({ mode = "full", scenario, scenarioControls, controls, se
         )}
         {showExpenses && (
           <div className="modal-section">
-            <h3>Gastos DRE</h3>
+            <h3>Gastos PRE</h3>
             <div className="edit-grid expense-item-grid">
               {expenseEditableRows.map((row) => (
                 <label className="editable-control" key={row.id}>
@@ -1800,6 +1809,7 @@ function AnnualPrintReport({ monthly, controls, scenario, useExcelBase }) {
     };
   });
   const topInvestmentItems = controls.investmentItems
+    .filter((item) => !isFranchiseFeeItem(item))
     .map((item) => ({ ...item, value: investmentItemTotal(item) }))
     .sort((a, b) => b.value - a.value)
     .slice(0, 10);
@@ -1820,7 +1830,7 @@ function AnnualPrintReport({ monthly, controls, scenario, useExcelBase }) {
 
       <PrintMonthlyChart title="Faturamento x despesas" data={monthly} />
 
-      <PrintTable title="DRE mensal">
+      <PrintTable title="PRE mensal">
         <thead>
           <tr>
             <th>Mes</th>
@@ -1845,10 +1855,10 @@ function AnnualPrintReport({ monthly, controls, scenario, useExcelBase }) {
         </tbody>
       </PrintTable>
 
-      <PrintTable title="Detalhamento completo DRE" className="page-break allow-break wide-print-table">
+      <PrintTable title="Detalhamento completo PRE" className="page-break allow-break wide-print-table">
         <thead>
           <tr>
-            <th>Linha DRE</th>
+            <th>Linha PRE</th>
             <th>Categoria</th>
             {monthly.map((item) => (
               <th key={item.month}>{item.month}</th>
