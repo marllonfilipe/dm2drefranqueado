@@ -86,7 +86,7 @@ const scenarioProfiles = {
 };
 
 const EVALUATION_TICKET = 180;
-const SCENARIO_STORAGE_KEY = "dm2-dre-scenarios-v4";
+const SCENARIO_STORAGE_KEY = "dm2-dre-scenarios-v5";
 
 const expenseFields = [
   { key: "rh", label: "RH", source: "(-) Despesas RH Contabil" },
@@ -367,14 +367,14 @@ const defaultPremises = data.months.map((month, index) => {
 const defaultInvestmentItems = data.investmentItems.map((item) => ({
   label: item.label,
   value: normalize(item.label).includes("taxa de franquia")
-    ? 80000
+    ? 120000
     : item.value,
   color: item.color,
   locked: false,
   monthly: data.months.map((_, index) =>
     index === 0
       ? normalize(item.label).includes("taxa de franquia")
-        ? 80000
+        ? 120000
         : item.value
       : 0,
   ),
@@ -428,6 +428,17 @@ function investmentMonthlyWithoutFranchiseFee(items, index) {
   return items
     .filter((item) => !isFranchiseFeeItem(item))
     .reduce((sum, item) => sum + (Number(item.monthly?.[index]) || 0), 0);
+}
+
+function setFranchiseFee(items, amount) {
+  return items.map((item) => {
+    if (!isFranchiseFeeItem(item)) return item;
+    const currentTotal = investmentItemTotal(item);
+    const monthly = currentTotal > 0
+      ? item.monthly.map((value) => (Number(value) || 0) * (amount / currentTotal))
+      : data.months.map((_, index) => (index === 0 ? amount : 0));
+    return { ...item, value: amount, monthly };
+  });
 }
 
 function scenarioExpenseLineValue(row, index, revenue, controls, monthScenario) {
@@ -735,7 +746,7 @@ function App() {
   }
 
   function openInvestmentEditor() {
-    openEditableScenario("investment");
+    setEditModal("investment");
   }
 
   function resetScenario() {
@@ -1312,6 +1323,12 @@ function InvestmentView({ controls, setControls, openEditor }) {
   const displayedTotal = topItems.reduce((sum, item) => sum + item.value, 0);
   const franchiseFee = investmentItemTotal(items.find(isFranchiseFeeItem) || { monthly: [] });
   const editableTotal = total - franchiseFee;
+  const changeFranchiseFee = (amount) => {
+    setControls((current) => ({
+      ...current,
+      investmentItems: setFranchiseFee(current.investmentItems, amount),
+    }));
+  };
   return (
     <div className="investment-layout">
       <section className="investment-hero">
@@ -1319,10 +1336,20 @@ function InvestmentView({ controls, setControls, openEditor }) {
           <span>Investimento inicial</span>
           <strong>{formatMoney(total)}</strong>
         </div>
-        <button className="ghost-button" onClick={openEditor}>
-          <Edit3 size={16} />
-          Editar
-        </button>
+        <div className="investment-hero-actions">
+          <div className="segmented-control" role="group" aria-label="Taxa de franquia">
+            <button className={Math.round(franchiseFee) === 120000 ? "active" : ""} onClick={() => changeFranchiseFee(120000)}>
+              R$ 120 mil
+            </button>
+            <button className={Math.round(franchiseFee) === 80000 ? "active" : ""} onClick={() => changeFranchiseFee(80000)}>
+              R$ 80 mil
+            </button>
+          </div>
+          <button className="ghost-button" onClick={openEditor}>
+            <Edit3 size={16} />
+            Editar
+          </button>
+        </div>
       </section>
       <section className="investment-summary-grid">
         <article>
