@@ -1,5 +1,14 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
+import { initializeApp } from "firebase/app";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+  updateProfile,
+} from "firebase/auth";
 import {
   Area,
   AreaChart,
@@ -27,8 +36,10 @@ import {
   Download,
   Edit3,
   Filter,
+  LogOut,
   LineChart,
   PieChart as PieChartIcon,
+  ShieldCheck,
   RotateCcw,
   Search,
   SlidersHorizontal,
@@ -87,6 +98,16 @@ const scenarioProfiles = {
 
 const EVALUATION_TICKET = 180;
 const SCENARIO_STORAGE_KEY = "dm2-dre-scenarios-v5";
+const allowedEmailDomain = "@doutordm2franquias.com.br";
+const firebaseConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyDxgAqWLSBYm08wQdya7YsqtjALs2tEs2Q",
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "dm2-dre-franqueado.firebaseapp.com",
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "dm2-dre-franqueado",
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+};
+const firebaseReady = Boolean(firebaseConfig.apiKey);
+const firebaseApp = firebaseReady ? initializeApp(firebaseConfig) : null;
+const firebaseAuth = firebaseReady ? getAuth(firebaseApp) : null;
 
 const expenseFields = [
   { key: "rh", label: "RH", source: "(-) Despesas RH Contabil" },
@@ -620,7 +641,7 @@ function mergeScenarioControls(saved = {}) {
   );
 }
 
-function App() {
+function DashboardApp({ authUser, userProfile, refreshProfile, onSignOut }) {
   const [activeTab, setActiveTab] = useState("executive");
   const [startMonth, setStartMonth] = useState(data.months[0]);
   const [endMonth, setEndMonth] = useState(data.months[data.months.length - 1]);
@@ -636,9 +657,26 @@ function App() {
     }
   });
   const [editModal, setEditModal] = useState(null);
+  const [userModal, setUserModal] = useState(null);
+  const [archiveModal, setArchiveModal] = useState(false);
+  const [printSnapshot, setPrintSnapshot] = useState(null);
   const persistenceReady = useRef(false);
   const controls = scenarioControls[scenario];
   const useExcelBase = scenario === "initial" && !controls.modified;
+
+  const apiFetch = useCallback(
+    async (url, options = {}) => {
+      const token = await authUser.getIdToken();
+      return fetch(url, {
+        ...options,
+        headers: {
+          ...(options.headers || {}),
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    },
+    [authUser],
+  );
 
   const setControls = useCallback(
     (updater) => {
@@ -653,7 +691,7 @@ function App() {
 
   useEffect(() => {
     let cancelled = false;
-    fetch("/api/scenarios")
+    apiFetch("/api/scenarios")
       .then((response) => (response.ok ? response.json() : null))
       .then((saved) => {
         if (!cancelled && saved?.scenarios) setScenarioControls(mergeScenarioControls(saved.scenarios));
@@ -665,20 +703,20 @@ function App() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [apiFetch]);
 
   useEffect(() => {
     window.localStorage.setItem(SCENARIO_STORAGE_KEY, JSON.stringify(scenarioControls));
     if (!persistenceReady.current) return undefined;
     const timeout = window.setTimeout(() => {
-      fetch("/api/scenarios", {
+      apiFetch("/api/scenarios", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ scenarios: scenarioControls }),
       }).catch(() => null);
     }, 700);
     return () => window.clearTimeout(timeout);
-  }, [scenarioControls]);
+  }, [scenarioControls, apiFetch]);
 
   const [startIndex, endIndex] = rangeIndexes(startMonth, endMonth);
   const visibleMonths = data.months.slice(startIndex, endIndex + 1);
@@ -753,7 +791,28 @@ function App() {
     setScenarioControls((current) => ({ ...current, [scenario]: buildScenarioControls(scenario) }));
   }
 
-  function exportPdf() {
+  async function exportPdf(snapshot = null) {
+    if (snapshot) {
+      setPrintSnapshot(snapshot);
+      window.setTimeout(() => {
+        window.print();
+        window.setTimeout(() => setPrintSnapshot(null), 300);
+      }, 120);
+      return;
+    }
+
+    apiFetch("/api/scenario-snapshots", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        scenario,
+        controls,
+        monthly: annualMonthly,
+        totals,
+        useExcelBase,
+      }),
+    }).catch(() => null);
+
     window.print();
   }
 
@@ -799,10 +858,26 @@ function App() {
                 {topAction.label}
               </button>
             )}
-            <button className="print-button" onClick={exportPdf}>
+            <button className="print-button" onClick={() => exportPdf()}>
               <Download size={16} />
               Baixar PDF
             </button>
+            <button className="ghost-button" onClick={() => setArchiveModal(true)}>
+              <Search size={16} />
+              Simulações
+            </button>
+            {userProfile.role === "admin" && (
+              <button className="ghost-button" onClick={() => setUserModal("users")}>
+                <ShieldCheck size={16} />
+                Gestão
+              </button>
+            )}
+            <div className="user-chip">
+              <span>{userProfile.name || authUser.displayName || authUser.email}</span>
+              <button aria-label="Sair" onClick={onSignOut}>
+                <LogOut size={15} />
+              </button>
+            </div>
           </div>
         </header>
 
@@ -816,7 +891,15 @@ function App() {
           setCategory={setCategory}
           setScenario={changeScenario}
         />
-        <AnnualPrintReport monthly={annualMonthly} controls={controls} scenario={scenario} useExcelBase={useExcelBase} />
+        {!printSnapshot && <AnnualPrintReport monthly={annualMonthly} controls={controls} scenario={scenario} useExcelBase={useExcelBase} />}
+        {printSnapshot && (
+          <AnnualPrintReport
+            monthly={printSnapshot.monthly}
+            controls={printSnapshot.controls}
+            scenario={printSnapshot.scenario}
+            useExcelBase={printSnapshot.useExcelBase}
+          />
+        )}
 
         {activeTab === "executive" && (
           <ExecutiveView
@@ -883,6 +966,12 @@ function App() {
       )}
       {editModal === "investment" && (
         <InvestmentModal controls={controls} setControls={setControls} onClose={() => setEditModal(null)} />
+      )}
+      {userModal === "users" && (
+        <UserManagementModal apiFetch={apiFetch} onClose={() => { setUserModal(null); refreshProfile(); }} />
+      )}
+      {archiveModal && (
+        <SimulationArchiveModal apiFetch={apiFetch} onClose={() => setArchiveModal(false)} onPrint={exportPdf} />
       )}
     </main>
   );
@@ -2124,6 +2213,339 @@ function LineTooltip({ active, payload, row }) {
       </span>
     </div>
   );
+}
+
+function App() {
+  const [authUser, setAuthUser] = useState(null);
+  const [userProfile, setUserProfile] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [profileLoading, setProfileLoading] = useState(false);
+  const [authMessage, setAuthMessage] = useState("");
+
+  const loadProfile = useCallback(async (user) => {
+    if (!user) return null;
+    setProfileLoading(true);
+    try {
+      const token = await user.getIdToken();
+      const response = await fetch("/api/me", { headers: { Authorization: `Bearer ${token}` } });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || "Nao foi possivel carregar o perfil");
+      setUserProfile(payload.user);
+      return payload.user;
+    } catch (error) {
+      setAuthMessage(error.message);
+      setUserProfile(null);
+      return null;
+    } finally {
+      setProfileLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!firebaseAuth) {
+      setAuthLoading(false);
+      return undefined;
+    }
+
+    return onAuthStateChanged(firebaseAuth, async (user) => {
+      setAuthUser(user);
+      setAuthMessage("");
+      if (user) await loadProfile(user);
+      else setUserProfile(null);
+      setAuthLoading(false);
+    });
+  }, [loadProfile]);
+
+  async function handleSignOut() {
+    if (firebaseAuth) await signOut(firebaseAuth);
+    setAuthUser(null);
+    setUserProfile(null);
+  }
+
+  if (!firebaseReady) {
+    return (
+      <AuthLayout>
+        <div className="auth-card">
+          <span className="auth-eyebrow">Firebase Auth</span>
+          <h1>Configuração pendente</h1>
+          <p>Defina `VITE_FIREBASE_API_KEY` no Cloud Run para ativar login e cadastro do projeto dm2-dre-franqueado.</p>
+        </div>
+      </AuthLayout>
+    );
+  }
+
+  if (authLoading || profileLoading) {
+    return (
+      <AuthLayout>
+        <div className="auth-card">
+          <span className="auth-eyebrow">Doutor DM2</span>
+          <h1>Carregando acesso</h1>
+          <p>Validando credenciais e permissoes.</p>
+        </div>
+      </AuthLayout>
+    );
+  }
+
+  if (!authUser) {
+    return <LoginScreen message={authMessage} onMessage={setAuthMessage} />;
+  }
+
+  if (userProfile?.status !== "approved") {
+    return (
+      <AuthLayout>
+        <div className="auth-card">
+          <span className="auth-eyebrow">Acesso pendente</span>
+          <h1>Cadastro aguardando aprovação</h1>
+          <p>Seu acesso com {authUser.email} foi registrado e precisa ser aprovado na Gestão de usuários.</p>
+          <button className="print-button full-button" onClick={handleSignOut}>
+            Sair
+          </button>
+        </div>
+      </AuthLayout>
+    );
+  }
+
+  return (
+    <DashboardApp
+      authUser={authUser}
+      userProfile={userProfile}
+      refreshProfile={() => loadProfile(authUser)}
+      onSignOut={handleSignOut}
+    />
+  );
+}
+
+function AuthLayout({ children }) {
+  return (
+    <main className="auth-shell">
+      <section className="auth-visual">
+        <img src="/assets/doutor-dm2-logo-dark.png" alt="Doutor DM2" />
+      </section>
+      <section className="auth-panel">{children}</section>
+    </main>
+  );
+}
+
+function LoginScreen({ message, onMessage }) {
+  const [mode, setMode] = useState("login");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function submit(event) {
+    event.preventDefault();
+    onMessage("");
+    const normalizedEmail = email.trim().toLowerCase();
+    if (!normalizedEmail.endsWith(allowedEmailDomain)) {
+      onMessage(`Use apenas e-mails do dominio ${allowedEmailDomain}.`);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      if (mode === "login") {
+        await signInWithEmailAndPassword(firebaseAuth, normalizedEmail, password);
+      } else {
+        const credential = await createUserWithEmailAndPassword(firebaseAuth, normalizedEmail, password);
+        if (name.trim()) await updateProfile(credential.user, { displayName: name.trim() });
+        const token = await credential.user.getIdToken();
+        await fetch("/api/register-profile", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+        });
+      }
+    } catch (error) {
+      onMessage(authErrorMessage(error));
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <AuthLayout>
+      <form className="auth-card" onSubmit={submit}>
+        <span className="auth-eyebrow">Doutor DM2 Franquias</span>
+        <h1>{mode === "login" ? "Entrar na plataforma" : "Solicitar cadastro"}</h1>
+        <p>{mode === "login" ? "Acesse com seu e-mail corporativo aprovado." : "Cadastros novos ficam pendentes para aprovação da gestão."}</p>
+
+        {mode === "register" && (
+          <label className="auth-field">
+            Nome
+            <input value={name} onChange={(event) => setName(event.target.value)} placeholder="Digite aqui" />
+          </label>
+        )}
+        <label className="auth-field">
+          E-mail
+          <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="Digite aqui" required />
+        </label>
+        <label className="auth-field">
+          Senha
+          <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Digite aqui" minLength={6} required />
+        </label>
+
+        {message && <div className="auth-alert">{message}</div>}
+
+        <button className="print-button full-button" disabled={loading}>
+          {loading ? "Validando..." : mode === "login" ? "Entrar" : "Cadastrar para aprovação"}
+        </button>
+        <button
+          type="button"
+          className="auth-switch"
+          onClick={() => {
+            onMessage("");
+            setMode(mode === "login" ? "register" : "login");
+          }}
+        >
+          {mode === "login" ? "Solicitar novo cadastro" : "Já tenho acesso"}
+        </button>
+      </form>
+    </AuthLayout>
+  );
+}
+
+function UserManagementModal({ apiFetch, onClose }) {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [query, setQuery] = useState("");
+
+  const loadUsers = useCallback(() => {
+    setLoading(true);
+    apiFetch("/api/users")
+      .then((response) => (response.ok ? response.json() : { users: [] }))
+      .then((payload) => setUsers(payload.users || []))
+      .finally(() => setLoading(false));
+  }, [apiFetch]);
+
+  useEffect(loadUsers, [loadUsers]);
+
+  async function updateUser(uid, update) {
+    await apiFetch(`/api/users/${uid}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(update),
+    });
+    loadUsers();
+  }
+
+  const visibleUsers = users.filter((user) => `${user.name} ${user.email} ${user.status}`.toLowerCase().includes(query.toLowerCase()));
+
+  return (
+    <div className="modal-backdrop" role="dialog" aria-modal="true">
+      <div className="modal">
+        <div className="modal-head">
+          <div>
+            <h2>Gestão de usuários</h2>
+            <p>Aprove acessos do domínio {allowedEmailDomain}.</p>
+          </div>
+          <button className="ghost-button" onClick={onClose}><X size={16} /> Fechar</button>
+        </div>
+        <label className="search-control modal-search">
+          <Search size={15} />
+          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar usuário" />
+        </label>
+        <div className="user-table">
+          {loading && <span>Carregando usuários...</span>}
+          {!loading && visibleUsers.map((user) => (
+            <div className="user-row" key={user.uid}>
+              <div>
+                <strong>{user.name || user.email}</strong>
+                <span>{user.email}</span>
+              </div>
+              <small className={`status-pill ${user.status}`}>{statusLabel(user.status)} · {user.role}</small>
+              <div className="button-row">
+                <button className="ghost-button" onClick={() => updateUser(user.uid, { status: "approved" })}>Aprovar</button>
+                <button className="ghost-button" onClick={() => updateUser(user.uid, { status: "rejected" })}>Rejeitar</button>
+                <button className="ghost-button" onClick={() => updateUser(user.uid, { role: user.role === "admin" ? "user" : "admin" })}>
+                  {user.role === "admin" ? "Remover admin" : "Tornar admin"}
+                </button>
+              </div>
+            </div>
+          ))}
+          {!loading && !visibleUsers.length && <span>Nenhum usuário encontrado.</span>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SimulationArchiveModal({ apiFetch, onClose, onPrint }) {
+  const [snapshots, setSnapshots] = useState([]);
+  const [query, setQuery] = useState("");
+  const [selected, setSelected] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    apiFetch("/api/scenario-snapshots")
+      .then((response) => (response.ok ? response.json() : { snapshots: [] }))
+      .then((payload) => setSnapshots(payload.snapshots || []))
+      .finally(() => setLoading(false));
+  }, [apiFetch]);
+
+  const visibleSnapshots = snapshots.filter((item) =>
+    `${item.title} ${item.createdBy} ${scenarioProfiles[item.scenario]?.label || item.scenario}`.toLowerCase().includes(query.toLowerCase()),
+  );
+
+  return (
+    <div className="modal-backdrop" role="dialog" aria-modal="true">
+      <div className="modal">
+        <div className="modal-head">
+          <div>
+            <h2>Simulações salvas</h2>
+            <p>Busque cenários emitidos e gere o PDF novamente.</p>
+          </div>
+          <button className="ghost-button" onClick={onClose}><X size={16} /> Fechar</button>
+        </div>
+        <label className="search-control modal-search">
+          <Search size={15} />
+          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar simulação" />
+        </label>
+        <div className="archive-layout">
+          <div className="archive-list">
+            {loading && <span>Carregando simulações...</span>}
+            {!loading && visibleSnapshots.map((item) => (
+              <button className={`archive-item ${selected?.id === item.id ? "active" : ""}`} key={item.id} onClick={() => setSelected(item)}>
+                <strong>{scenarioProfiles[item.scenario]?.label || item.scenario}</strong>
+                <span>{item.createdBy}</span>
+                <small>{item.createdAt ? new Date(item.createdAt).toLocaleString("pt-BR") : "Sem data"}</small>
+              </button>
+            ))}
+            {!loading && !visibleSnapshots.length && <span>Nenhuma simulação encontrada.</span>}
+          </div>
+          <div className="archive-preview">
+            {selected ? (
+              <>
+                <div className="archive-kpis">
+                  <div><span>Faturamento</span><strong>{formatMoney(selected.totals?.revenue || 0)}</strong></div>
+                  <div><span>Resultado</span><strong>{formatMoney(selected.totals?.netResult || 0)}</strong></div>
+                  <div><span>Investimento</span><strong>{formatMoney(selected.totals?.investment || 0)}</strong></div>
+                </div>
+                <button className="print-button" onClick={() => onPrint(selected)}>
+                  <Download size={16} />
+                  Baixar PDF
+                </button>
+              </>
+            ) : (
+              <p>Selecione uma simulação para visualizar o resumo e baixar novamente.</p>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function statusLabel(status) {
+  return { approved: "Aprovado", pending: "Pendente", rejected: "Rejeitado" }[status] || status;
+}
+
+function authErrorMessage(error) {
+  const code = error?.code || "";
+  if (code.includes("auth/invalid-credential")) return "E-mail ou senha inválidos.";
+  if (code.includes("auth/email-already-in-use")) return "Este e-mail já foi cadastrado.";
+  if (code.includes("auth/weak-password")) return "Use uma senha com pelo menos 6 caracteres.";
+  if (code.includes("auth/operation-not-allowed")) return "Ative o provedor E-mail/Senha no Firebase Auth.";
+  return error?.message || "Não foi possível autenticar.";
 }
 
 createRoot(document.getElementById("root")).render(<App />);
