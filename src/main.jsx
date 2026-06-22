@@ -4,7 +4,9 @@ import { initializeApp } from "firebase/app";
 import {
   createUserWithEmailAndPassword,
   getAuth,
+  GoogleAuthProvider,
   onAuthStateChanged,
+  signInWithPopup,
   signInWithEmailAndPassword,
   signOut,
   updateProfile,
@@ -108,6 +110,10 @@ const firebaseConfig = {
 const firebaseReady = Boolean(firebaseConfig.apiKey);
 const firebaseApp = firebaseReady ? initializeApp(firebaseConfig) : null;
 const firebaseAuth = firebaseReady ? getAuth(firebaseApp) : null;
+const googleProvider = firebaseReady ? new GoogleAuthProvider() : null;
+if (googleProvider) {
+  googleProvider.setCustomParameters({ prompt: "select_account" });
+}
 
 const expenseFields = [
   { key: "rh", label: "RH", source: "(-) Despesas RH Contabil" },
@@ -138,6 +144,7 @@ const decimalMoneyFormatter = new Intl.NumberFormat("pt-BR", {
 });
 
 const numberFormatter = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 2 });
+const integerFormatter = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 0 });
 const percentFormatter = new Intl.NumberFormat("pt-BR", { style: "percent", maximumFractionDigits: 1 });
 
 function normalize(value) {
@@ -343,6 +350,10 @@ function formatLabelValue(value) {
   return formatCompactMoney(value);
 }
 
+function countValue(value) {
+  return Math.max(0, Math.round(Number(value) || 0));
+}
+
 function rangeIndexes(startMonth, endMonth) {
   const start = data.months.indexOf(startMonth);
   const end = data.months.indexOf(endMonth);
@@ -371,13 +382,13 @@ const defaultPremises = data.months.map((month, index) => {
     getMonthlyValue("Produto A", index) +
     getMonthlyValue("Produto B", index);
   const days = 22;
-  const evaluationCount = evaluationRevenue / EVALUATION_TICKET;
+  const evaluationCount = countValue(evaluationRevenue / EVALUATION_TICKET);
 
   return {
     month,
     days,
     evaluationsPerDay: days ? evaluationCount / days : 0,
-    protocolSales: protocolTicket ? protocolRevenue / protocolTicket : 0,
+    protocolSales: countValue(protocolTicket ? protocolRevenue / protocolTicket : 0),
     protocolTicket,
     supplementEnabled: supplementRevenue > 0,
     supplementQuantity: supplementRevenue > 0 ? 1 : 0,
@@ -409,9 +420,10 @@ function buildScenarioControls(scenarioId) {
     growthRate: profile.growth,
     premises: defaultPremises.map((item) => ({
       ...item,
+      days: countValue(item.days),
       evaluationsPerDay: item.evaluationsPerDay * profile.revenue,
-      protocolSales: item.protocolSales * profile.revenue,
-      supplementQuantity: item.supplementQuantity * profile.revenue,
+      protocolSales: countValue(item.protocolSales * profile.revenue),
+      supplementQuantity: countValue(item.supplementQuantity * profile.revenue),
     })),
     expenseItems: Object.fromEntries(
       expenseEditableRows.map((row) => {
@@ -499,18 +511,18 @@ function calculateScenario(months, indexes, controls, useExcelBase) {
     const sourceIndex = indexes[listIndex];
     const base = baseBreakdown(month, sourceIndex);
     const premise = controls.premises[sourceIndex] || defaultPremises[sourceIndex];
-    const evaluationCount = premise.days * premise.evaluationsPerDay;
+    const evaluationCount = countValue(premise.days * premise.evaluationsPerDay);
     const evaluationRevenue = useExcelBase ? getMonthlyValue("Consultas", sourceIndex) : evaluationCount * EVALUATION_TICKET;
     const protocolRevenue = useExcelBase
       ? getMonthlyValue("Protocolos", sourceIndex)
-      : premise.protocolSales * premise.protocolTicket;
+      : countValue(premise.protocolSales) * premise.protocolTicket;
     const supplementRevenue = useExcelBase
       ? getMonthlyValue("Produtos Alimenticios", sourceIndex) +
         getMonthlyValue("Suplementos Extras", sourceIndex) +
         getMonthlyValue("Produto A", sourceIndex) +
         getMonthlyValue("Produto B", sourceIndex)
       : premise.supplementEnabled
-        ? premise.supplementQuantity * premise.supplementTicket
+        ? countValue(premise.supplementQuantity) * premise.supplementTicket
         : 0;
     const revenueParts = { evaluationRevenue, protocolRevenue, supplementRevenue };
     const revenue = useExcelBase ? base.revenue : scenarioRevenueTotal(revenueParts);
@@ -537,11 +549,11 @@ function calculateScenario(months, indexes, controls, useExcelBase) {
       evaluationCount,
       evaluationTicket: EVALUATION_TICKET,
       evaluationRevenue,
-      protocolSales: premise.protocolSales,
+      protocolSales: countValue(premise.protocolSales),
       protocolTicket: premise.protocolTicket,
       protocolRevenue,
       supplementEnabled: premise.supplementEnabled,
-      supplementQuantity: premise.supplementQuantity,
+      supplementQuantity: countValue(premise.supplementQuantity),
       supplementTicket: premise.supplementTicket,
       supplementRevenue,
       initialInvestment: preInvestmentOutflow,
@@ -628,7 +640,13 @@ function mergeScenarioControls(saved = {}) {
         {
           ...fallback,
           ...candidate,
-          premises: data.months.map((_, index) => ({ ...fallback.premises[index], ...candidate.premises?.[index] })),
+          premises: data.months.map((_, index) => ({
+            ...fallback.premises[index],
+            ...candidate.premises?.[index],
+            days: countValue(candidate.premises?.[index]?.days ?? fallback.premises[index].days),
+            protocolSales: countValue(candidate.premises?.[index]?.protocolSales ?? fallback.premises[index].protocolSales),
+            supplementQuantity: countValue(candidate.premises?.[index]?.supplementQuantity ?? fallback.premises[index].supplementQuantity),
+          })),
           expenseItems: { ...fallback.expenseItems, ...candidate.expenseItems },
           investmentItems: fallback.investmentItems.map((item, index) => ({
             ...item,
@@ -659,6 +677,7 @@ function DashboardApp({ authUser, userProfile, refreshProfile, onSignOut }) {
   const [editModal, setEditModal] = useState(null);
   const [userModal, setUserModal] = useState(null);
   const [archiveModal, setArchiveModal] = useState(false);
+  const [saveModal, setSaveModal] = useState(false);
   const [printSnapshot, setPrintSnapshot] = useState(null);
   const persistenceReady = useRef(false);
   const controls = scenarioControls[scenario];
@@ -816,6 +835,25 @@ function DashboardApp({ authUser, userProfile, refreshProfile, onSignOut }) {
     window.print();
   }
 
+  async function saveSimulation(snapshot) {
+    const response = await apiFetch("/api/scenario-snapshots", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        scenario,
+        controls,
+        monthly: annualMonthly,
+        totals,
+        useExcelBase,
+        contactName: snapshot.contactName,
+        contactPhone: snapshot.contactPhone,
+        title: snapshot.contactName?.trim() || `${scenarioProfiles[scenario].label} - ${new Date().toLocaleDateString("pt-BR")}`,
+      }),
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(payload.error || "Nao foi possivel salvar a simulacao");
+  }
+
   const topAction = {
     simulator: { label: "Editar cenario", action: openScenarioEditor },
     dre: { label: "Editar PRE", action: openExpenseEditor },
@@ -920,6 +958,7 @@ function DashboardApp({ authUser, userProfile, refreshProfile, onSignOut }) {
             setControls={setControls}
             resetScenario={resetScenario}
             openEditor={openScenarioEditor}
+            onSaveSimulation={() => setSaveModal(true)}
           />
         )}
         {activeTab === "dre" && (
@@ -972,6 +1011,16 @@ function DashboardApp({ authUser, userProfile, refreshProfile, onSignOut }) {
       )}
       {archiveModal && (
         <SimulationArchiveModal apiFetch={apiFetch} onClose={() => setArchiveModal(false)} onPrint={exportPdf} />
+      )}
+      {saveModal && (
+        <SaveSimulationModal
+          onClose={() => setSaveModal(false)}
+          onSave={async (payload) => {
+            await saveSimulation(payload);
+            setSaveModal(false);
+            setArchiveModal(true);
+          }}
+        />
       )}
     </main>
   );
@@ -1081,13 +1130,17 @@ function ExecutiveView({ monthly, totals, paybackMonth, selectedRow, selectedLin
   );
 }
 
-function SimulatorView({ monthly, totals, paybackMonth, scenario, resetScenario, openEditor }) {
+function SimulatorView({ monthly, totals, paybackMonth, scenario, resetScenario, openEditor, onSaveSimulation }) {
   return (
     <div className="view-grid">
       <section className="panel wide">
         <div className="panel-actions">
           <PanelTitle icon={Calculator} title="Simulador" />
           <div className="button-row">
+            <button className="ghost-button" onClick={onSaveSimulation}>
+              <Download size={16} />
+              Salvar simulaÃ§Ã£o
+            </button>
             <button className="ghost-button" onClick={openEditor}>
               <Edit3 size={16} />
               Editar cenario
@@ -1160,7 +1213,7 @@ function PremiseGrid({ controls, setControls, months, compact = false }) {
         return (
           <div className="premise-card" key={item.month}>
             <strong>{item.month}</strong>
-            <ScenarioNumber label="Dias uteis" value={item.days} onChange={(value) => updatePremise(setControls, index, "days", value)} />
+            <ScenarioNumber label="Dias uteis" value={item.days} integer onChange={(value) => updatePremise(setControls, index, "days", value)} />
             <ScenarioNumber
               label="Avaliacoes/dia"
               value={item.evaluationsPerDay}
@@ -1169,6 +1222,7 @@ function PremiseGrid({ controls, setControls, months, compact = false }) {
             <ScenarioNumber
               label="Vendas de protocolos"
               value={item.protocolSales}
+              integer
               onChange={(value) => updatePremise(setControls, index, "protocolSales", value)}
             />
             <ScenarioNumber
@@ -1194,8 +1248,8 @@ function updatePremise(setControls, index, key, value) {
   }));
 }
 
-function ScenarioNumber({ label, value, onChange, step = 1, money = false, disabled = false, blankMode = false }) {
-  const displayValue = blankMode ? value : Math.round(value || 0);
+function ScenarioNumber({ label, value, onChange, step = 1, money = false, disabled = false, blankMode = false, integer = false }) {
+  const displayValue = blankMode ? (integer ? Math.round(Number(value) || 0) : value) : Math.round(value || 0);
   return (
     <label className="scenario-number">
       <span>{label}</span>
@@ -1205,7 +1259,7 @@ function ScenarioNumber({ label, value, onChange, step = 1, money = false, disab
         placeholder="Digite aqui"
         step={step}
         disabled={disabled}
-        onChange={(event) => onChange(blankMode ? event.target.value : Number(event.target.value || 0))}
+        onChange={(event) => onChange(blankMode ? (integer ? countValue(event.target.value) : event.target.value) : Number(event.target.value || 0))}
       />
       {money && !blankMode && <small>{formatMoney(value)}</small>}
     </label>
@@ -1238,10 +1292,10 @@ function MonthlyScenarioTable({ monthly }) {
             {monthly.map((row) => (
               <tr key={row.month}>
                 <td>{row.month}</td>
-                <td>{numberFormatter.format(row.days)}</td>
-                <td>{numberFormatter.format(row.evaluationCount)}</td>
+                <td>{integerFormatter.format(row.days)}</td>
+                <td>{integerFormatter.format(row.evaluationCount)}</td>
                 <td>{formatMoney(row.evaluationRevenue)}</td>
-                <td>{numberFormatter.format(row.protocolSales)}</td>
+                <td>{integerFormatter.format(row.protocolSales)}</td>
                 <td>{formatMoney(row.protocolTicket)}</td>
                 <td>{formatMoney(row.protocolRevenue)}</td>
                 <td>{formatMoney(row.supplementRevenue)}</td>
@@ -1621,7 +1675,11 @@ function AssumptionsView({ monthly, openEditor }) {
                 <tr key={row.key}>
                   <td><strong>{row.label}</strong></td>
                   {premiseChart.map((item) => (
-                    <td key={item.month}>{formatValue(item[row.key], row.type)}</td>
+                    <td key={item.month}>
+                      {row.key === "evaluationCount" || row.key === "protocolSales" || row.key === "supplementQuantity" || row.key === "days"
+                        ? integerFormatter.format(item[row.key])
+                        : formatValue(item[row.key], row.type)}
+                    </td>
                   ))}
                 </tr>
               ))}
@@ -1653,7 +1711,12 @@ function ScenarioModal({ mode = "full", scenario, scenarioControls, controls, se
           : Number(expenseControlValue(row, source).toFixed(2)),
       ]),
     ),
-    base: { ...source.premises[0] },
+    base: {
+      ...source.premises[0],
+      days: countValue(source.premises[0]?.days),
+      protocolSales: countValue(source.premises[0]?.protocolSales),
+      supplementQuantity: countValue(source.premises[0]?.supplementQuantity),
+    },
   });
   const [draft, setDraft] = useState(() => draftFromControls(controls));
   const showExpenses = mode === "full" || mode === "expenses";
@@ -1677,11 +1740,11 @@ function ScenarioModal({ mode = "full", scenario, scenarioControls, controls, se
         });
       }
 
-      const days = optionalNumber(draft.base.days) ?? 0;
+      const days = countValue(optionalNumber(draft.base.days) ?? 0);
       const evaluationsPerDay = optionalNumber(draft.base.evaluationsPerDay) ?? 0;
-      const protocolSales = optionalNumber(draft.base.protocolSales) ?? 0;
+      const protocolSales = countValue(optionalNumber(draft.base.protocolSales) ?? 0);
       const protocolTicket = optionalNumber(draft.base.protocolTicket) ?? 0;
-      const supplementQuantity = optionalNumber(draft.base.supplementQuantity) ?? 0;
+      const supplementQuantity = countValue(optionalNumber(draft.base.supplementQuantity) ?? 0);
       const supplementTicket = optionalNumber(draft.base.supplementTicket) ?? 0;
       const growthRate = Math.max(-99, optionalNumber(draft.growthRate) ?? 0) / 100;
       const nextPremises = showPremises
@@ -1691,10 +1754,10 @@ function ScenarioModal({ mode = "full", scenario, scenarioControls, controls, se
             ...item,
             days: Math.max(0, days),
             evaluationsPerDay: Math.max(0, evaluationsPerDay * growthFactor),
-            protocolSales: Math.max(0, protocolSales * growthFactor),
+            protocolSales: countValue(Math.max(0, protocolSales * growthFactor)),
             protocolTicket: Math.max(0, protocolTicket),
             supplementEnabled: Boolean(draft.base.supplementEnabled),
-            supplementQuantity: Math.max(0, supplementQuantity * growthFactor),
+            supplementQuantity: countValue(Math.max(0, supplementQuantity * growthFactor)),
             supplementTicket: Math.max(0, supplementTicket),
           };
         })
@@ -1773,6 +1836,7 @@ function ScenarioModal({ mode = "full", scenario, scenarioControls, controls, se
                 label="Dias uteis"
                 value={draft.base.days}
                 blankMode
+                integer
                 onChange={(value) => setDraft((current) => ({ ...current, base: { ...current.base, days: value } }))}
               />
               <ScenarioNumber
@@ -1792,6 +1856,7 @@ function ScenarioModal({ mode = "full", scenario, scenarioControls, controls, se
                 label="Protocolos vendidos/mes"
                 value={draft.base.protocolSales}
                 blankMode
+                integer
                 onChange={(value) => setDraft((current) => ({ ...current, base: { ...current.base, protocolSales: value } }))}
               />
               <ScenarioNumber
@@ -1819,12 +1884,13 @@ function ScenarioModal({ mode = "full", scenario, scenarioControls, controls, se
             </label>
             {draft.base.supplementEnabled && (
               <div className="edit-grid two">
-                <ScenarioNumber
-                  label="Quantidade mensal de suplementos"
-                  value={draft.base.supplementQuantity}
-                  blankMode
-                  onChange={(value) => setDraft((current) => ({ ...current, base: { ...current.base, supplementQuantity: value } }))}
-                />
+              <ScenarioNumber
+                label="Quantidade mensal de suplementos"
+                value={draft.base.supplementQuantity}
+                blankMode
+                integer
+                onChange={(value) => setDraft((current) => ({ ...current, base: { ...current.base, supplementQuantity: value } }))}
+              />
                 <ScenarioNumber
                   label="Ticket medio dos suplementos"
                   value={draft.base.supplementTicket}
@@ -1944,7 +2010,7 @@ function AnnualPrintReport({ monthly, controls, scenario, useExcelBase }) {
         <div><span>Investimento</span><strong>{formatMoney(investment)}</strong></div>
       </div>
 
-      <PrintMonthlyChart title="Faturamento x despesas" data={monthly} />
+      <PrintFinancialChart data={monthly} />
 
       <PrintTable title="PRE mensal">
         <thead>
@@ -2017,9 +2083,9 @@ function AnnualPrintReport({ monthly, controls, scenario, useExcelBase }) {
             <tr key={item.month}>
               <td>{item.month}</td>
               <td>{item.days}</td>
-              <td>{numberFormatter.format(item.evaluationCount)}</td>
+              <td>{integerFormatter.format(item.evaluationCount)}</td>
               <td>{formatMoney(item.evaluationRevenue)}</td>
-              <td>{numberFormatter.format(item.protocolSales)}</td>
+              <td>{integerFormatter.format(item.protocolSales)}</td>
               <td>{formatMoney(item.protocolTicket)}</td>
               <td>{formatMoney(item.protocolRevenue)}</td>
               <td>{formatMoney(item.supplementRevenue)}</td>
@@ -2028,6 +2094,8 @@ function AnnualPrintReport({ monthly, controls, scenario, useExcelBase }) {
           ))}
         </tbody>
       </PrintTable>
+
+      <PrintPremiseChart data={monthly} />
 
       <PrintInvestmentChart items={topInvestmentItems} />
 
@@ -2053,84 +2121,77 @@ function AnnualPrintReport({ monthly, controls, scenario, useExcelBase }) {
   );
 }
 
-function PrintMonthlyChart({ title, data }) {
-  const max = Math.max(...data.flatMap((item) => [item.revenue, item.expenses]), 1);
-
+function PrintFinancialChart({ data }) {
   return (
     <div className="print-section">
-      <h2>{title}</h2>
-      <div className="print-chart-grid">
-        {data.map((item) => (
-          <div className="print-chart-column" key={item.month}>
-            <div className="print-chart-bars">
-              <span
-                className="print-bar revenue"
-                style={{ height: `${Math.max(8, (item.revenue / max) * 100)}%` }}
-              />
-              <span
-                className="print-bar expense"
-                style={{ height: `${Math.max(8, (item.expenses / max) * 100)}%` }}
-              />
-            </div>
-            <strong>{item.month}</strong>
-            <small>{formatCompactMoney(item.revenue)}</small>
-          </div>
-        ))}
-      </div>
-      <div className="print-legend">
-        <span><i className="revenue" />Faturamento</span>
-        <span><i className="expense" />Despesas</span>
+      <h2>Trajetoria financeira</h2>
+      <div className="print-chart-frame">
+        <ResponsiveContainer>
+          <ComposedChart data={data} margin={{ top: 24, right: 18, left: 8, bottom: 8 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#D8E5EA" />
+            <XAxis dataKey="month" interval={0} tick={{ fill: "#075C57", fontSize: 11 }} />
+            <YAxis tickFormatter={formatCompactMoney} tick={{ fill: "#075C57", fontSize: 11 }} />
+            <Tooltip content={<MoneyTooltip />} />
+            <Legend />
+            <Bar dataKey="revenue" name="Faturamento" fill={brand.green} radius={[4, 4, 0, 0]} />
+            <Bar dataKey="expenses" name="Despesas" fill={brand.blue2} radius={[4, 4, 0, 0]} />
+            <Line type="monotone" dataKey="netResult" name="Resultado" stroke={brand.yellow} strokeWidth={3} />
+          </ComposedChart>
+        </ResponsiveContainer>
       </div>
     </div>
   );
 }
 
 function PrintPremiseChart({ data }) {
-  const max = Math.max(...data.map((item) => item.revenue), 1);
-
   return (
     <div className="print-section page-break">
       <h2>Premissas e faturamento</h2>
-      <div className="print-premise-chart">
-        {data.map((item) => (
-          <div className="print-premise-row" key={item.month}>
-            <span>{item.month}</span>
-            <div>
-              <i style={{ width: `${Math.max(5, (item.revenue / max) * 100)}%` }} />
-            </div>
-            <strong>
-              {numberFormatter.format(item.evaluationCount)} aval. | {numberFormatter.format(item.protocolSales)} protocolos | {formatCompactMoney(item.revenue)}
-            </strong>
-          </div>
-        ))}
+      <div className="print-chart-frame">
+        <ResponsiveContainer>
+          <ComposedChart data={data} margin={{ top: 24, right: 18, left: 8, bottom: 8 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#D8E5EA" />
+            <XAxis dataKey="month" interval={0} tick={{ fill: "#075C57", fontSize: 11 }} />
+            <YAxis tickFormatter={formatCompactMoney} tick={{ fill: "#075C57", fontSize: 11 }} />
+            <Tooltip content={<PremiseTooltip />} />
+            <Legend />
+            <Bar dataKey="evaluationRevenue" name="Avaliacoes" fill={brand.blue} radius={[3, 3, 0, 0]}>
+              <LabelList dataKey="evaluationRevenue" position="top" formatter={formatLabelValue} className="bar-label bar-label-light" />
+            </Bar>
+            <Bar dataKey="protocolRevenue" name="Protocolos" fill={brand.green} radius={[3, 3, 0, 0]}>
+              <LabelList dataKey="protocolRevenue" position="top" formatter={formatLabelValue} className="bar-label bar-label-light" />
+            </Bar>
+            <Bar dataKey="supplementRevenue" name="Suplementos" fill={brand.cyan} radius={[3, 3, 0, 0]}>
+              <LabelList dataKey="supplementRevenue" position="top" formatter={formatLabelValue} className="bar-label bar-label-light" />
+            </Bar>
+            <Line dataKey="revenue" name="Faturamento total" stroke={brand.yellow} strokeWidth={3} />
+          </ComposedChart>
+        </ResponsiveContainer>
       </div>
     </div>
   );
 }
 
 function PrintInvestmentChart({ items }) {
-  const max = Math.max(...items.map((item) => item.value), 1);
-
   return (
     <div className="print-section page-break">
       <h2>Composicao do investimento</h2>
-      <div className="print-investment-chart">
-        {items.map((item) => (
-          <div className="print-investment-row" key={item.label}>
-            <span>{item.label}</span>
-            <div>
-              <i
-                style={{
-                  width: `${Math.max(5, (item.value / max) * 100)}%`,
-                  background: item.color,
-                  borderTopColor: item.color,
-                }}
-              />
-            </div>
-            <strong>{formatMoney(item.value)}</strong>
-          </div>
-        ))}
+      <div className="print-investment-layout">
+        <div className="print-chart-frame print-pie-frame">
+          <ResponsiveContainer>
+            <PieChart>
+              <Pie data={items.filter((item) => item.value > 0)} dataKey="value" nameKey="label" outerRadius={95} innerRadius={64} paddingAngle={2}>
+                {items.map((item) => (
+                  <Cell key={item.label} fill={item.color} />
+                ))}
+              </Pie>
+              <Tooltip formatter={(value) => formatMoney(value)} />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+        <InvestmentLegend items={items} total={items.reduce((sum, item) => sum + item.value, 0)} />
       </div>
+      <InvestmentBars items={items} total={items.reduce((sum, item) => sum + item.value, 0)} />
     </div>
   );
 }
@@ -2173,7 +2234,7 @@ function PanelTitle({ icon: Icon, title }) {
 
 function formatChartValue(value, type) {
   if (type === "percent") return percentFormatter.format(value);
-  if (type === "count" || type === "number") return numberFormatter.format(value);
+  if (type === "count" || type === "number") return integerFormatter.format(value);
   return formatCompactMoney(value);
 }
 
@@ -2333,6 +2394,15 @@ function LoginScreen({ message, onMessage }) {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
+  async function ensureProfile(user) {
+    if (!user) return;
+    const token = await user.getIdToken();
+    await fetch("/api/register-profile", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  }
+
   async function submit(event) {
     event.preventDefault();
     onMessage("");
@@ -2345,16 +2415,31 @@ function LoginScreen({ message, onMessage }) {
     setLoading(true);
     try {
       if (mode === "login") {
-        await signInWithEmailAndPassword(firebaseAuth, normalizedEmail, password);
+        const credential = await signInWithEmailAndPassword(firebaseAuth, normalizedEmail, password);
+        await ensureProfile(credential.user);
       } else {
         const credential = await createUserWithEmailAndPassword(firebaseAuth, normalizedEmail, password);
         if (name.trim()) await updateProfile(credential.user, { displayName: name.trim() });
-        const token = await credential.user.getIdToken();
-        await fetch("/api/register-profile", {
-          method: "POST",
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        await ensureProfile(credential.user);
       }
+    } catch (error) {
+      onMessage(authErrorMessage(error));
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleGoogleLogin() {
+    onMessage("");
+    setLoading(true);
+    try {
+      const credential = await signInWithPopup(firebaseAuth, googleProvider);
+      const emailValue = credential.user.email?.toLowerCase() || "";
+      if (!emailValue.endsWith(allowedEmailDomain)) {
+        await signOut(firebaseAuth);
+        throw new Error(`Use apenas e-mails do dominio ${allowedEmailDomain}.`);
+      }
+      await ensureProfile(credential.user);
     } catch (error) {
       onMessage(authErrorMessage(error));
     } finally {
@@ -2365,7 +2450,15 @@ function LoginScreen({ message, onMessage }) {
   return (
     <AuthLayout>
       <form className="auth-card" onSubmit={submit}>
-        <span className="auth-eyebrow">Doutor DM2 Franquias</span>
+        <img className="auth-card-logo" src="/assets/doutor-dm2-logo-dark.png" alt="Doutor DM2" />
+        <div className="auth-tabs" role="tablist" aria-label="Acesso">
+          <button type="button" className={mode === "login" ? "active" : ""} onClick={() => setMode("login")}>
+            Login
+          </button>
+          <button type="button" className={mode === "register" ? "active" : ""} onClick={() => setMode("register")}>
+            Cadastro
+          </button>
+        </div>
         <h1>{mode === "login" ? "Entrar na plataforma" : "Solicitar cadastro"}</h1>
         <p>{mode === "login" ? "Acesse com seu e-mail corporativo aprovado." : "Cadastros novos ficam pendentes para aprovação da gestão."}</p>
 
@@ -2389,6 +2482,11 @@ function LoginScreen({ message, onMessage }) {
         <button className="print-button full-button" disabled={loading}>
           {loading ? "Validando..." : mode === "login" ? "Entrar" : "Cadastrar para aprovação"}
         </button>
+        {mode === "login" && (
+          <button type="button" className="ghost-button full-button auth-google" onClick={handleGoogleLogin} disabled={loading}>
+            Entrar com Google
+          </button>
+        )}
         <button
           type="button"
           className="auth-switch"
@@ -2401,6 +2499,65 @@ function LoginScreen({ message, onMessage }) {
         </button>
       </form>
     </AuthLayout>
+  );
+}
+
+function SaveSimulationModal({ onSave, onClose }) {
+  const [contactName, setContactName] = useState("");
+  const [contactPhone, setContactPhone] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const canSave = contactName.trim() && contactPhone.trim();
+
+  async function submit(event) {
+    event.preventDefault();
+    if (!canSave) return;
+    setError("");
+    setLoading(true);
+    try {
+      await onSave({
+        contactName: contactName.trim(),
+        contactPhone: contactPhone.trim(),
+      });
+    } catch (requestError) {
+      setError(requestError.message || "Nao foi possivel salvar a simulacao.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div className="modal-backdrop" role="dialog" aria-modal="true">
+      <div className="modal modal-narrow">
+        <div className="modal-head">
+          <PanelTitle icon={Download} title="Salvar simulação" />
+          <button className="icon-button" onClick={onClose} aria-label="Fechar">
+            <X size={18} />
+          </button>
+        </div>
+        <form onSubmit={submit}>
+          <div className="modal-section">
+            <label className="auth-field">
+              Nome
+              <input value={contactName} onChange={(event) => setContactName(event.target.value)} placeholder="Nome para busca" required />
+            </label>
+            <label className="auth-field">
+              Telefone
+              <input value={contactPhone} onChange={(event) => setContactPhone(event.target.value)} placeholder="Telefone para busca" required />
+            </label>
+            {error && <div className="auth-alert">{error}</div>}
+          </div>
+          <div className="modal-actions">
+            <button type="button" className="ghost-button" onClick={onClose}>
+              Cancelar
+            </button>
+            <button className="print-button" disabled={loading || !canSave}>
+              {loading ? "Salvando..." : "Salvar"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 }
 
@@ -2499,7 +2656,9 @@ function SimulationArchiveModal({ apiFetch, onClose, onPrint }) {
   }, [apiFetch]);
 
   const visibleSnapshots = snapshots.filter((item) =>
-    `${item.title} ${item.createdBy} ${scenarioProfiles[item.scenario]?.label || item.scenario}`.toLowerCase().includes(query.toLowerCase()),
+    `${item.title || ""} ${item.contactName || ""} ${item.contactPhone || ""} ${item.createdBy || ""} ${scenarioProfiles[item.scenario]?.label || item.scenario || ""}`
+      .toLowerCase()
+      .includes(query.toLowerCase()),
   );
 
   return (
@@ -2522,7 +2681,8 @@ function SimulationArchiveModal({ apiFetch, onClose, onPrint }) {
             {!loading && visibleSnapshots.map((item) => (
               <button className={`archive-item ${selected?.id === item.id ? "active" : ""}`} key={item.id} onClick={() => setSelected(item)}>
                 <strong>{scenarioProfiles[item.scenario]?.label || item.scenario}</strong>
-                <span>{item.createdBy}</span>
+                <span>{item.contactName || item.createdBy}</span>
+                <small>{item.contactPhone || item.createdBy}</small>
                 <small>{item.createdAt ? new Date(item.createdAt).toLocaleString("pt-BR") : "Sem data"}</small>
               </button>
             ))}
@@ -2535,6 +2695,10 @@ function SimulationArchiveModal({ apiFetch, onClose, onPrint }) {
                   <div><span>Faturamento</span><strong>{formatMoney(selected.totals?.revenue || 0)}</strong></div>
                   <div><span>Resultado</span><strong>{formatMoney(selected.totals?.netResult || 0)}</strong></div>
                   <div><span>Investimento</span><strong>{formatMoney(selected.totals?.investment || 0)}</strong></div>
+                </div>
+                <div className="archive-meta">
+                  <strong>{selected.contactName || selected.title}</strong>
+                  <span>{selected.contactPhone || selected.createdBy}</span>
                 </div>
                 <button className="print-button" onClick={() => onPrint(selected)}>
                   <Download size={16} />

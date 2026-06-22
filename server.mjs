@@ -221,6 +221,8 @@ app.get("/api/scenario-snapshots", authenticate, async (request, response) => {
         return {
           id: doc.id,
           title: item.title,
+          contactName: item.contactName || null,
+          contactPhone: item.contactPhone || null,
           scenario: item.scenario,
           createdBy: item.createdBy,
           createdAt: item.createdAt?.toDate?.()?.toISOString?.() || null,
@@ -238,7 +240,7 @@ app.get("/api/scenario-snapshots", authenticate, async (request, response) => {
 });
 
 app.post("/api/scenario-snapshots", authenticate, async (request, response) => {
-  const { scenario, controls, monthly, totals, useExcelBase } = request.body || {};
+  const { scenario, controls, monthly, totals, useExcelBase, contactName, contactPhone, title } = request.body || {};
   if (!scenario || !controls || !Array.isArray(monthly)) {
     response.status(400).json({ error: "Simulacao invalida" });
     return;
@@ -253,7 +255,9 @@ app.post("/api/scenario-snapshots", authenticate, async (request, response) => {
 
     const createdAt = new Date();
     const doc = await snapshotCollection.add({
-      title: `${scenario} - ${createdAt.toLocaleDateString("pt-BR")}`,
+      title: title || `${scenario} - ${createdAt.toLocaleDateString("pt-BR")}`,
+      contactName: contactName || null,
+      contactPhone: contactPhone || null,
       scenario,
       controls,
       monthly,

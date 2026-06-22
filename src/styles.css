@@ -252,6 +252,42 @@ input {
   padding: 0;
 }
 
+.auth-card-logo {
+  width: min(188px, 68%);
+  max-height: 64px;
+  object-fit: contain;
+  display: block;
+  margin: 0 0 18px;
+}
+
+.auth-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  margin-bottom: 16px;
+  padding: 5px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #f8fafb;
+}
+
+.auth-tabs button {
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #667085;
+  padding: 8px 10px;
+  font-size: 0.8rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.auth-tabs button.active {
+  background: #ffffff;
+  color: var(--green);
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.08);
+}
+
 .auth-eyebrow {
   display: inline-flex;
   color: var(--green);
@@ -321,6 +357,11 @@ input {
   font-size: 0.82rem;
   font-weight: 900;
   cursor: pointer;
+}
+
+.auth-google {
+  margin-top: 10px;
+  background: #ffffff;
 }
 
 .filter-bar {
@@ -1171,6 +1212,26 @@ tr:nth-child(even) td:first-child {
   font-size: 0.9rem;
 }
 
+.archive-meta {
+  display: grid;
+  gap: 3px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #f8fafb;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+}
+
+.archive-meta strong {
+  color: #101828;
+  font-size: 0.92rem;
+}
+
+.archive-meta span {
+  color: #667085;
+  font-size: 0.78rem;
+}
+
 .icon-button {
   width: 34px;
   height: 34px;
@@ -1309,6 +1370,23 @@ tr:nth-child(even) td:first-child {
 .print-section {
   break-inside: avoid;
   margin-top: 16px;
+}
+
+.print-chart-frame {
+  width: 100%;
+  height: 320px;
+  margin-top: 10px;
+}
+
+.print-investment-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.print-pie-frame {
+  height: 300px;
 }
 
 .print-section h2 {
