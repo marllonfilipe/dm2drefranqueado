@@ -328,7 +328,7 @@ function formatValue(value, type = "currency") {
   if (value === null || value === undefined || value === "") return "-";
   if (typeof value !== "number") return String(value);
   if (type === "percent") return percentFormatter.format(value);
-  if (type === "count" || type === "number") return numberFormatter.format(value);
+  if (type === "count" || type === "number") return integerFormatter.format(value);
   return decimalMoneyFormatter.format(value);
 }
 
@@ -2062,8 +2062,6 @@ function AnnualPrintReport({ monthly, controls, scenario, useExcelBase }) {
         </tbody>
       </PrintTable>
 
-      <PrintPremiseChart data={monthly} />
-
       <PrintTable title="Premissas do cenario">
         <thead>
           <tr>
@@ -2095,8 +2093,6 @@ function AnnualPrintReport({ monthly, controls, scenario, useExcelBase }) {
         </tbody>
       </PrintTable>
 
-      <PrintPremiseChart data={monthly} />
-
       <PrintInvestmentChart items={topInvestmentItems} />
 
       <PrintTable title="Estimativa de investimento" className="page-break allow-break wide-print-table">
@@ -2122,76 +2118,180 @@ function AnnualPrintReport({ monthly, controls, scenario, useExcelBase }) {
 }
 
 function PrintFinancialChart({ data }) {
+  const width = 980;
+  const height = 300;
+  const padding = { top: 22, right: 18, bottom: 34, left: 48 };
+  const plotWidth = width - padding.left - padding.right;
+  const plotHeight = height - padding.top - padding.bottom;
+  const maxValue = Math.max(...data.flatMap((item) => [item.revenue, item.expenses, Math.max(0, item.netResult)]), 1);
+  const band = plotWidth / Math.max(data.length, 1);
+  const barWidth = Math.max(8, band * 0.28);
+
+  function xFor(index) {
+    return padding.left + band * index + band / 2;
+  }
+
+  function yFor(value) {
+    return padding.top + plotHeight - (value / maxValue) * plotHeight;
+  }
+
+  const linePoints = data.map((item, index) => `${xFor(index)},${yFor(Math.max(0, item.netResult))}`).join(" ");
+
   return (
     <div className="print-section">
       <h2>Trajetoria financeira</h2>
-      <div className="print-chart-frame">
-        <ResponsiveContainer>
-          <ComposedChart data={data} margin={{ top: 24, right: 18, left: 8, bottom: 8 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#D8E5EA" />
-            <XAxis dataKey="month" interval={0} tick={{ fill: "#075C57", fontSize: 11 }} />
-            <YAxis tickFormatter={formatCompactMoney} tick={{ fill: "#075C57", fontSize: 11 }} />
-            <Tooltip content={<MoneyTooltip />} />
-            <Legend />
-            <Bar dataKey="revenue" name="Faturamento" fill={brand.green} radius={[4, 4, 0, 0]} />
-            <Bar dataKey="expenses" name="Despesas" fill={brand.blue2} radius={[4, 4, 0, 0]} />
-            <Line type="monotone" dataKey="netResult" name="Resultado" stroke={brand.yellow} strokeWidth={3} />
-          </ComposedChart>
-        </ResponsiveContainer>
-      </div>
+      <svg className="print-svg-chart" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Trajetoria financeira">
+        <line x1={padding.left} y1={padding.top} x2={padding.left} y2={padding.top + plotHeight} stroke="#D8E5EA" />
+        <line x1={padding.left} y1={padding.top + plotHeight} x2={width - padding.right} y2={padding.top + plotHeight} stroke="#D8E5EA" />
+        {[0, 0.5, 1].map((ratio) => {
+          const y = padding.top + plotHeight - plotHeight * ratio;
+          const label = formatCompactMoney(maxValue * ratio);
+          return (
+            <g key={ratio}>
+              <line x1={padding.left} y1={y} x2={width - padding.right} y2={y} stroke="#E5ECEF" strokeDasharray="4 4" />
+              <text x={padding.left - 8} y={y + 4} textAnchor="end">{label}</text>
+            </g>
+          );
+        })}
+        {data.map((item, index) => {
+          const center = xFor(index);
+          const revenueHeight = (item.revenue / maxValue) * plotHeight;
+          const expenseHeight = (item.expenses / maxValue) * plotHeight;
+          return (
+            <g key={item.month}>
+              <rect
+                x={center - barWidth - 4}
+                y={padding.top + plotHeight - revenueHeight}
+                width={barWidth}
+                height={Math.max(2, revenueHeight)}
+                fill={brand.green}
+                rx="3"
+              />
+              <rect
+                x={center + 4}
+                y={padding.top + plotHeight - expenseHeight}
+                width={barWidth}
+                height={Math.max(2, expenseHeight)}
+                fill={brand.blue2}
+                rx="3"
+              />
+              <text x={center} y={height - 10} textAnchor="middle">{item.month}</text>
+            </g>
+          );
+        })}
+        <polyline fill="none" stroke={brand.yellow} strokeWidth="3" points={linePoints} />
+        {data.map((item, index) => (
+          <circle
+            key={`${item.month}-net`}
+            cx={xFor(index)}
+            cy={yFor(Math.max(0, item.netResult))}
+            r="3.5"
+            fill={brand.yellow}
+          />
+        ))}
+        <g transform={`translate(${width - 178}, ${padding.top + 4})`}>
+          <rect width="12" height="12" fill={brand.green} rx="2" />
+          <text x="18" y="10">Faturamento</text>
+          <rect y="18" width="12" height="12" fill={brand.blue2} rx="2" />
+          <text x="18" y="28">Despesas</text>
+          <line x1="0" y1="43" x2="12" y2="43" stroke={brand.yellow} strokeWidth="3" />
+          <text x="18" y="47">Resultado</text>
+        </g>
+      </svg>
     </div>
   );
 }
 
 function PrintPremiseChart({ data }) {
+  const width = 980;
+  const height = 320;
+  const padding = { top: 22, right: 18, bottom: 34, left: 56 };
+  const plotWidth = width - padding.left - padding.right;
+  const plotHeight = height - padding.top - padding.bottom;
+  const maxValue = Math.max(...data.flatMap((item) => [item.evaluationRevenue, item.protocolRevenue, item.supplementRevenue, item.revenue]), 1);
+  const band = plotWidth / Math.max(data.length, 1);
+  const barWidth = Math.max(7, band * 0.2);
+
+  function xFor(index, offset = 0) {
+    return padding.left + band * index + band / 2 + offset;
+  }
+
+  function yFor(value) {
+    return padding.top + plotHeight - (value / maxValue) * plotHeight;
+  }
+
   return (
     <div className="print-section page-break">
       <h2>Premissas e faturamento</h2>
-      <div className="print-chart-frame">
-        <ResponsiveContainer>
-          <ComposedChart data={data} margin={{ top: 24, right: 18, left: 8, bottom: 8 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#D8E5EA" />
-            <XAxis dataKey="month" interval={0} tick={{ fill: "#075C57", fontSize: 11 }} />
-            <YAxis tickFormatter={formatCompactMoney} tick={{ fill: "#075C57", fontSize: 11 }} />
-            <Tooltip content={<PremiseTooltip />} />
-            <Legend />
-            <Bar dataKey="evaluationRevenue" name="Avaliacoes" fill={brand.blue} radius={[3, 3, 0, 0]}>
-              <LabelList dataKey="evaluationRevenue" position="top" formatter={formatLabelValue} className="bar-label bar-label-light" />
-            </Bar>
-            <Bar dataKey="protocolRevenue" name="Protocolos" fill={brand.green} radius={[3, 3, 0, 0]}>
-              <LabelList dataKey="protocolRevenue" position="top" formatter={formatLabelValue} className="bar-label bar-label-light" />
-            </Bar>
-            <Bar dataKey="supplementRevenue" name="Suplementos" fill={brand.cyan} radius={[3, 3, 0, 0]}>
-              <LabelList dataKey="supplementRevenue" position="top" formatter={formatLabelValue} className="bar-label bar-label-light" />
-            </Bar>
-            <Line dataKey="revenue" name="Faturamento total" stroke={brand.yellow} strokeWidth={3} />
-          </ComposedChart>
-        </ResponsiveContainer>
-      </div>
+      <svg className="print-svg-chart" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Premissas e faturamento">
+        <line x1={padding.left} y1={padding.top} x2={padding.left} y2={padding.top + plotHeight} stroke="#D8E5EA" />
+        <line x1={padding.left} y1={padding.top + plotHeight} x2={width - padding.right} y2={padding.top + plotHeight} stroke="#D8E5EA" />
+        {[0, 0.5, 1].map((ratio) => {
+          const y = padding.top + plotHeight - plotHeight * ratio;
+          const label = formatCompactMoney(maxValue * ratio);
+          return (
+            <g key={ratio}>
+              <line x1={padding.left} y1={y} x2={width - padding.right} y2={y} stroke="#E5ECEF" strokeDasharray="4 4" />
+              <text x={padding.left - 8} y={y + 4} textAnchor="end">{label}</text>
+            </g>
+          );
+        })}
+        {data.map((item, index) => {
+          const center = xFor(index);
+          const evalHeight = (item.evaluationRevenue / maxValue) * plotHeight;
+          const protocolHeight = (item.protocolRevenue / maxValue) * plotHeight;
+          const supplementHeight = (item.supplementRevenue / maxValue) * plotHeight;
+          return (
+            <g key={item.month}>
+              <rect x={center - barWidth * 1.5 - 6} y={padding.top + plotHeight - evalHeight} width={barWidth} height={Math.max(2, evalHeight)} fill={brand.blue} rx="3" />
+              <rect x={center - barWidth / 2} y={padding.top + plotHeight - protocolHeight} width={barWidth} height={Math.max(2, protocolHeight)} fill={brand.green} rx="3" />
+              <rect x={center + barWidth / 2 + 6} y={padding.top + plotHeight - supplementHeight} width={barWidth} height={Math.max(2, supplementHeight)} fill={brand.cyan} rx="3" />
+              <circle cx={center} cy={yFor(item.revenue)} r="3.5" fill={brand.yellow} />
+              <text x={center} y={height - 10} textAnchor="middle">{item.month}</text>
+            </g>
+          );
+        })}
+        <g transform={`translate(${width - 184}, ${padding.top + 4})`}>
+          <rect width="12" height="12" fill={brand.blue} rx="2" />
+          <text x="18" y="10">Avaliacoes</text>
+          <rect y="18" width="12" height="12" fill={brand.green} rx="2" />
+          <text x="18" y="28">Protocolos</text>
+          <rect y="36" width="12" height="12" fill={brand.cyan} rx="2" />
+          <text x="18" y="46">Suplementos</text>
+          <line x1="0" y1="61" x2="12" y2="61" stroke={brand.yellow} strokeWidth="3" />
+          <text x="18" y="65">Faturamento total</text>
+        </g>
+      </svg>
     </div>
   );
 }
 
 function PrintInvestmentChart({ items }) {
+  const width = 980;
+  const height = 260;
+  const padding = { top: 16, right: 18, bottom: 20, left: 18 };
+  const plotWidth = width - padding.left - padding.right;
+  const maxValue = Math.max(...items.map((item) => item.value), 1);
+  const rowHeight = 24;
+  const bars = items.slice(0, 10);
+
   return (
     <div className="print-section page-break">
       <h2>Composicao do investimento</h2>
-      <div className="print-investment-layout">
-        <div className="print-chart-frame print-pie-frame">
-          <ResponsiveContainer>
-            <PieChart>
-              <Pie data={items.filter((item) => item.value > 0)} dataKey="value" nameKey="label" outerRadius={95} innerRadius={64} paddingAngle={2}>
-                {items.map((item) => (
-                  <Cell key={item.label} fill={item.color} />
-                ))}
-              </Pie>
-              <Tooltip formatter={(value) => formatMoney(value)} />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
-        <InvestmentLegend items={items} total={items.reduce((sum, item) => sum + item.value, 0)} />
-      </div>
-      <InvestmentBars items={items} total={items.reduce((sum, item) => sum + item.value, 0)} />
+      <svg className="print-svg-chart print-investment-svg" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Composicao do investimento">
+        {bars.map((item, index) => {
+          const y = padding.top + index * rowHeight;
+          const barWidth = (item.value / maxValue) * plotWidth;
+          return (
+            <g key={item.label} transform={`translate(${padding.left}, ${y})`}>
+              <text x="0" y="14">{item.label}</text>
+              <rect x="200" y="3" width={Math.max(6, barWidth)} height="12" fill={item.color} rx="3" />
+              <text x={plotWidth} y="14" textAnchor="end">{formatMoney(item.value)}</text>
+            </g>
+          );
+        })}
+      </svg>
+      <InvestmentLegend items={items} total={items.reduce((sum, item) => sum + item.value, 0)} />
     </div>
   );
 }
