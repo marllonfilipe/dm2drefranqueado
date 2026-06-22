@@ -178,13 +178,21 @@ input {
   max-width: 260px;
 }
 
-.user-chip span {
+.user-chip .profile-trigger {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 800;
+  padding: 0;
+  cursor: pointer;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  text-align: left;
 }
 
-.user-chip button {
+.user-chip > button:not(.profile-trigger) {
   width: 28px;
   height: 28px;
   border: 0;
@@ -237,11 +245,11 @@ input {
 
 .auth-card {
   width: min(430px, 100%);
-  background: #ffffff;
-  border: 1px solid #e8edf0;
-  border-radius: 12px;
-  box-shadow: 0 24px 60px rgba(16, 33, 38, 0.08);
-  padding: 30px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
 }
 
 .auth-eyebrow {
@@ -1013,6 +1021,27 @@ tr:nth-child(even) td:first-child {
 
 .modal-search {
   margin-bottom: 12px;
+}
+
+.modal-state {
+  display: grid;
+  gap: 4px;
+  border: 1px solid #fedf89;
+  background: #fffbeb;
+  color: #92400e;
+  border-radius: 9px;
+  padding: 12px;
+  margin-bottom: 12px;
+  font-size: 0.82rem;
+}
+
+.modal-state strong {
+  color: #78350f;
+}
+
+.modal-state span {
+  color: #92400e;
+  font-weight: 700;
 }
 
 .user-table,

@@ -866,14 +866,14 @@ function DashboardApp({ authUser, userProfile, refreshProfile, onSignOut }) {
               <Search size={16} />
               Simulações
             </button>
-            {userProfile.role === "admin" && (
-              <button className="ghost-button" onClick={() => setUserModal("users")}>
-                <ShieldCheck size={16} />
-                Gestão
-              </button>
-            )}
+            <button className="ghost-button" onClick={() => setUserModal("users")}>
+              <ShieldCheck size={16} />
+              Gestão
+            </button>
             <div className="user-chip">
-              <span>{userProfile.name || authUser.displayName || authUser.email}</span>
+              <button className="profile-trigger" onClick={() => setUserModal("users")}>
+                {userProfile.name || authUser.displayName || authUser.email}
+              </button>
               <button aria-label="Sair" onClick={onSignOut}>
                 <LogOut size={15} />
               </button>
@@ -2408,12 +2408,22 @@ function UserManagementModal({ apiFetch, onClose }) {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
+  const [error, setError] = useState("");
 
   const loadUsers = useCallback(() => {
     setLoading(true);
+    setError("");
     apiFetch("/api/users")
-      .then((response) => (response.ok ? response.json() : { users: [] }))
+      .then(async (response) => {
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(payload.error || "Acesso indisponivel");
+        return payload;
+      })
       .then((payload) => setUsers(payload.users || []))
+      .catch((requestError) => {
+        setUsers([]);
+        setError(requestError.message);
+      })
       .finally(() => setLoading(false));
   }, [apiFetch]);
 
@@ -2444,9 +2454,15 @@ function UserManagementModal({ apiFetch, onClose }) {
           <Search size={15} />
           <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar usuário" />
         </label>
+        {error && (
+          <div className="modal-state">
+            <strong>Gestão restrita</strong>
+            <span>{error}. Peça para um administrador aprovar seu perfil como admin.</span>
+          </div>
+        )}
         <div className="user-table">
-          {loading && <span>Carregando usuários...</span>}
-          {!loading && visibleUsers.map((user) => (
+          {loading && !error && <span>Carregando usuários...</span>}
+          {!loading && !error && visibleUsers.map((user) => (
             <div className="user-row" key={user.uid}>
               <div>
                 <strong>{user.name || user.email}</strong>
@@ -2462,7 +2478,7 @@ function UserManagementModal({ apiFetch, onClose }) {
               </div>
             </div>
           ))}
-          {!loading && !visibleUsers.length && <span>Nenhum usuário encontrado.</span>}
+          {!loading && !error && !visibleUsers.length && <span>Nenhum usuário encontrado.</span>}
         </div>
       </div>
     </div>
