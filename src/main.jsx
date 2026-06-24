@@ -2480,7 +2480,7 @@ function AuthLayout({ children }) {
   return (
     <main className="auth-shell">
       <section className="auth-visual">
-        <img src="/assets/doutor-dm2-logo-dark.png" alt="Doutor DM2" />
+        <img className="auth-visual-image" src="/assets/fachada.png" alt="Fachada Doutor DM2" />
       </section>
       <section className="auth-panel">{children}</section>
     </main>
