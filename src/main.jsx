@@ -387,7 +387,7 @@ const defaultPremises = data.months.map((month, index) => {
   return {
     month,
     days,
-    evaluationsPerDay: days ? evaluationCount / days : 0,
+    evaluationsPerDay: days ? countValue(evaluationCount / days) : 0,
     protocolSales: countValue(protocolTicket ? protocolRevenue / protocolTicket : 0),
     protocolTicket,
     supplementEnabled: supplementRevenue > 0,
@@ -396,21 +396,44 @@ const defaultPremises = data.months.map((month, index) => {
   };
 });
 
-const defaultInvestmentItems = data.investmentItems.map((item) => ({
-  label: item.label,
-  value: normalize(item.label).includes("taxa de franquia")
-    ? 120000
-    : item.value,
-  color: item.color,
-  locked: false,
-  monthly: data.months.map((_, index) =>
-    index === 0
-      ? normalize(item.label).includes("taxa de franquia")
-        ? 120000
-        : item.value
-      : 0,
-  ),
-}));
+function createMonthlySchedule(entries) {
+  return data.months.map((_, index) => Number(entries[index + 1]) || 0);
+}
+
+function normalizeMonthlySchedule(schedule, fallback = []) {
+  return data.months.map((_, index) => Number(schedule?.[index]) || Number(fallback?.[index]) || 0);
+}
+
+function createInvestmentItem(label, color, entries, locked = false) {
+  const monthly = createMonthlySchedule(entries);
+  return {
+    label,
+    value: monthly.reduce((sum, value) => sum + value, 0),
+    color,
+    locked,
+    monthly,
+  };
+}
+
+const defaultInvestmentItems = [
+  createInvestmentItem("Taxa de franquia", "#075C57", { 1: 80000 }, true),
+  createInvestmentItem("Reforma", "#00A19A", { 3: 45000, 4: 45000 }),
+  createInvestmentItem("Estoque (2 meses)", "#12C2C2", { 4: 8000, 5: 8000, 6: 8000 }),
+  createInvestmentItem("Equipamentos Técnicos", "#F99D36", { 4: 8200, 5: 1200, 6: 1200, 7: 1200, 8: 1200, 9: 1200, 10: 1200, 11: 1200, 12: 1200, 13: 1200 }),
+  createInvestmentItem("Ar Condicionado", "#1D71B8", { 3: 1600, 4: 1600, 5: 1600, 6: 1600, 7: 1600, 8: 1600, 9: 1600, 10: 1600, 11: 1600, 12: 1600 }),
+  createInvestmentItem("Móveis", "#1192B1", { 3: 1500, 4: 1500, 5: 1500, 6: 1500, 7: 1500, 8: 1500, 9: 1500, 10: 1500, 11: 1500, 12: 1500 }),
+  createInvestmentItem("Macas", "#12E8E8", { 3: 700, 4: 700, 5: 700, 6: 700, 7: 700, 8: 700, 9: 700, 10: 700, 11: 700, 12: 700 }),
+  createInvestmentItem("Fachada", "#075C57", { 3: 5000, 4: 5000, 5: 5000 }),
+  createInvestmentItem("Comunicação Visual", "#00A19A", { 3: 1400, 4: 1400 }),
+  createInvestmentItem("Material Gráfico", "#12C2C2", { 4: 2000 }),
+  createInvestmentItem("Uniformes", "#F99D36", { 4: 2000 }),
+  createInvestmentItem("Marketing Inaugural", "#1D71B8", { 4: 6000 }),
+  createInvestmentItem("Eletro | Eletrônicos", "#1192B1", { 4: 1500, 5: 1500, 6: 1500, 7: 1500, 8: 1500, 9: 1500, 10: 1500, 11: 1500, 12: 1500, 13: 1500 }),
+  createInvestmentItem("Abertura e Alvarás", "#12E8E8", { 3: 5000 }),
+  createInvestmentItem("Compras extras", "#F99D36", { 4: 1500, 5: 1500, 6: 1500, 7: 1500, 8: 1500, 9: 1500, 10: 1500, 11: 1500, 12: 1500, 13: 1500 }),
+  createInvestmentItem("Viagens |Hospedagem", "#075C57", { 4: 10000 }),
+  createInvestmentItem("Capital de Giro", "#00A19A", { 5: 30000 }),
+];
 
 function buildScenarioControls(scenarioId) {
   const profile = scenarioProfiles[scenarioId];
@@ -466,10 +489,7 @@ function investmentMonthlyWithoutFranchiseFee(items, index) {
 function setFranchiseFee(items, amount) {
   return items.map((item) => {
     if (!isFranchiseFeeItem(item)) return item;
-    const currentTotal = investmentItemTotal(item);
-    const monthly = currentTotal > 0
-      ? item.monthly.map((value) => (Number(value) || 0) * (amount / currentTotal))
-      : data.months.map((_, index) => (index === 0 ? amount : 0));
+    const monthly = data.months.map((_, index) => (index === 0 ? amount : 0));
     return { ...item, value: amount, monthly };
   });
 }
@@ -648,11 +668,16 @@ function mergeScenarioControls(saved = {}) {
             supplementQuantity: countValue(candidate.premises?.[index]?.supplementQuantity ?? fallback.premises[index].supplementQuantity),
           })),
           expenseItems: { ...fallback.expenseItems, ...candidate.expenseItems },
-          investmentItems: fallback.investmentItems.map((item, index) => ({
-            ...item,
-            ...candidate.investmentItems?.[index],
-            monthly: candidate.investmentItems?.[index]?.monthly || item.monthly,
-          })),
+          investmentItems: fallback.investmentItems.map((item, index) => {
+            const savedItem = candidate.investmentItems?.find((currentItem) => normalize(currentItem?.label) === normalize(item.label))
+              || candidate.investmentItems?.[index]
+              || {};
+            return {
+              ...item,
+              ...savedItem,
+              monthly: normalizeMonthlySchedule(savedItem.monthly, item.monthly),
+            };
+          }),
         },
       ];
     }),
@@ -1217,6 +1242,7 @@ function PremiseGrid({ controls, setControls, months, compact = false }) {
             <ScenarioNumber
               label="Avaliacoes/dia"
               value={item.evaluationsPerDay}
+              integer
               onChange={(value) => updatePremise(setControls, index, "evaluationsPerDay", value)}
             />
             <ScenarioNumber
@@ -1478,14 +1504,15 @@ function InvestmentView({ controls, setControls, openEditor }) {
         <div>
           <span>Investimento inicial</span>
           <strong>{formatMoney(total)}</strong>
+          <small>Taxa de franquia fixa: interior R$ 80 mil | capital R$ 120 mil</small>
         </div>
         <div className="investment-hero-actions">
           <div className="segmented-control" role="group" aria-label="Taxa de franquia">
             <button className={Math.round(franchiseFee) === 120000 ? "active" : ""} onClick={() => changeFranchiseFee(120000)}>
-              R$ 120 mil
+              Capital R$ 120 mil
             </button>
             <button className={Math.round(franchiseFee) === 80000 ? "active" : ""} onClick={() => changeFranchiseFee(80000)}>
-              R$ 80 mil
+              Interior R$ 80 mil
             </button>
           </div>
           <button className="ghost-button" onClick={openEditor}>
@@ -1498,12 +1525,12 @@ function InvestmentView({ controls, setControls, openEditor }) {
         <article>
           <span>Taxa de franquia</span>
           <strong>{formatMoney(franchiseFee)}</strong>
-          <small>{percentFormatter.format(total ? franchiseFee / total : 0)} do total</small>
+          <small>Fixa no mes 1</small>
         </article>
         <article>
           <span>Demais investimentos</span>
           <strong>{formatMoney(editableTotal)}</strong>
-          <small>{items.length - 1} outros itens</small>
+          <small>{items.length - 1} itens editaveis</small>
         </article>
         <article>
           <span>Maior item</span>
@@ -1843,6 +1870,7 @@ function ScenarioModal({ mode = "full", scenario, scenarioControls, controls, se
                 label="Avaliacoes/dia"
                 value={draft.base.evaluationsPerDay}
                 blankMode
+                integer
                 onChange={(value) => setDraft((current) => ({ ...current, base: { ...current.base, evaluationsPerDay: value } }))}
               />
               <ScenarioNumber
@@ -1915,12 +1943,37 @@ function ScenarioModal({ mode = "full", scenario, scenarioControls, controls, se
 }
 
 function InvestmentModal({ controls, setControls, onClose }) {
-  const [monthIndex, setMonthIndex] = useState(0);
-  const orderedItems = controls.investmentItems;
+  const items = controls.investmentItems;
+  const total = investmentTotal(items);
+
+  function updateCell(itemIndex, monthIndex, value) {
+    setControls((current) => ({
+      ...current,
+      investmentItems: current.investmentItems.map((currentItem, currentIndex) => {
+        if (currentIndex !== itemIndex) return currentItem;
+        if (isFranchiseFeeItem(currentItem) && monthIndex !== 0) return currentItem;
+        const nextMonthly = currentItem.monthly.map((monthValue, currentMonth) =>
+          currentMonth === monthIndex ? Math.max(0, Number(value) || 0) : Number(monthValue) || 0,
+        );
+        return {
+          ...currentItem,
+          monthly: nextMonthly,
+          value: nextMonthly.reduce((sum, monthValue) => sum + monthValue, 0),
+        };
+      }),
+    }));
+  }
+
+  function resetToSheetBase() {
+    setControls((current) => ({
+      ...current,
+      investmentItems: defaultInvestmentItems.map((item) => ({ ...item, monthly: [...item.monthly] })),
+    }));
+  }
 
   return (
     <div className="modal-backdrop" role="dialog" aria-modal="true">
-      <div className="modal modal-narrow">
+      <div className="modal modal-spreadsheet">
         <div className="modal-head">
           <PanelTitle icon={PieChartIcon} title="Editar investimento" />
           <button className="icon-button" onClick={onClose} aria-label="Fechar">
@@ -1929,44 +1982,52 @@ function InvestmentModal({ controls, setControls, onClose }) {
         </div>
         <div className="investment-modal-summary">
           <span>Total do investimento</span>
-          <strong>{formatMoney(investmentTotal(controls.investmentItems))}</strong>
+          <strong>{formatMoney(total)}</strong>
         </div>
-        <div className="modal-section compact-section">
-          <FilterSelect icon={Filter} label="Mes do desembolso" value={String(monthIndex)} onChange={(value) => setMonthIndex(Number(value))}>
-            {data.months.map((month, index) => <option key={month} value={index}>{month}</option>)}
-          </FilterSelect>
+        <div className="investment-modal-note">
+          Taxa de franquia fixa no mes 1. Interior = R$ 80 mil. Capital = R$ 120 mil.
         </div>
-        <div className="investment-edit-list">
-          {orderedItems.map((item) => {
-            const index = controls.investmentItems.findIndex((currentItem) => currentItem.label === item.label);
-            return (
-            <ScenarioNumber
-              key={item.label}
-              label={item.label}
-              value={item.monthly?.[monthIndex] || 0}
-              step={1000}
-              money
-              onChange={(value) =>
-                setControls((current) => ({
-                  ...current,
-                  investmentItems: current.investmentItems.map((currentItem, currentIndex) =>
-                    currentIndex === index
-                      ? {
-                          ...currentItem,
-                          monthly: currentItem.monthly.map((monthValue, currentMonth) =>
-                            currentMonth === monthIndex ? value : monthValue,
-                          ),
-                        }
-                      : currentItem,
-                  ),
-                }))
-              }
-            />
-            );
-          })}
+        <div className="table-wrap compact investment-sheet-wrap">
+          <table className="investment-sheet">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Total</th>
+                {data.months.map((month) => <th key={month}>{month}</th>)}
+              </tr>
+            </thead>
+            <tbody>
+              {items.map((item, itemIndex) => (
+                <tr key={item.label} className={isFranchiseFeeItem(item) || item.locked ? "locked" : ""}>
+                  <td>
+                    <strong>{item.label}</strong>
+                    <span>{item.locked ? "Fixa, nao parcelada" : "Editavel por mes"}</span>
+                  </td>
+                  <td>{formatMoney(investmentItemTotal(item))}</td>
+                  {data.months.map((month, monthIndex) => (
+                    <td key={`${item.label}-${month}`}>
+                      <input
+                        type="number"
+                        min="0"
+                        step="100"
+                        value={Number(item.monthly?.[monthIndex]) || 0}
+                        disabled={item.locked || isFranchiseFeeItem(item)}
+                        onChange={(event) => updateCell(itemIndex, monthIndex, event.target.value)}
+                      />
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
         <div className="modal-actions">
-          <button className="print-button" onClick={onClose}>Aplicar</button>
+          <button type="button" className="ghost-button" onClick={resetToSheetBase}>
+            Resetar planilha
+          </button>
+          <button type="button" className="print-button" onClick={onClose}>
+            Aplicar
+          </button>
         </div>
       </div>
     </div>
@@ -2267,30 +2328,27 @@ function PrintPremiseChart({ data }) {
 }
 
 function PrintInvestmentChart({ items }) {
-  const width = 980;
-  const height = 260;
-  const padding = { top: 16, right: 18, bottom: 20, left: 18 };
-  const plotWidth = width - padding.left - padding.right;
   const maxValue = Math.max(...items.map((item) => item.value), 1);
-  const rowHeight = 24;
   const bars = items.slice(0, 10);
 
   return (
     <div className="print-section page-break">
       <h2>Composicao do investimento</h2>
-      <svg className="print-svg-chart print-investment-svg" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Composicao do investimento">
-        {bars.map((item, index) => {
-          const y = padding.top + index * rowHeight;
-          const barWidth = (item.value / maxValue) * plotWidth;
+      <div className="print-investment-note">Taxa de franquia fixa: interior R$ 80 mil | capital R$ 120 mil</div>
+      <div className="print-investment-chart">
+        {bars.map((item) => {
+          const barWidth = Math.max(6, (item.value / maxValue) * 100);
           return (
-            <g key={item.label} transform={`translate(${padding.left}, ${y})`}>
-              <text x="0" y="14">{item.label}</text>
-              <rect x="200" y="3" width={Math.max(6, barWidth)} height="12" fill={item.color} rx="3" />
-              <text x={plotWidth} y="14" textAnchor="end">{formatMoney(item.value)}</text>
-            </g>
+            <div className="print-investment-row" key={item.label}>
+              <strong>{item.label}</strong>
+              <div>
+                <i style={{ width: `${barWidth}%`, background: item.color }} />
+              </div>
+              <span>{formatMoney(item.value)}</span>
+            </div>
           );
         })}
-      </svg>
+      </div>
       <InvestmentLegend items={items} total={items.reduce((sum, item) => sum + item.value, 0)} />
     </div>
   );
